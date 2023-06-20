@@ -6,6 +6,9 @@
 #include "CTabDlg1.h"
 #include "CTabDlg2.h"
 #include "CTabDlg3.h"
+#include "CTabDlg4.h"
+#include "CTabDlg5.h"
+#include "resource.h"
 #include "afxcmn.h"
 #include "afxdialogex.h"
 #include "afx.h"
@@ -58,10 +61,13 @@ public:
 	CTabDlg1* cTabDlg1;
 	CTabDlg2* cTabDlg2;
 	CTabDlg3* cTabDlg3;
+	CTabDlg4* cTabDlg4;
+	CTabDlg5* cTabDlg5;
 	CTabCtrl r_tab1;
 	afx_msg void OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButton1();
 	CString m_filename;
 	
+	afx_msg void OnBnClickedButton2();
 };
 

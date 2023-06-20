@@ -1,5 +1,22 @@
 ﻿#pragma once
 #include "afxdialogex.h"
+#include "SSGEdit.h"
+#include "pch.h"
+#include "GridCtrl.h"
+#include "GridCellCombo.h"
+#include <SplitStr.h>
+#include <string>
+#include <cstring>
+#include <io.h>
+#include <fstream> 
+#include <iostream>
+#include <vector>
+#include <tchar.h>
+#include <sstream>
+#include <stdio.h>
+#include <direct.h>
+#include <numeric>
+#include <algorithm>
 
 
 // CTabDlg2 对话框
@@ -22,6 +39,12 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CListCtrl m_beamlist;
 	virtual BOOL OnInitDialog();
+	CGridCtrl m_Grid_Beam;
+	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+private:
+	CStringArray arrConcMat;
+	CStringArray arrRebarMat;
+	
 };

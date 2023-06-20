@@ -77,7 +77,7 @@ void CTabDlg1::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTabDlg1, CDialogEx)
-	ON_MESSAGE(NM_A, UpdateTab)
+	ON_MESSAGE(NM_A, OnUpDate)
 END_MESSAGE_MAP()
 
 
@@ -143,7 +143,7 @@ BOOL CTabDlg1::OnInitDialog()
 	// 异常: OCX 属性页应返回 FALSE
 }
 
-LRESULT CTabDlg1::UpdateTab(WPARAM wParam, LPARAM lParam)
+LRESULT CTabDlg1::OnUpDate(WPARAM wParam, LPARAM lParam)
 {		
 		//MessageBox(TEXT("接受"));
 		CStdioFile cFile;

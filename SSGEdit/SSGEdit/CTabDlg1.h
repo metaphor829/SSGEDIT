@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "afxdialogex.h"
 #include "afxcmn.h"
-#include "SSGEditDlg.h"
+#include "SSGEdit.h"
 #include <string>
 #include <cstring>
 #include <io.h>
@@ -65,6 +65,6 @@ private:
 	float m_colrebarratio;
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg LRESULT UpdateTab(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 };
 
