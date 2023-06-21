@@ -43,6 +43,10 @@ public:
 	CGridCtrl m_Grid_Beam;
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrBeamInfo, int BeamInfoIndex);
+	void TrimArray(CStringArray& arr,int index,int n);
+	void ExpandArray(CStringArray& arrtext, CStringArray& arrInfo);
+	CString GetComboBoxIndex(CStringArray& arr, int nCol);
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;
