@@ -15,7 +15,7 @@
 #define IDC_BUTTON1                     1002
 #define IDC_EDIT1                       1004
 #define IDC_BUTTON2                     1008
-#define IDC_TAB2                        1010
+#define IDC_TAB_CTRL                    1010
 #define IDC_COMBO_CODETYPE              1013
 #define IDC_EDIT_REBARCOVER             1022
 #define IDC_EDIT_ACCGRAVITY             1023

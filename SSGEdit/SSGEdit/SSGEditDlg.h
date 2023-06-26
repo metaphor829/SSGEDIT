@@ -28,6 +28,7 @@
 #define NM_C	(WM_USER + 102)
 #define NM_D	(WM_USER + 103)
 #define NM_E	(WM_USER + 104)
+#define NM_F	(WM_USER + 105)
 
 using namespace std;
 // CSSGEditDlg 对话框
