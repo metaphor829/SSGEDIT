@@ -66,7 +66,7 @@ void CTabDlg2::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CTabDlg2, CDialogEx)
 	ON_MESSAGE(NM_A, OnUpDate)
-	ON_MESSAGE(NM_B, OnWriteDate)
+	ON_MESSAGE(NM_C, OnWriteDate)
 END_MESSAGE_MAP()
 
 
@@ -85,40 +85,24 @@ void CTabDlg2::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringAr
 	}
 }
 
-void CTabDlg2::TrimArray(CStringArray& arr, int index, int n)
+void CTabDlg2::TrimArray(CStringArray& arr, int index)
 {
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i <10; i++)
 	{
 		arr.RemoveAt(index);
 	}
 }
 
-void CTabDlg2::ExpandArray(CStringArray& arrtext, CStringArray& arrInfo)
+void CTabDlg2::ExpandArray(CStringArray& arr, int iColCount,int index)
 {
-	arrtext.SetSize(arrInfo.GetSize());
-	arrtext.InsertAt(22,arrInfo.GetAt(22));
-	arrtext.InsertAt(23, arrInfo.GetAt(23));
-	arrtext.InsertAt(25, arrInfo.GetAt(25));
-	arrtext.InsertAt(26, arrInfo.GetAt(26));
-	arrtext.InsertAt(30, arrInfo.GetAt(30));
-	arrtext.InsertAt(31, arrInfo.GetAt(31));
-	arrtext.InsertAt(32, arrInfo.GetAt(32));
-	arrtext.InsertAt(34, arrInfo.GetAt(34));
-	arrtext.InsertAt(35, arrInfo.GetAt(35));
-	arrtext.InsertAt(36, arrInfo.GetAt(36));
-	arrtext.InsertAt(37, arrInfo.GetAt(37));
-	arrtext.InsertAt(39, arrInfo.GetAt(39));
-	arrtext.InsertAt(40, arrInfo.GetAt(40));
-	arrtext.InsertAt(52, arrInfo.GetAt(52));
-	arrtext.InsertAt(53, arrInfo.GetAt(53));
-	arrtext.InsertAt(54, arrInfo.GetAt(54));
-	arrtext.InsertAt(55, arrInfo.GetAt(55));
-	arrtext.InsertAt(56, arrInfo.GetAt(56));
-	arrtext.InsertAt(57, arrInfo.GetAt(57));
-	arrtext.InsertAt(58, arrInfo.GetAt(58));
-	arrtext.InsertAt(59, arrInfo.GetAt(59));
-	arrtext.InsertAt(60, arrInfo.GetAt(60));
-	arrtext.InsertAt(61, arrInfo.GetAt(61));
+	arr.SetSize(iColCount);
+	for(int i=0;i<10;i++)
+	{
+	arr.InsertAt(index,_T("0"));
+	}
+	
+
+	
 }
 
 CString CTabDlg2::GetComboBoxIndex(CStringArray& arr, int nCol)
@@ -151,7 +135,7 @@ BOOL CTabDlg2::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	CRect cr;
 	m_Grid_Beam.GetClientRect(&cr);
-	m_Grid_Beam.SetColumnCount(39);//设置列数
+	m_Grid_Beam.SetColumnCount(62);//设置列数
 	m_Grid_Beam.SetFixedRowCount(1);//设置表头
 	m_Grid_Beam.SetItemText(0, 0, _T("ID"));
 	m_Grid_Beam.SetItemText(0, 1, _T("PKPM结构线编号"));
@@ -176,31 +160,78 @@ BOOL CTabDlg2::OnInitDialog()
 	m_Grid_Beam.SetItemText(0, 20, _T("2点Y方向偏移"));
 	m_Grid_Beam.SetItemText(0, 21, _T("2点Z方向偏移"));
 	m_Grid_Beam.SetItemText(0, 22, _T("面筋配筋面积"));
-	m_Grid_Beam.SetItemText(0, 23, _T("底筋配筋面积"));
-	m_Grid_Beam.SetItemText(0, 24, _T("加密区箍筋面积"));
-	m_Grid_Beam.SetItemText(0, 25, _T("非加密区箍筋面积"));
-	m_Grid_Beam.SetItemText(0, 26, _T("恒荷载qz（kN/m）"));
-	m_Grid_Beam.SetItemText(0, 27, _T("活荷载qz（kN/m）"));	
-	m_Grid_Beam.SetItemText(0, 28, _T("中震本构"));
-	m_Grid_Beam.SetItemText(0, 29, _T("大震本构"));
-	m_Grid_Beam.SetItemText(0, 30, _T("重要性分类"));
-	m_Grid_Beam.SetItemText(0, 31, _T("中震正截面性能"));
-	m_Grid_Beam.SetItemText(0, 32, _T("中震斜截面性能"));
-	m_Grid_Beam.SetItemText(0, 33, _T("大震正截面性能"));
-	m_Grid_Beam.SetItemText(0, 34, _T("大震斜截面性能"));
-	m_Grid_Beam.SetItemText(0, 35, _T("地震等级"));
-	m_Grid_Beam.SetItemText(0, 36, _T("轴力内力调整系数"));
-	m_Grid_Beam.SetItemText(0, 37, _T("弯矩内力调整系数"));
-	m_Grid_Beam.SetItemText(0, 38, _T("剪力内力调整系数"));
+	m_Grid_Beam.SetItemText(0, 23, _T("面筋配筋面积"));
+	m_Grid_Beam.SetItemText(0, 24, _T("面筋配筋面积"));
+	m_Grid_Beam.SetItemText(0, 25, _T("底筋配筋面积"));
+	m_Grid_Beam.SetItemText(0, 26, _T("底筋配筋面积"));
+	m_Grid_Beam.SetItemText(0, 27, _T("底筋配筋面积"));
+	m_Grid_Beam.SetItemText(0, 28, _T("加密区箍筋面积"));
+	m_Grid_Beam.SetItemText(0, 29, _T("非加密区箍筋面积"));
+	m_Grid_Beam.SetItemText(0, 30, _T("2"));
+	m_Grid_Beam.SetItemText(0, 31, _T("0"));
+	m_Grid_Beam.SetItemText(0, 32, _T("0"));
+	m_Grid_Beam.SetItemText(0, 33, _T("恒荷载qz（kN/m）"));
+	m_Grid_Beam.SetItemText(0, 34, _T("长度"));
+	m_Grid_Beam.SetItemText(0, 35, _T("恒荷载qz（kN/m）"));
+	m_Grid_Beam.SetItemText(0, 36, _T("1"));
+	m_Grid_Beam.SetItemText(0, 37, _T("0"));
+	m_Grid_Beam.SetItemText(0, 38, _T("活荷载qz（kN/m）"));
+	m_Grid_Beam.SetItemText(0, 39, _T("长度"));	
+	m_Grid_Beam.SetItemText(0, 40, _T("活荷载qz（kN/m）"));
+	m_Grid_Beam.SetItemText(0, 41, _T("中震本构"));
+	m_Grid_Beam.SetItemText(0, 42, _T("大震本构"));
+	m_Grid_Beam.SetItemText(0, 43, _T("重要性分类"));
+	m_Grid_Beam.SetItemText(0, 44, _T("中震正截面性能"));
+	m_Grid_Beam.SetItemText(0, 45, _T("中震斜截面性能"));
+	m_Grid_Beam.SetItemText(0, 46, _T("大震正截面性能"));
+	m_Grid_Beam.SetItemText(0, 47, _T("大震斜截面性能"));
+	m_Grid_Beam.SetItemText(0, 48, _T("地震等级"));
+	m_Grid_Beam.SetItemText(0, 49, _T("轴力内力调整系数"));
+	m_Grid_Beam.SetItemText(0, 50, _T("弯矩内力调整系数"));
+	m_Grid_Beam.SetItemText(0, 51, _T("剪力内力调整系数"));
+	m_Grid_Beam.SetItemText(0, 52, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 53, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 54, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 55, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 56, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 57, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 58, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 59, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 60, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 61, _T("待确定"));
+	//设置列宽，并将部分列隐藏
 	m_Grid_Beam.SetColumnWidth(0,50);
+	m_Grid_Beam.SetColumnWidth(1, 0);
 	m_Grid_Beam.SetColumnWidth(2, 80);
 	m_Grid_Beam.SetColumnWidth(3, 60);
 	m_Grid_Beam.SetColumnWidth(4, 60);
 	m_Grid_Beam.SetColumnWidth(5, 60);
 	m_Grid_Beam.SetColumnWidth(6, 60);
 	m_Grid_Beam.SetColumnWidth(7, 60);
-	
-	
+	m_Grid_Beam.SetColumnWidth(23, 0);
+	m_Grid_Beam.SetColumnWidth(24, 0);
+	m_Grid_Beam.SetColumnWidth(26, 0);
+	m_Grid_Beam.SetColumnWidth(27, 0);
+	m_Grid_Beam.SetColumnWidth(30, 0);
+	m_Grid_Beam.SetColumnWidth(31, 0);
+	m_Grid_Beam.SetColumnWidth(32, 0);
+	m_Grid_Beam.SetColumnWidth(34, 0);
+	m_Grid_Beam.SetColumnWidth(35, 0);
+	m_Grid_Beam.SetColumnWidth(36, 0);
+	m_Grid_Beam.SetColumnWidth(37, 0);
+	m_Grid_Beam.SetColumnWidth(39, 0);
+	m_Grid_Beam.SetColumnWidth(40, 0);
+	m_Grid_Beam.SetColumnWidth(52, 0);
+	m_Grid_Beam.SetColumnWidth(53, 0);
+	m_Grid_Beam.SetColumnWidth(54, 0);
+	m_Grid_Beam.SetColumnWidth(55, 0);
+	m_Grid_Beam.SetColumnWidth(56, 0);
+	m_Grid_Beam.SetColumnWidth(57, 0);
+	m_Grid_Beam.SetColumnWidth(58, 0);
+	m_Grid_Beam.SetColumnWidth(59, 0);
+	m_Grid_Beam.SetColumnWidth(60, 0);
+	m_Grid_Beam.SetColumnWidth(61, 0);
+	m_Grid_Beam.EnableHiddenColUnhide(FALSE);//使隐藏列不能显示
 
 
 
@@ -243,17 +274,23 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 		Split.SetSplitFlag(TEXT(" "));
 		CStringArray arrBeamInfo;
 		Split.GetSplitStrArray(arrBeamInfo);
-		//先对arrBeamInfo进行处理，去掉一些暂不清楚、不需要的信息和重复的信息
-		TrimArray(arrBeamInfo,23,2);
-		TrimArray(arrBeamInfo,24,2);
-		TrimArray(arrBeamInfo,26,3);
-		TrimArray(arrBeamInfo,27,4);
-		TrimArray(arrBeamInfo,28,2);
-		//将arrBeamInfo中的信息填入到网格中
-		for (int j = 0; j < iColCount; j++)
+		
+		if (arrBeamInfo.GetSize() == iColCount)//将arrBeamInfo中的信息填入到网格中
 		{
-			m_Grid_Beam.SetItemText(i + 1, j, (LPCTSTR)arrBeamInfo.GetAt(j));
+			for (int j = 0; j < arrBeamInfo.GetSize(); j++)
+			{
+				m_Grid_Beam.SetItemText(i + 1, j, (LPCTSTR)arrBeamInfo.GetAt(j));
+			}
 		}
+		else//将arrBeamInfo中格式不统一的信息先进行处理再填入到网格中
+		{
+			ExpandArray(arrBeamInfo, iColCount,30);
+			for (int j = 0; j < arrBeamInfo.GetSize(); j++)
+			{
+				m_Grid_Beam.SetItemText(i + 1, j, (LPCTSTR)arrBeamInfo.GetAt(j));
+			}
+		}
+
 		//ComboBox内容的单独设置
 		m_Grid_Beam.SetCellType(i + 1, 8, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Beam, i + 1, 8, arrConcMat, arrBeamInfo, 8);
@@ -261,11 +298,13 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 		SetCellComboText(m_Grid_Beam, i + 1, 9, arrRebarMat, arrBeamInfo, 9);
 		m_Grid_Beam.SetCellType(i + 1, 10, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Beam, i + 1, 10, arrRebarMat, arrBeamInfo, 10);
+
+		
 	}
-	
+
 	return 0;
 }
- LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
+LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
 {
 	 CStdioFile cFile;
 	 CStdioFile cNewFile;
@@ -278,18 +317,17 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 	 cNewFile.SeekToBegin();
 	 int iColCount = m_Grid_Beam.GetColumnCount();
 	 CString sLine;
+	 CString sNewLine;
 	 static int iBeamNumbers = 0;
 	 static CString sBeamNumbers;
 	 while (cFile.ReadString(sLine))
 	 {
-		
-		 cNewFile.WriteString(sLine+ _T("\n"));
-
+		 cNewFile.WriteString(sLine + _T("\n"));
 		 if (sLine.Find(TEXT("NBEAM NUMBER=")) != -1)//先定位至BEAM NUMBER所在行
 		 {
 			 sBeamNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
 			 iBeamNumbers = _ttoi(sBeamNumbers);
-			 for (int i = 0; i < iBeamNumbers-1; i++)
+			 for (int i = 0; i < iBeamNumbers; i++)
 			 {
 				 cFile.ReadString(sLine);
 				 CSplitStr Split;
@@ -297,7 +335,7 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 				 Split.SetSplitFlag(TEXT(" "));
 				 CStringArray arrBeamInfo;
 				 Split.GetSplitStrArray(arrBeamInfo);
-				 static CStringArray arrCellText;
+				 CStringArray arrCellText;
 				 for (int j = 0; j < iColCount; j++)
 				 {
 					 arrCellText.Add(m_Grid_Beam.GetItemText(i + 1, j));
@@ -306,25 +344,39 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 				 arrCellText.SetAt(8, GetComboBoxIndex(arrCellText, 8));
 				 arrCellText.SetAt(9, GetComboBoxIndex(arrCellText, 9));
 				 arrCellText.SetAt(10, GetComboBoxIndex(arrCellText, 10));
+				
 
-				 //将arrCellTextl扩充，和arrBeamInfo一样的长度
-				 ExpandArray(arrCellText, arrBeamInfo);
-				//将arrCellText中的信息填入到NewLine进行替换
-				 CString sNewLine;
-				 for (int k = 0; k < arrCellText.GetSize(); k++)
+				 if (arrCellText.GetSize() == arrBeamInfo.GetSize())//将arrCellText中的信息填入到NewLine进行替换
 				 {
-					 sNewLine += arrCellText.GetAt(k);
-					 sNewLine += TEXT(" ");
+					 for (int k = 0; k < arrCellText.GetSize(); k++)
+					 {
+						 sNewLine += arrCellText.GetAt(k);
+						 sNewLine += TEXT(" ");
+					 }
+
+				 } 
+				 else//将arrCellText修建为arrBeamInfo一样的格式长度
+				 {
+					 TrimArray(arrCellText,30);
+					 for (int k = 0; k < arrCellText.GetSize(); k++)
+					 {
+						 sNewLine += arrCellText.GetAt(k);
+						 sNewLine += TEXT(" ");
+					 }
 				 }
+				 //MessageBox(sNewLine);
+				 cNewFile.WriteString(sNewLine + _T("\n"));
+				 sNewLine.Empty();
 				 arrCellText.RemoveAll();
 				 arrBeamInfo.RemoveAll();
-				 cNewFile.WriteString(sNewLine +_T("\n"));
-			 }
+			 } 
 		 }
 	 }
 	 cFile.Close();
 	 cNewFile.Close();
-	return 0;
+	 cFile.Remove(sPath);
+	 cNewFile.Rename(sNewPath,sPath);
+	 return 0;
 }
 
  

@@ -66,5 +66,6 @@ private:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
 };
 

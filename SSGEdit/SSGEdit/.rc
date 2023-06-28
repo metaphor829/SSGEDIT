@@ -1,0 +1,375 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+#include <windows.h>
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#include ""res\\SSGEdit.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""l.CHS\\afxribbon.rc""   // MFC 功能区和控制条资源\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\SSGEdit.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 SSGEdit"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "SSGEdit，版本 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "版权所有 (C) 2023",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_SSGEDIT_DIALOG DIALOGEX 0, 0, 439, 287
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SSGEdit"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "打开",IDC_BUTTON1,24,16,50,14
+    EDITTEXT        IDC_EDIT1,81,16,264,16,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "保存",IDC_BUTTON2,353,18,50,14
+    CONTROL         "",IDC_TAB2,"SysTabControl32",0x0,18,39,403,228
+END
+
+IDD_TAB_DIALOG1 DIALOGEX 0, 0, 451, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+EXSTYLE WS_EX_WINDOWEDGE
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "规范类型：",IDC_STATIC,7,8,42,11
+    COMBOBOX        IDC_COMBO_CODETYPE,49,7,93,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "项目名称：",IDC_STATIC,7,25,42,11
+    LTEXT           "梁钢筋保护层厚度（mm）：",IDC_STATIC,7,42,104,11
+    EDITTEXT        IDC_EDIT_PROJECTNAME,49,22,95,14,ES_AUTOHSCROLL
+    LTEXT           "柱、斜撑钢筋保护层厚度（mm）：",IDC_STATIC,7,54,129,11
+    LTEXT           "板钢筋保护层厚度（mm）：",IDC_STATIC,7,69,104,11
+    LTEXT           "墙钢筋保护层厚度（mm）：",IDC_STATIC,7,84,104,11
+    LTEXT           "混凝土重度（kN/m3）：",IDC_STATIC,7,100,104,11
+    LTEXT           "钢材重度（kN/m3）：",IDC_STATIC,7,115,104,11
+    LTEXT           "重力加速度（m/s2）：",IDC_STATIC,7,129,104,11
+    LTEXT           "剪力墙边缘构件钢筋级别：",IDC_STATIC,7,145,104,11
+    EDITTEXT        IDC_EDIT_REBARCOVER,127,38,46,14,ES_AUTOHSCROLL
+    LTEXT           "连梁纵筋钢筋级别：",IDC_STATIC,7,160,104,11
+    EDITTEXT        IDC_EDIT_ACCGRAVITY,127,127,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_STEELGRAVITY,127,112,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CONGRAVITY,127,97,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WALLCOVER,127,82,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SLABCOVER,127,67,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_COLCOVER,127,53,49,14,ES_AUTOHSCROLL
+    LTEXT           "墙水平分布筋间距（mm）：",IDC_STATIC,7,175,104,11
+    EDITTEXT        IDC_EDIT_BEAMLINKSPACE,127,171,49,14,ES_AUTOHSCROLL
+    LTEXT           "剪力墙抗震等级：",IDC_STATIC,206,8,77,11
+    LTEXT           "框架抗震等级：",IDC_STATIC,206,22,77,11
+    LTEXT           "楼板抗震等级：",IDC_STATIC,206,36,77,11
+    LTEXT           "场地分组：",IDC_STATIC,206,92,101,11
+    LTEXT           "地震烈度：",IDC_STATIC,206,106,101,11
+    LTEXT           "地震概率：",IDC_STATIC,206,120,101,11
+    LTEXT           "梁缺省钢筋直径（mm）：",IDC_STATIC,206,135,101,11
+    LTEXT           "柱缺省钢筋直径（mm）：",IDC_STATIC,206,149,101,11
+    EDITTEXT        IDC_EDIT_BEAMREBARDIAMETER,343,132,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_COLREBARDIAMETER,343,147,49,14,ES_AUTOHSCROLL
+    LTEXT           "板缺省配筋率：",IDC_STATIC,207,164,101,11
+    EDITTEXT        IDC_EDIT_SLABREBARRATIO,343,161,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WALLREBARRATIO,343,176,49,14,ES_AUTOHSCROLL
+    LTEXT           "墙缺省配筋率：",IDC_STATIC,206,179,101,11
+    LTEXT           "梁面筋、底筋缺省配筋率：",IDC_STATIC,206,193,101,11
+    LTEXT           "柱、斜撑水平和竖向筋缺省配筋率：",IDC_STATIC,206,207,148,11
+    EDITTEXT        IDC_EDIT_BEAMREBARRATIO,343,190,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_COLREBARRATIO,343,204,49,14,ES_AUTOHSCROLL
+    LTEXT           "板缺省厚度（mm）",IDC_STATIC,7,189,104,11
+    EDITTEXT        IDC_EDIT_SLABDETHICKNESS,127,186,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WALLDETHICKNESS,127,201,49,14,ES_AUTOHSCROLL
+    LTEXT           "墙缺省厚度（mm）：",IDC_STATIC,7,203,104,11
+    LTEXT           "场地类别：",IDC_STATIC,206,78,101,11
+    LTEXT           "抗震设防类别：",IDC_STATIC,206,65,101,11
+    LTEXT           "抗震构造措施的抗震等级：",IDC_STATIC,206,50,101,11
+    COMBOBOX        IDC_COMBO_EQGRADEPROBILITY,343,118,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_EQGRADE,343,104,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FIELDGROUP,343,90,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FIELDCLASS,343,76,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FORTICATEGORY,343,62,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_SEISDETAILGRADE,343,48,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_SLABSEISGRADE,343,34,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_COLSEISGRADE,343,20,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_WALLSEISGRADE,343,7,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_EDGEREBAR,127,141,49,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_LINKREABR,127,156,49,14,ES_AUTOHSCROLL
+END
+
+IDD_TAB_DIALOG2 DIALOGEX 0, 0, 448, 218
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "梁构件",IDC_CUSTOM1,"MFCGridCtrl",WS_TABSTOP,7,7,434,204
+END
+
+IDD_TAB_DIALOG3 DIALOGEX 0, 0, 448, 217
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+IDD_TAB_DIALOG4 DIALOGEX 0, 0, 448, 217
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+IDD_TAB_DIALOG5 DIALOGEX 0, 0, 448, 217
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "SSGEdit"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "SSGEdit.exe"
+            VALUE "LegalCopyright", "TODO:  (C) <公司名>。  保留所有权利。"
+            VALUE "OriginalFilename", "SSGEdit.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_SSGEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 432
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 280
+    END
+
+    IDD_TAB_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 445
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_TAB_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 441
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_TAB_DIALOG3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 441
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_TAB_DIALOG4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 441
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_TAB_DIALOG5, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 441
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_SSGEDIT_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_TAB_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_TAB_DIALOG2 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_TAB_DIALOG3 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_TAB_DIALOG4 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_TAB_DIALOG5 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "关于 SSGEdit(&A)..."
+END
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#include "res\SSGEdit.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#if !defined(_AFXDLL)
+#include "l.CHS\afxribbon.rc"   // MFC 功能区和控制条资源
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
