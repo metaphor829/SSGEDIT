@@ -59,7 +59,7 @@ CSSGEditDlg::CSSGEditDlg(CWnd* pParent /*=nullptr*/)
 void CSSGEditDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TAB_CTRL, r_tab1);
+	DDX_Control(pDX, IDC_TAB2, r_tab1);
 	DDX_Text(pDX, IDC_EDIT1, m_filename);
 }
 
@@ -67,7 +67,7 @@ BEGIN_MESSAGE_MAP(CSSGEditDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_CTRL, &CSSGEditDlg::OnTcnSelchangeTab1)
+	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB2, &CSSGEditDlg::OnTcnSelchangeTab1)
 	ON_BN_CLICKED(IDC_BUTTON1, &CSSGEditDlg::OnBnClickedButton1)
 
 	
@@ -268,23 +268,10 @@ void CSSGEditDlg::OnBnClickedButton1()
 void CSSGEditDlg::OnBnClickedButton2()
 {	
 	//向对话框发送消息
-	switch (r_tab1.GetCurSel())
-	{
-	case 0:
-		::PostMessage(cTabDlg1->GetSafeHwnd(), NM_B, (LPARAM)0, (LPARAM)0);
-		break;
-	case 1:
-		::PostMessage(cTabDlg2->GetSafeHwnd(), NM_C, (LPARAM)0, (LPARAM)0);
-		break;
-	case 2:
-		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_D, (LPARAM)0, (LPARAM)0);
-		break;
-	case 3:
-		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_E, (LPARAM)0, (LPARAM)0);
-		break;
-	case 4:
-		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_F, (LPARAM)0, (LPARAM)0);
-		break;
-	}
+	::PostMessage(cTabDlg1->GetSafeHwnd(), NM_B, (LPARAM)0, (LPARAM)0);
+	::PostMessage(cTabDlg2->GetSafeHwnd(), NM_B, (LPARAM)0, (LPARAM)0);
+	::PostMessage(cTabDlg3->GetSafeHwnd(), NM_B, (LPARAM)0, (LPARAM)0);
+	::PostMessage(cTabDlg4->GetSafeHwnd(), NM_B, (LPARAM)0, (LPARAM)0);
+	::PostMessage(cTabDlg5->GetSafeHwnd(), NM_B, (LPARAM)0, (LPARAM)0);
 	// TODO: 在此添加控件通知处理程序代码
 }
