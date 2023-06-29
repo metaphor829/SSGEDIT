@@ -100,9 +100,6 @@ void CTabDlg2::ExpandArray(CStringArray& arr, int iColCount,int index)
 	{
 	arr.InsertAt(index,_T("0"));
 	}
-	
-
-	
 }
 
 CString CTabDlg2::GetComboBoxIndex(CStringArray& arr, int nCol)
