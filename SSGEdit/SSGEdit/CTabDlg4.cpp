@@ -79,10 +79,10 @@ void CTabDlg4::TrimArray(CStringArray& arrText, CStringArray& arrInfo)
 	}
 }
 
-void CTabDlg4::ExpandArray(CStringArray& arr, int iWallCount)
+void CTabDlg4::ExpandArray(CStringArray& arr, int iCount)
 {
-	int iExpandSize=iWallCount-arr.GetSize();
-	arr.SetSize(iWallCount);
+	int iExpandSize=iCount-arr.GetSize();
+	arr.SetSize(iCount);
 	for (int i = 0; i < iExpandSize; i++)
 	{
 		arr.InsertAt(9-iExpandSize, _T("0"));
@@ -143,7 +143,7 @@ BOOL CTabDlg4::OnInitDialog()
 	m_Grid_Wall.SetItemText(0, 6, _T("线编号4"));
 	m_Grid_Wall.SetItemText(0, 7, _T("线编号5"));
 	m_Grid_Wall.SetItemText(0, 8, _T("线编号6"));
-	m_Grid_Wall.SetItemText(0, 9, _T("结构类型"));
+	m_Grid_Wall.SetItemText(0, 9, _T("对象类型"));
 	m_Grid_Wall.SetItemText(0, 10, _T("截面类型"));
 	m_Grid_Wall.SetItemText(0, 11, _T("子截面类型"));
 	m_Grid_Wall.SetItemText(0, 12, _T("钢筋层数"));
@@ -187,6 +187,7 @@ BOOL CTabDlg4::OnInitDialog()
 	m_Grid_Wall.SetColumnWidth(7, 60);
 	m_Grid_Wall.SetColumnWidth(8, 60);
 	m_Grid_Wall.SetColumnWidth(16, 0);
+	m_Grid_Wall.SetColumnWidth(32, 0);
 	m_Grid_Wall.SetColumnWidth(36, 0);
 	m_Grid_Wall.SetColumnWidth(37, 0);
 	m_Grid_Wall.SetColumnWidth(38, 0);
@@ -211,20 +212,20 @@ LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 	int iWallCount = m_Grid_Wall.GetColumnCount();
 	CString sLine;
 	CString sNewLine;
-	static int iWallumnNumbers = 0;
-	static CString sWallumnNumbers;
+	static int iWallNumbers = 0;
+	static CString sWallNumbers;
 	while (cFile.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)
 		{
-			sWallumnNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iWallumnNumbers = _ttoi(sWallumnNumbers);
-			m_Grid_Wall.SetRowCount(iWallumnNumbers + 1);
+			sWallNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
+			iWallNumbers = _ttoi(sWallNumbers);
+			m_Grid_Wall.SetRowCount(iWallNumbers + 1);
 			break;
 		}
 	}
 	
-	for (int i = 0; i < iWallumnNumbers; i++)
+	for (int i = 0; i < iWallNumbers; i++)
 	{
 		cFile.ReadString(sLine);
 		CSplitStr Split;
@@ -273,16 +274,16 @@ LRESULT CTabDlg4::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	int iWallCount = m_Grid_Wall.GetColumnCount();
 	CString sLine;
 	CString sNewLine;
-	static int iWallumnNumbers = 0;
-	static CString sWallumnNumbers;
+	static int iWallNumbers = 0;
+	static CString sWallNumbers;
 	while (cFile.ReadString(sLine))
 	{
 		cNewFile.WriteString(sLine + _T("\n"));
 		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)//先定位至COLUMN NUMBER所在行
 		{
-			sWallumnNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iWallumnNumbers = _ttoi(sWallumnNumbers);
-			for (int i = 0; i < iWallumnNumbers; i++)
+			sWallNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
+			iWallNumbers = _ttoi(sWallNumbers);
+			for (int i = 0; i < iWallNumbers; i++)
 			{
 				cFile.ReadString(sLine);
 				CSplitStr Split;

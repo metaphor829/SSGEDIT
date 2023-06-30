@@ -189,8 +189,8 @@ BOOL CTabDlg2::OnInitDialog()
 	m_Grid_Beam.SetItemText(0, 52, _T("待确定"));
 	m_Grid_Beam.SetItemText(0, 53, _T("待确定"));
 	m_Grid_Beam.SetItemText(0, 54, _T("待确定"));
-	m_Grid_Beam.SetItemText(0, 55, _T("待确定"));
-	m_Grid_Beam.SetItemText(0, 56, _T("待确定"));
+	m_Grid_Beam.SetItemText(0, 55, _T("剪切属性"));
+	m_Grid_Beam.SetItemText(0, 56, _T("构件跨度"));
 	m_Grid_Beam.SetItemText(0, 57, _T("待确定"));
 	m_Grid_Beam.SetItemText(0, 58, _T("待确定"));
 	m_Grid_Beam.SetItemText(0, 59, _T("待确定"));
@@ -221,7 +221,6 @@ BOOL CTabDlg2::OnInitDialog()
 	m_Grid_Beam.SetColumnWidth(52, 0);
 	m_Grid_Beam.SetColumnWidth(53, 0);
 	m_Grid_Beam.SetColumnWidth(54, 0);
-	m_Grid_Beam.SetColumnWidth(55, 0);
 	m_Grid_Beam.SetColumnWidth(56, 0);
 	m_Grid_Beam.SetColumnWidth(57, 0);
 	m_Grid_Beam.SetColumnWidth(58, 0);

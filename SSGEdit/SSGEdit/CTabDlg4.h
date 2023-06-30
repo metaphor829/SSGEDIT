@@ -40,7 +40,7 @@ protected:
 public:
 	CGridCtrl m_Grid_Wall;
 	void TrimArray(CStringArray& arrText, CStringArray& arrInfo);
-	void ExpandArray(CStringArray& arr, int iWallCount);
+	void ExpandArray(CStringArray& arr, int iCount);
 	CString GetComboBoxIndex(CStringArray& arr, int nCol);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex);
 	virtual BOOL OnInitDialog();
