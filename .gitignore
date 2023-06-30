@@ -5,6 +5,7 @@
 !*.c
 !*.h
 !*.vcproj
+!*.vcxproj
 !*.sln
 !*.aps
 !*.filters
@@ -15,6 +16,7 @@
 !.**/*.hpp
 !.**/*.h
 !.**/*.vcproj
+!.**/*.vcxproj
 !.**/*.aps
 !.**/*.filters
 !.**/*.users
