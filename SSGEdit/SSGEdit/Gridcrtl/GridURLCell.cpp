@@ -2,6 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+#include "pch.h"
 #include "stdafx.h"
 #include "GridURLCell.h"
 #include "GridCtrl.h"

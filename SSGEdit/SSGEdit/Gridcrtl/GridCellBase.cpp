@@ -42,6 +42,7 @@
 //        
 /////////////////////////////////////////////////////////////////////////////
 
+#include "pch.h"
 #include "stdafx.h"
 #include "GridCtrl.h"
 #include "GridCellBase.h"

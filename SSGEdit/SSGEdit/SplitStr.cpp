@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "SplitStr.h"
-
+#include "pch.h"
 
 // CSplitStr
 
