@@ -13,6 +13,7 @@
 !*.filters
 !*.users
 !*.rc
+!*.props
 !.**/*.cpp
 !.**/*.c
 !.**/*.hpp
@@ -25,3 +26,4 @@
 !.**/*.filters
 !.**/*.users
 !.**/*.rc
+!.**/*.props
