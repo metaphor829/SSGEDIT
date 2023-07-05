@@ -6,6 +6,8 @@
 !*.h
 !*.vcproj
 !*.vcxproj
+!*.vcxproj.filters
+!*.vcxproj.user
 !*.sln
 !*.aps
 !*.filters
@@ -17,6 +19,8 @@
 !.**/*.h
 !.**/*.vcproj
 !.**/*.vcxproj
+!.**/*.vcxproj.filters
+!.**/*.vcxproj.user
 !.**/*.aps
 !.**/*.filters
 !.**/*.users
