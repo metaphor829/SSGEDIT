@@ -12,6 +12,7 @@
 #define IDD_TAB_DIALOG3                 134
 #define IDD_TAB_DIALOG4                 135
 #define IDD_TAB_DIALOG5                 136
+#define IDD_TAB_DIALOG6                 137
 #define IDC_BUTTON1                     1002
 #define IDC_EDIT1                       1004
 #define IDC_BUTTON2                     1008
@@ -32,6 +33,7 @@
 #define IDC_CUSTOM3                     1031
 #define IDC_EDIT_BEAMLINKSPACE          1032
 #define IDC_CUSTOM4                     1032
+#define IDC_CUSTOM5                     1033
 #define IDC_COMBO_WALLSEISGRADE         1036
 #define IDC_COMBO_COLSEISGRADE          1037
 #define IDC_COMBO_SLABSEISGRADE         1038
@@ -58,7 +60,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

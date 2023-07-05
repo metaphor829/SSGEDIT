@@ -116,26 +116,31 @@ BOOL CSSGEditDlg::OnInitDialog()
 	r_tab1.InsertItem(2, L"柱构件");
 	r_tab1.InsertItem(3, L"墙构件");
 	r_tab1.InsertItem(4, L"板构件");
+	r_tab1.InsertItem(5, L"节点信息");
 	cTabDlg1 = new CTabDlg1();
 	cTabDlg2 = new CTabDlg2();
 	cTabDlg3 = new CTabDlg3();
 	cTabDlg4 = new CTabDlg4();
 	cTabDlg5 = new CTabDlg5();
+	cTabDlg6 = new CTabDlg6();
 	cTabDlg1->Create(IDD_TAB_DIALOG1, &r_tab1);
 	cTabDlg2->Create(IDD_TAB_DIALOG2, &r_tab1);
 	cTabDlg3->Create(IDD_TAB_DIALOG3, &r_tab1);
 	cTabDlg4->Create(IDD_TAB_DIALOG4, &r_tab1);
 	cTabDlg5->Create(IDD_TAB_DIALOG5, &r_tab1);
+	cTabDlg6->Create(IDD_TAB_DIALOG6, &r_tab1);
 	cTabDlg1->MoveWindow(tabRect);
 	cTabDlg2->MoveWindow(tabRect);
 	cTabDlg3->MoveWindow(tabRect);
 	cTabDlg4->MoveWindow(tabRect);
 	cTabDlg5->MoveWindow(tabRect);
+	cTabDlg6->MoveWindow(tabRect);
 	cTabDlg1->ShowWindow(SW_SHOW);
 	cTabDlg2->ShowWindow(SW_HIDE);
 	cTabDlg3->ShowWindow(SW_HIDE);
 	cTabDlg4->ShowWindow(SW_HIDE);
 	cTabDlg5->ShowWindow(SW_HIDE);
+	cTabDlg6->ShowWindow(SW_HIDE);
 
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -203,6 +208,7 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		cTabDlg3->ShowWindow(SW_HIDE);
 		cTabDlg4->ShowWindow(SW_HIDE);
 		cTabDlg5->ShowWindow(SW_HIDE);
+		cTabDlg6->ShowWindow(SW_HIDE);
 		break;
 	case 1:
 		cTabDlg1->ShowWindow(SW_HIDE);
@@ -210,6 +216,7 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		cTabDlg3->ShowWindow(SW_HIDE);
 		cTabDlg4->ShowWindow(SW_HIDE);
 		cTabDlg5->ShowWindow(SW_HIDE);
+		cTabDlg6->ShowWindow(SW_HIDE);
 		break;
 	case 2:
 		cTabDlg1->ShowWindow(SW_HIDE);
@@ -217,6 +224,7 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		cTabDlg3->ShowWindow(SW_SHOW);
 		cTabDlg4->ShowWindow(SW_HIDE);
 		cTabDlg5->ShowWindow(SW_HIDE);
+		cTabDlg6->ShowWindow(SW_HIDE);
 		break;
 	case 3:
 		cTabDlg1->ShowWindow(SW_HIDE);
@@ -224,6 +232,7 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		cTabDlg3->ShowWindow(SW_HIDE);
 		cTabDlg4->ShowWindow(SW_SHOW);
 		cTabDlg5->ShowWindow(SW_HIDE);
+		cTabDlg6->ShowWindow(SW_HIDE);
 		break;
 	case 4:
 		cTabDlg1->ShowWindow(SW_HIDE);
@@ -231,7 +240,17 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		cTabDlg3->ShowWindow(SW_HIDE);
 		cTabDlg4->ShowWindow(SW_HIDE);
 		cTabDlg5->ShowWindow(SW_SHOW);
+		cTabDlg6->ShowWindow(SW_HIDE);
+	case 5:
+		cTabDlg1->ShowWindow(SW_HIDE);
+		cTabDlg2->ShowWindow(SW_HIDE);
+		cTabDlg3->ShowWindow(SW_HIDE);
+		cTabDlg4->ShowWindow(SW_HIDE);
+		cTabDlg5->ShowWindow(SW_HIDE);
+		cTabDlg6->ShowWindow(SW_SHOW);
+
 		break;
+
 	}
 	*pResult = 0;
 }
@@ -258,6 +277,7 @@ void CSSGEditDlg::OnBnClickedButton1()
 		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+		::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 	}
 	m_filename = strFileName;
 	UpdateData(FALSE);

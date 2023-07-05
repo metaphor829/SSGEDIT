@@ -93,6 +93,9 @@
     <ClInclude Include="SplitStr.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CTabDlg6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SSGEdit.cpp">
@@ -153,6 +156,9 @@
       <Filter>GridCtrl</Filter>
     </ClCompile>
     <ClCompile Include="SplitStr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTabDlg6.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

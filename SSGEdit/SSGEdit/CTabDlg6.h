@@ -19,19 +19,19 @@
 #include <algorithm>
 
 
-// CTabDlg5 对话框
+// CTabDlg6 对话框
 
-class CTabDlg5 : public CDialogEx
+class CTabDlg6 : public CDialogEx
 {
-	DECLARE_DYNAMIC(CTabDlg5)
+	DECLARE_DYNAMIC(CTabDlg6)
 
 public:
-	CTabDlg5(CWnd* pParent = nullptr);   // 标准构造函数
-	virtual ~CTabDlg5();
+	CTabDlg6(CWnd* pParent = nullptr);   // 标准构造函数
+	virtual ~CTabDlg6();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_TAB_DIALOG5 };
+	enum { IDD = IDD_TAB_DIALOG6 };
 #endif
 
 protected:
@@ -39,15 +39,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CGridCtrl m_Grid_Slab;
-	void TrimArray(CStringArray& arrText, CStringArray& arrInfo);
-	void ExpandArray(CStringArray& arr, int iCount);
-	CString GetComboBoxIndex(CStringArray& arr, int nCol);
-	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex);
+	CGridCtrl m_Grid_Coor;
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
-private:
-	CStringArray arrConcMat;
-	CStringArray arrRebarMat;
 };
