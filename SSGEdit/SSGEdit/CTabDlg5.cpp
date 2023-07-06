@@ -165,15 +165,15 @@ BOOL CTabDlg5::OnInitDialog()
 	m_Grid_Slab.SetItemText(0, 33, _T("中震斜截面性能"));
 	m_Grid_Slab.SetItemText(0, 34, _T("大震正截面性能"));
 	m_Grid_Slab.SetItemText(0, 35, _T("大震斜截面性能"));
-	m_Grid_Slab.SetItemText(0, 36, _T("地震等级"));
+	m_Grid_Slab.SetItemText(0, 36, _T("3"));
 	m_Grid_Slab.SetItemText(0, 37, _T("轴力内力调整系数"));
 	m_Grid_Slab.SetItemText(0, 38, _T("弯矩内力调整系数"));
 	m_Grid_Slab.SetItemText(0, 39, _T("剪力内力调整系数"));
-	m_Grid_Slab.SetItemText(0, 40, _T("待确定"));
-	m_Grid_Slab.SetItemText(0, 41, _T("待确定"));
-	m_Grid_Slab.SetItemText(0, 42, _T("待确定"));
-	m_Grid_Slab.SetItemText(0, 43, _T("待确定"));
-	m_Grid_Slab.SetItemText(0, 44, _T("待确定"));
+	m_Grid_Slab.SetItemText(0, 40, _T("0"));
+	m_Grid_Slab.SetItemText(0, 41, _T("0"));
+	m_Grid_Slab.SetItemText(0, 42, _T("0"));
+	m_Grid_Slab.SetItemText(0, 43, _T("0"));
+	m_Grid_Slab.SetItemText(0, 44, _T("0"));
 	// TODO:  在此添加额外的初始化
 	//设置列宽，并将部分列隐藏
 	m_Grid_Slab.SetColumnWidth(0, 50);
