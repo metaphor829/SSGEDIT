@@ -130,8 +130,8 @@ BOOL CTabDlg3::OnInitDialog()
 	m_Grid_Column.SetItemText(0, 3, _T("对象类型"));
 	m_Grid_Column.SetItemText(0, 4, _T("截面类型"));
 	m_Grid_Column.SetItemText(0, 5, _T("子类型"));
-	m_Grid_Column.SetItemText(0, 6, _T("梁1端连接形式"));
-	m_Grid_Column.SetItemText(0, 7, _T("梁2端连接形式"));
+	m_Grid_Column.SetItemText(0, 6, _T("柱1端连接形式"));
+	m_Grid_Column.SetItemText(0, 7, _T("柱2端连接形式"));
 	m_Grid_Column.SetItemText(0, 8, _T("混凝土强度等级"));
 	m_Grid_Column.SetItemText(0, 9, _T("钢筋级别"));
 	m_Grid_Column.SetItemText(0, 10, _T("箍筋级别"));

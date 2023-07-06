@@ -241,6 +241,7 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		cTabDlg4->ShowWindow(SW_HIDE);
 		cTabDlg5->ShowWindow(SW_SHOW);
 		cTabDlg6->ShowWindow(SW_HIDE);
+		break;
 	case 5:
 		cTabDlg1->ShowWindow(SW_HIDE);
 		cTabDlg2->ShowWindow(SW_HIDE);

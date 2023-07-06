@@ -186,7 +186,15 @@ BOOL CTabDlg4::OnInitDialog()
 	m_Grid_Wall.SetColumnWidth(6, 60);
 	m_Grid_Wall.SetColumnWidth(7, 60);
 	m_Grid_Wall.SetColumnWidth(8, 60);
+	m_Grid_Wall.SetColumnWidth(9, 60);
+	m_Grid_Wall.SetColumnWidth(10, 60);
+	m_Grid_Wall.SetColumnWidth(11, 60);
+	m_Grid_Wall.SetColumnWidth(12, 60);
 	m_Grid_Wall.SetColumnWidth(16, 0);
+	m_Grid_Wall.SetColumnWidth(17, 60);
+	m_Grid_Wall.SetColumnWidth(18, 60);
+	m_Grid_Wall.SetColumnWidth(19, 60);
+	m_Grid_Wall.SetColumnWidth(20, 60);
 	m_Grid_Wall.SetColumnWidth(32, 0);
 	m_Grid_Wall.SetColumnWidth(36, 0);
 	m_Grid_Wall.SetColumnWidth(37, 0);
