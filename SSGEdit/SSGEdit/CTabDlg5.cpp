@@ -12,6 +12,8 @@
 
 IMPLEMENT_DYNAMIC(CTabDlg5, CDialogEx)
 
+
+
 CTabDlg5::CTabDlg5(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_DIALOG5, pParent)
 {
@@ -66,59 +68,190 @@ END_MESSAGE_MAP()
 
 // CTabDlg5 消息处理程序
 
-/*void CTabDlg5::TrimArray(CStringArray& arrText, CStringArray& arrInfo)
+
+void CTabDlg5::SetSlabData(Slab& slab, CDataFile& fin)
 {
-	int iTrimSize = arrText.GetSize() - arrInfo.GetSize();
-	for (int i = 0; i < iTrimSize; i++)
+	slab.ID = fin.GetInt();
+	slab.iPKPM = fin.GetInt();
+	slab.nLine = fin.GetInt();
+	for (int i = 0; i < slab.nLine; i++)
 	{
-		arrText.RemoveAt(12 - iTrimSize);
+		slab.iNode[i] = fin.GetInt();
 	}
+	slab.iType = fin.GetInt();
+	slab.iSection = fin.GetInt();
+	slab.iSubType = fin.GetInt();
+	slab.nRebarLayer = fin.GetInt();
+	slab.iConcMat = fin.GetInt();
+	slab.iRebarMat = fin.GetInt();
+	slab.iSteelMat = fin.GetInt();
+	slab.iStory = fin.GetInt();
+	slab.iStage = fin.GetInt();
+	slab.iTower = fin.GetInt();
+	slab.fF1 = fin.GetFloat();
+	slab.fF2 = fin.GetFloat();
+	slab.fOffset = fin.GetFloat();
+	slab.fRebarRatio1 = fin.GetFloat();
+	slab.fAngle1 = fin.GetFloat();
+	slab.fRebarRatio2 = fin.GetFloat();
+	slab.fAngle2 = fin.GetFloat();
+	slab.iMidPerformType = fin.GetInt();
+	slab.iSeverePerformType = fin.GetInt();
+	slab.iStructType = fin.GetInt();
+	slab.iMidNormSectPerformObject = fin.GetInt();
+	slab.intiMidDiagSectPerformObject = fin.GetInt();
+	slab.iRareNormSectPerformObject = fin.GetInt();
+	slab.iRareDiagSectPerformObject = fin.GetInt();
+	slab.iParaNumbers = fin.GetInt();
+	slab.fAxisFactor = fin.GetFloat();
+	slab.fMomentFactor = fin.GetFloat();
+	slab.fShearFactor = fin.GetFloat();
 }
 
-void CTabDlg5::ExpandArray(CStringArray& arr, int iCount)
+void CTabDlg5::GetSlabData(CGridCtrl& m_Grid_Slab, int iRow)
 {
-	int iExpandSize = iCount - arr.GetSize();
-	arr.SetSize(iCount);
-	for (int i = 0; i < iExpandSize; i++)
-	{
-		arr.InsertAt(12 - iExpandSize, _T("0"));
-	}*/
-
+	vSlab[iRow].ID = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 0));
+	vSlab[iRow].iPKPM = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 1));
+	vSlab[iRow].nLine = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 2));
+	vSlab[iRow].iNode[0] = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 3));
+	vSlab[iRow].iNode[1] = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 4));
+	vSlab[iRow].iNode[2] = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 5));
+	vSlab[iRow].iNode[3] = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 6));
+	vSlab[iRow].iNode[4] = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 7));
+	vSlab[iRow].iNode[5] = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 8));
+	vSlab[iRow].iType = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 9));
+	vSlab[iRow].iSection = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 10));
+	vSlab[iRow].iSubType = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 11));
+	vSlab[iRow].nRebarLayer = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 12));
+	vSlab[iRow].iConcMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 13));;//ComboBox需转换为序号
+	vSlab[iRow].iRebarMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 14));//ComboBox需转换为序号
+	vSlab[iRow].iSteelMat = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 15));
+	vSlab[iRow].iStory = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 16));
+	vSlab[iRow].iStage = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 17));
+	vSlab[iRow].iTower = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 18));
+	vSlab[iRow].fF1 = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 19));
+	vSlab[iRow].fF2 = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 20));
+	vSlab[iRow].fOffset = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 21));
+	vSlab[iRow].fRebarRatio1 = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 22));
+	vSlab[iRow].fAngle1 = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 23));
+	vSlab[iRow].fRebarRatio2 = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 24));
+	vSlab[iRow].fAngle2 = _ttof(m_Grid_Slab.GetItemText(iRow + 1, 25));
+	vSlab[iRow].iMidPerformType = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 26));
+	vSlab[iRow].iSeverePerformType = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 27));
+	vSlab[iRow].iStructType = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 28));
+	vSlab[iRow].iMidNormSectPerformObject = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 29));
+	vSlab[iRow].intiMidDiagSectPerformObject = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 30));
+	vSlab[iRow].iRareNormSectPerformObject = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 31));
+	vSlab[iRow].iRareDiagSectPerformObject = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 32));
+	vSlab[iRow].iParaNumbers = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 33));
+	vSlab[iRow].fAxisFactor = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 34));
+	vSlab[iRow].fMomentFactor = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 35));
+	vSlab[iRow].fShearFactor = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 36));
 }
 
-CString CTabDlg5::GetComboBoxIndex(CStringArray& arr, int nCol)
+void CTabDlg5::WriteSlabData(int iRow, CString& sNewLine)
+{
+
+	char temp[512];
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].ID);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iPKPM);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].nLine);
+	sNewLine += temp;
+	for (int i = 0; i < vSlab[iRow].nLine; i++)
+	{
+		sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iNode[i]);
+		sNewLine += temp;
+	}
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iSection);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iSubType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].nRebarLayer);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iConcMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iRebarMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iSteelMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iStory);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iStage);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iTower);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fF1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fF2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fOffset);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.4f ", vSlab[iRow].fRebarRatio1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fAngle1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.4f ", vSlab[iRow].fRebarRatio2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fAngle2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iMidPerformType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iSeverePerformType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iMidNormSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].intiMidDiagSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iRareNormSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iRareDiagSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vSlab[iRow].iParaNumbers);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fAxisFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fMomentFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vSlab[iRow].fShearFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
+	sNewLine += temp;
+
+	
+}
+
+int CTabDlg5::GetComboBoxIndex(CString sMat)
 {
 	for (int i = 0; i < arrConcMat.GetSize(); i++)
 	{
-		if (arrConcMat.GetAt(i) == arr.GetAt(nCol))
+		if (arrConcMat.GetAt(i) == sMat)
 		{
-			CString String;
-			String.Format(_T("%d"), i);
-			return String;
+			return i;
 		}
 	}
 	for (int i = 0; i < arrRebarMat.GetSize(); i++)
 	{
-		if (arrRebarMat.GetAt(i) == arr.GetAt(nCol))
+		if (arrRebarMat.GetAt(i) == sMat)
 		{
-			CString String;
-			String.Format(_T("%d"), i + 101);
-			return String;
+			return i + 101;
 		}
 	}
-	return CString();
 }
 
-void CTabDlg5::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex)
+void CTabDlg5::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)
 {
 	CGridCellCombo* pCell = (CGridCellCombo*)m_Grid.GetCell(nRow, nCol);
 	pCell->SetOptions(arrText);
-	int iBeamInfo = _ttoi(arrInfo.GetAt(InfoIndex));
-	if (iBeamInfo < 100) {
-		pCell->SetText(arrText.GetAt(_ttoi(arrInfo.GetAt(InfoIndex))));
+	if (iMat < 100)
+	{
+		pCell->SetText(arrText.GetAt(iMat));
 	}
 	else {
-		pCell->SetText(arrText.GetAt(_ttoi(arrInfo.GetAt(InfoIndex)) - 101));
+		pCell->SetText(arrText.GetAt((iMat - 101)));
 	}
 }
 
@@ -127,7 +260,7 @@ BOOL CTabDlg5::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	CRect cr;
 	m_Grid_Slab.GetClientRect(&cr);
-	m_Grid_Slab.SetColumnCount(45);//设置列数
+	m_Grid_Slab.SetColumnCount(37);//设置列数
 	m_Grid_Slab.SetFixedRowCount(1);//设置表头
 	m_Grid_Slab.SetItemText(0, 0, _T("ID"));
 	m_Grid_Slab.SetItemText(0, 1, _T("PKPM结构线编号"));
@@ -138,62 +271,42 @@ BOOL CTabDlg5::OnInitDialog()
 	m_Grid_Slab.SetItemText(0, 6, _T("线编号4"));
 	m_Grid_Slab.SetItemText(0, 7, _T("线编号5"));
 	m_Grid_Slab.SetItemText(0, 8, _T("线编号6"));
-	m_Grid_Slab.SetItemText(0, 9, _T("线编号7"));
-	m_Grid_Slab.SetItemText(0, 10, _T("线编号8"));
-	m_Grid_Slab.SetItemText(0, 11, _T("线编号9"));
-	m_Grid_Slab.SetItemText(0, 12, _T("对象类型"));
-	m_Grid_Slab.SetItemText(0, 13, _T("截面类型"));
-	m_Grid_Slab.SetItemText(0, 14, _T("子截面类型"));
-	m_Grid_Slab.SetItemText(0, 15, _T("钢筋层数"));
-	m_Grid_Slab.SetItemText(0, 16, _T("混凝土材料等级"));
-	m_Grid_Slab.SetItemText(0, 17, _T("钢筋等级"));
-	m_Grid_Slab.SetItemText(0, 18, _T("钢材等级"));
-	m_Grid_Slab.SetItemText(0, 19, _T("楼层"));
-	m_Grid_Slab.SetItemText(0, 20, _T("施工阶段"));
-	m_Grid_Slab.SetItemText(0, 21, _T("塔号"));
-	m_Grid_Slab.SetItemText(0, 22, _T("F1"));
-	m_Grid_Slab.SetItemText(0, 23, _T("F2"));
-	m_Grid_Slab.SetItemText(0, 24, _T("偏移值"));
-	m_Grid_Slab.SetItemText(0, 25, _T("面筋单向配筋率"));
-	m_Grid_Slab.SetItemText(0, 26, _T("水平筋方向角"));
-	m_Grid_Slab.SetItemText(0, 27, _T("底筋单向配筋率"));
-	m_Grid_Slab.SetItemText(0, 28, _T("竖向筋方向角"));
-	m_Grid_Slab.SetItemText(0, 29, _T("中震本构"));
-	m_Grid_Slab.SetItemText(0, 30, _T("大震本构"));
-	m_Grid_Slab.SetItemText(0, 31, _T("重要性分类"));
-	m_Grid_Slab.SetItemText(0, 32, _T("中震正截面性能"));
-	m_Grid_Slab.SetItemText(0, 33, _T("中震斜截面性能"));
-	m_Grid_Slab.SetItemText(0, 34, _T("大震正截面性能"));
-	m_Grid_Slab.SetItemText(0, 35, _T("大震斜截面性能"));
-	m_Grid_Slab.SetItemText(0, 36, _T("3"));
-	m_Grid_Slab.SetItemText(0, 37, _T("轴力内力调整系数"));
-	m_Grid_Slab.SetItemText(0, 38, _T("弯矩内力调整系数"));
-	m_Grid_Slab.SetItemText(0, 39, _T("剪力内力调整系数"));
-	m_Grid_Slab.SetItemText(0, 40, _T("0"));
-	m_Grid_Slab.SetItemText(0, 41, _T("0"));
-	m_Grid_Slab.SetItemText(0, 42, _T("0"));
-	m_Grid_Slab.SetItemText(0, 43, _T("0"));
-	m_Grid_Slab.SetItemText(0, 44, _T("0"));
+	m_Grid_Slab.SetItemText(0, 9, _T("对象类型"));
+	m_Grid_Slab.SetItemText(0, 10, _T("截面类型"));
+	m_Grid_Slab.SetItemText(0, 11, _T("子截面类型"));
+	m_Grid_Slab.SetItemText(0, 12, _T("钢筋层数"));
+	m_Grid_Slab.SetItemText(0, 13, _T("混凝土材料等级"));
+	m_Grid_Slab.SetItemText(0, 14, _T("钢筋等级"));
+	m_Grid_Slab.SetItemText(0, 15, _T("钢材等级"));
+	m_Grid_Slab.SetItemText(0, 16, _T("楼层"));
+	m_Grid_Slab.SetItemText(0, 17, _T("施工阶段"));
+	m_Grid_Slab.SetItemText(0, 18, _T("塔号"));
+	m_Grid_Slab.SetItemText(0, 19, _T("F1"));
+	m_Grid_Slab.SetItemText(0, 20, _T("F2"));
+	m_Grid_Slab.SetItemText(0, 21, _T("偏移值"));
+	m_Grid_Slab.SetItemText(0, 22, _T("面筋单向配筋率"));
+	m_Grid_Slab.SetItemText(0, 23, _T("水平筋方向角"));
+	m_Grid_Slab.SetItemText(0, 24, _T("底筋单向配筋率"));
+	m_Grid_Slab.SetItemText(0, 25, _T("竖向筋方向角"));
+	m_Grid_Slab.SetItemText(0, 26, _T("中震本构"));
+	m_Grid_Slab.SetItemText(0, 27, _T("大震本构"));
+	m_Grid_Slab.SetItemText(0, 28, _T("重要性分类"));
+	m_Grid_Slab.SetItemText(0, 29, _T("中震正截面性能"));
+	m_Grid_Slab.SetItemText(0, 30, _T("中震斜截面性能"));
+	m_Grid_Slab.SetItemText(0, 31, _T("大震正截面性能"));
+	m_Grid_Slab.SetItemText(0, 32, _T("大震斜截面性能"));
+	m_Grid_Slab.SetItemText(0, 33, _T("3"));
+	m_Grid_Slab.SetItemText(0, 34, _T("轴力内力调整系数"));
+	m_Grid_Slab.SetItemText(0, 35, _T("弯矩内力调整系数"));
+	m_Grid_Slab.SetItemText(0, 36, _T("剪力内力调整系数"));
 	// TODO:  在此添加额外的初始化
 	//设置列宽，并将部分列隐藏
-	m_Grid_Slab.SetColumnWidth(0, 50);
+	for (int i = 0; i <37; i++)
+	{
+		m_Grid_Slab.SetColumnWidth(i, 60);
+	}
 	m_Grid_Slab.SetColumnWidth(1, 0);
-	m_Grid_Slab.SetColumnWidth(2, 50);
-	m_Grid_Slab.SetColumnWidth(3, 60);
-	m_Grid_Slab.SetColumnWidth(4, 60);
-	m_Grid_Slab.SetColumnWidth(5, 60);
-	m_Grid_Slab.SetColumnWidth(6, 60);
-	m_Grid_Slab.SetColumnWidth(7, 60);
-	m_Grid_Slab.SetColumnWidth(8, 60);
-	m_Grid_Slab.SetColumnWidth(9, 60);
-	m_Grid_Slab.SetColumnWidth(10, 60);
-	m_Grid_Slab.SetColumnWidth(11, 60);
-	m_Grid_Slab.SetColumnWidth(36, 0);
-	m_Grid_Slab.SetColumnWidth(40, 0);
-	m_Grid_Slab.SetColumnWidth(41, 0);
-	m_Grid_Slab.SetColumnWidth(42, 0);
-	m_Grid_Slab.SetColumnWidth(43, 0);
-	m_Grid_Slab.SetColumnWidth(44, 0);
+	m_Grid_Slab.SetColumnWidth(33, 0);
 	m_Grid_Slab.EnableHiddenColUnhide(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -204,61 +317,50 @@ BOOL CTabDlg5::OnInitDialog()
 
 LRESULT CTabDlg5::OnUpDate(WPARAM wParam, LPARAM lParam)
 {
-	CStdioFile cFile;
-	CStdioFile cNewFile;
+	
+	CDataFile fin;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
 	CString sPath = pParent->m_filename;
-	CString sNewPath = sPath.Left(sPath.ReverseFind('.')) + _T("(new)") + sPath.Mid(sPath.ReverseFind('.'));
-	cFile.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
-	cNewFile.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
-	cFile.SeekToBegin();// 将文件指针指向文件开始处
-	cNewFile.SeekToBegin();
-	int iSlabCount = m_Grid_Slab.GetColumnCount();
+	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
+	fin.SeekToBegin();
 	CString sLine;
-	CString sNewLine;
-	static int iSlabNumbers = 0;
-	static CString sSlabNumbers;
-	while (cFile.ReadString(sLine))
+	int iSlabNumbers = 0;
+	int iColCount = m_Grid_Slab.GetColumnCount();
+	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("SLAB NUMBER=")) != -1)
 		{
-			sSlabNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iSlabNumbers = _ttoi(sSlabNumbers);
+			iSlabNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			m_Grid_Slab.SetRowCount(iSlabNumbers + 1);
+			//MessageBox(TEXT("ok"));
 			break;
 		}
 	}
-
 	for (int i = 0; i < iSlabNumbers; i++)
 	{
-		cFile.ReadString(sLine);
-		CSplitStr Split;
-		Split.SetData(sLine);
-		Split.SetSplitFlag(TEXT(" "));
-		CStringArray arrSlabInfo;
-		Split.GetSplitStrArray(arrSlabInfo);
-
-		if (arrSlabInfo.GetSize() == iSlabCount)//将arrBeamInfo中的信息填入到网格中
+		fin.ReadString(sLine);
+		fin.SetData(sLine);
+		Slab slab;
+		SetSlabData(slab,fin);
+		int nLine = slab.nLine;
+		vSlab.push_back(slab);
+		for (int j = 0; j < iColCount; j++)
 		{
-			for (int j = 0; j < arrSlabInfo.GetSize(); j++)
+			
+			if (j<(nLine + 3) && j<9)
+			{ m_Grid_Slab.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[j]);}
+			if (j>=9)
 			{
-				m_Grid_Slab.SetItemText(i + 1, j, (LPCTSTR)arrSlabInfo.GetAt(j));
+			m_Grid_Slab.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[(j-(6-nLine))]);
 			}
 		}
-		else
-		{
-			ExpandArray(arrSlabInfo, iSlabCount);
-			for (int j = 0; j < arrSlabInfo.GetSize(); j++)
-			{
-				m_Grid_Slab.SetItemText(i + 1, j, (LPCTSTR)arrSlabInfo.GetAt(j));
-			}
-		}
+		fin.arrInfo.RemoveAll();
 
 		//ComboBox内容的单独设置
-		m_Grid_Slab.SetCellType(i + 1, 16, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Slab, i + 1, 16, arrConcMat, arrSlabInfo, 16);
-		m_Grid_Slab.SetCellType(i + 1, 17, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Slab, i + 1, 17, arrRebarMat, arrSlabInfo, 17);
+		m_Grid_Slab.SetCellType(i + 1, 13, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Slab, i + 1, 13, arrConcMat, slab.iConcMat);
+		m_Grid_Slab.SetCellType(i + 1, 14, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Slab, i + 1, 14, arrRebarMat, slab.iRebarMat);
 
 	}
 	return LRESULT();
@@ -266,75 +368,42 @@ LRESULT CTabDlg5::OnUpDate(WPARAM wParam, LPARAM lParam)
 
 LRESULT CTabDlg5::OnWriteDate(WPARAM wParam, LPARAM lParam)
 {
-	CStdioFile cFile;
-	CStdioFile cNewFile;
+	CDataFile fin;
+	CDataFile fout;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
 	CString sPath = pParent->m_filename;
 	CString sNewPath = sPath.Left(sPath.ReverseFind('.')) + _T("(new)") + sPath.Mid(sPath.ReverseFind('.'));
-	cFile.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
-	cNewFile.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
-	cFile.SeekToBegin();// 将文件指针指向文件开始处
-	cNewFile.SeekToBegin();
-	int iSlabCount = m_Grid_Slab.GetColumnCount();
+	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
+	fout.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
+	fin.SeekToBegin();
+	fout.SeekToBegin();
 	CString sLine;
 	CString sNewLine;
-	static int iSlabNumbers = 0;
-	static CString sSlabNumbers;
-	while (cFile.ReadString(sLine))
+	int iColCount = m_Grid_Slab.GetColumnCount();
+	int iSlabNumbers = 0;
+	while (fin.ReadString(sLine))
 	{
-		cNewFile.WriteString(sLine + _T("\n"));
-		if (sLine.Find(TEXT("SLAB NUMBER=")) != -1)//先定位至COLUMN NUMBER所在行
+		fout.WriteString(sLine + _T("\n"));
+		if (sLine.Find(TEXT("SLAB NUMBER=")) != -1)//先定位
 		{
-			sSlabNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iSlabNumbers = _ttoi(sSlabNumbers);
+			iSlabNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			for (int i = 0; i < iSlabNumbers; i++)
 			{
-				cFile.ReadString(sLine);
-				CSplitStr Split;
-				Split.SetData(sLine);
-				Split.SetSplitFlag(TEXT(" "));
-				CStringArray arrSlabInfo;
-				Split.GetSplitStrArray(arrSlabInfo);
-				CStringArray arrCellText;
-				for (int j = 0; j < iSlabCount; j++)
-				{
-					arrCellText.Add(m_Grid_Slab.GetItemText(i + 1, j));
-				}
-				//将ComboBox项的内容转换为索引号
+				fin.ReadString(sLine);
 
-				arrCellText.SetAt(16, GetComboBoxIndex(arrCellText, 16));
-				arrCellText.SetAt(17, GetComboBoxIndex(arrCellText, 17));
-
-				if (arrCellText.GetSize() == arrSlabInfo.GetSize())//将arrCellText中的信息填入到NewLine进行替换
-				{
-					for (int k = 0; k < arrCellText.GetSize(); k++)
-					{
-						sNewLine += arrCellText.GetAt(k);
-						sNewLine += TEXT(" ");
-					}
-				}
-				else
-				{
-					TrimArray(arrCellText, arrSlabInfo);
-					for (int k = 0; k < arrCellText.GetSize(); k++)
-					{
-						sNewLine += arrCellText.GetAt(k);
-						sNewLine += TEXT(" ");
-					}
-				}
-
+				GetSlabData(m_Grid_Slab, i);
+				WriteSlabData(i, sNewLine);
 				//MessageBox(sNewLine);
-				cNewFile.WriteString(sNewLine + _T("\n"));
+				fout.WriteString(sNewLine + _T("\n"));
 				sNewLine.Empty();
-				arrCellText.RemoveAll();
-				arrSlabInfo.RemoveAll();
+
 			}
 		}
 	}
-	cFile.Close();
-	cNewFile.Close();
-	cFile.Remove(sPath);
-	cNewFile.Rename(sNewPath, sPath);
+	fin.Close();
+	fout.Close();
+	fin.Remove(sPath);
+	fout.Rename(sNewPath, sPath);
 	return LRESULT();
 }
 

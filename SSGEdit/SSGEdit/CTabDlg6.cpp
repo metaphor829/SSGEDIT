@@ -6,7 +6,7 @@
 #include "afxdialogex.h"
 #include "SSGEditDlg.h"
 #include "CTabDlg6.h"
-//#include "CDataFile.h"
+
 
 
 // CTabDLG6 对话框

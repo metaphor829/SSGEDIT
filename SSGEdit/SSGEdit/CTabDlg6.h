@@ -62,8 +62,6 @@ public:
 		int iTower;
 		int iRigidBody;
 	}Coor;
-
-	//vector <Coor> vCoor;
 	CGridCtrl m_Grid_Coor;
 	void SetCoorData(Coor& coor, CDataFile& fin);
 	void GetCoorData(Coor& coor, CGridCtrl& m_Grid_Coor,int iRow);
