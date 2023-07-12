@@ -13,6 +13,7 @@ private:
 	BOOL m_bSequenceAsOne;
 	//被切分的文本
 	CString m_sData;
+	
 public:
 	CSplitStr();
 	virtual ~CSplitStr();
@@ -31,8 +32,14 @@ public:
 	//设置切分标志
 	void SetSplitFlag(CString sSplitFlag) {m_sSplitFlag = sSplitFlag;};
 
+	CString GetSplit();
+	
+
 protected:
 	DECLARE_MESSAGE_MAP()
+		
+	
+	
 };
 
 

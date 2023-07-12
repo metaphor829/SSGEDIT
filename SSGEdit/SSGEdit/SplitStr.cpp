@@ -61,6 +61,29 @@ void CSplitStr::GetSplitStrArray( CStringArray &array )
 	}
 }
 
+CString CSplitStr::GetSplit()
+{
+	CString sData = GetData();
+	CString sSplitFlag = GetSplitFlag();
+	if (sData.Right(1) != sSplitFlag) sData += sSplitFlag;
+	CString sTemp;
+	int pos = -1;
+	pos = sData.Find(sSplitFlag, 0);//从头开始搜索分隔符
+	sTemp = sData.Left(pos);//截取分隔符前面的字符串
+	if (!GetSequenceAsOne())
+	{
+		return sTemp;
+	}
+	else
+	{
+		if (!sTemp.IsEmpty() && sTemp != "") ////连续的分隔符视为单个处理
+		{
+			return sTemp;
+		}
+	}
+	sData = sData.Right(sData.GetLength() - pos - 1);//截取剩余的字符串
+	SetData(sData);
+}
 
 
 // CSplitStr 消息处理程序

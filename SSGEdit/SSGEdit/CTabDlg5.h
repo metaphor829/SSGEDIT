@@ -40,8 +40,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CGridCtrl m_Grid_Slab;
-	void TrimArray(CStringArray& arrText, CStringArray& arrInfo);
-	void ExpandArray(CStringArray& arr, int iCount);
+	//void TrimArray(CStringArray& arrText, CStringArray& arrInfo);
+	//void ExpandArray(CStringArray& arr, int iCount);
 	CString GetComboBoxIndex(CStringArray& arr, int nCol);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex);
 	virtual BOOL OnInitDialog();

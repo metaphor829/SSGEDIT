@@ -306,6 +306,9 @@ void CSSGEditDlg::OnBnClickedButton2()
 	case 4:
 		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_F, (LPARAM)0, (LPARAM)0);
 		break;
+	case 5:
+		::PostMessage(cTabDlg6->GetSafeHwnd(), NM_G, (LPARAM)0, (LPARAM)0);
+		break;
 	}
 	// TODO: 在此添加控件通知处理程序代码
 }

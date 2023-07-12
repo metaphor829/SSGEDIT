@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 
 // CTabDlg5 消息处理程序
 
-void CTabDlg5::TrimArray(CStringArray& arrText, CStringArray& arrInfo)
+/*void CTabDlg5::TrimArray(CStringArray& arrText, CStringArray& arrInfo)
 {
 	int iTrimSize = arrText.GetSize() - arrInfo.GetSize();
 	for (int i = 0; i < iTrimSize; i++)
@@ -82,7 +82,7 @@ void CTabDlg5::ExpandArray(CStringArray& arr, int iCount)
 	for (int i = 0; i < iExpandSize; i++)
 	{
 		arr.InsertAt(12 - iExpandSize, _T("0"));
-	}
+	}*/
 
 }
 

@@ -311,8 +311,8 @@ LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	 int iColCount = m_Grid_Beam.GetColumnCount();
 	 CString sLine;
 	 CString sNewLine;
-	 static int iBeamNumbers = 0;
-	 static CString sBeamNumbers;
+	 int iBeamNumbers = 0;
+	 CString sBeamNumbers;
 	 while (cFile.ReadString(sLine))
 	 {
 		 cNewFile.WriteString(sLine + _T("\n"));
