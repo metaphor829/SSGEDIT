@@ -265,39 +265,45 @@ void CSSGEditDlg::OnBnClickedButton1()
 		strFileName = dlg.GetPathName();
 	else
 		strFileName.Empty();
-	BOOL ret=cFile.Open(strFileName, CFile::modeRead);
-	CString sLine;
-	int iVer = 0;
-	while (cFile.ReadString(sLine))
-	{
-		if (sLine.Find(TEXT("VER=")) != -1)
+	if(!strFileName.IsEmpty())
+	{ 
+		BOOL ret=cFile.Open(strFileName, CFile::modeRead);
+		CString sLine;
+		int iVer = 0;
+		while (cFile.ReadString(sLine))
 		{
-			iVer = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			if (iVer < 2020)
+			if (sLine.Find(TEXT("VER=")) != -1)
 			{
-				MessageBox(TEXT("请打开v2020以上的版本"));
+				iVer = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+				if (iVer < 2023)
+				{
+					MessageBox(TEXT("请打开v2023版本的.ssg文件"));
+				}
+				break;
 			}
-			break;
 		}
+		if (ret==0)
+		{
+			MessageBox(TEXT("无法打开文件"));
+		}
+		else if(ret != 0&& iVer==2023)
+		{
+			//向对话框发送消息
+			::PostMessage(cTabDlg1->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+			::PostMessage(cTabDlg2->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+			::PostMessage(cTabDlg3->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+			::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+			::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+			::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+			m_filename = strFileName;
+			UpdateData(FALSE);
+		}
+		cFile.Close();
 	}
-	if (ret==0)
+	else
 	{
-		MessageBox(TEXT("无法打开文件"));
+		MessageBox(TEXT("请选择.ssg文件打开"));
 	}
-	else if(ret != 0&& iVer>=2020)
-	{
-		//向对话框发送消息
-		::PostMessage(cTabDlg1->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-		::PostMessage(cTabDlg2->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-		::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-		m_filename = strFileName;
-		UpdateData(FALSE);
-	}
-	cFile.Close();
-	
 	// TODO: 在此添加控件通知处理程序代码
 }
 

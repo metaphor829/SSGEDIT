@@ -5,7 +5,6 @@
 #include "GridCtrl.h"
 #include "GridCellCombo.h"
 #include "CDataFile.h"
-#include <SplitStr.h>
 #include <string>
 #include <cstring>
 #include <io.h>

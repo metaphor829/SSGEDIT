@@ -5,7 +5,6 @@
 #include "GridCtrl.h"
 #include "GridCellCombo.h"
 #include "CDataFile.h"
-#include <SplitStr.h>
 #include <string>
 #include <cstring>
 #include <io.h>
@@ -65,7 +64,7 @@ public:
 		int iSeverePerformType;
 		int iStructType;
 		int iMidNormSectPerformObject;
-		int	intiMidDiagSectPerformObject;
+		int	iMidDiagSectPerformObject;
 		int	iRareNormSectPerformObject;
 		int iRareDiagSectPerformObject;
 		int iParaNumbers;

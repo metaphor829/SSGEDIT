@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "GridCtrl.h"
 #include "GridCellCombo.h"
-#include <SplitStr.h>
+#include "CDataFile.h"
 #include <string>
 #include <cstring>
 #include <io.h>
@@ -39,16 +39,71 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog();
+	typedef struct BeamStruc
+	{
+		int ID;
+		int iPKPM;
+		int iLine;
+		int iType;
+		int iSection;
+		int iSubType;
+		int bArtiNode1;
+		int bArtiNode2;
+		int iConcMat;
+		int iRebarMat;
+		int iStirrupMat;
+		int iSteelMat;
+		int iStory;
+		int iStage;
+		int iTower;
+		float fRotateAng;
+		float fOffsetX1;
+		float fOffsetY1;
+		float fOffsetZ1;
+		float fOffsetX2;
+		float fOffsetY2;
+		float fOffsetZ2;
+		float fUpperRebarLeft;
+		float fUpperRebarMid;
+		float fUpperRebarRight;
+		float fLowerRebarLeft;
+		float fLowerRebarMid;
+		float fLowerRebarRight;
+		float fStirrupArea_D;
+		float fStirrupArea_UD;
+		int nForceParament;
+		float fF1;
+		float fLength;
+		float fF2;
+		int iMidPerformType;
+		int iSeverePerformType;
+		int iStructType;
+		int iMidNormSectPerformObject;
+		int	iMidDiagSectPerformObject;
+		int	iRareNormSectPerformObject;
+		int iRareDiagSectPerformObject;
+		int iParaNumbers;
+		float fAxisFactor;
+		float fMomentFactor;
+		float fShearFactor;
+		int iAppendMat;
+		int iNode1Sec;
+		int iNode2Sec;
+		int iShearNonlinear;
+		float fBeamSpan;
+	}Beam;
+	std::vector<Beam>vBeam;
+	void SetBeamData(Beam& beam, CDataFile& fin);
+	void GetBeamData(CGridCtrl& m_Grid_Beam, int iRow);
+	void WriteBeamData(int iRow, CString& sNewLine);
+	int GetComboBoxIndex(CString sMat);
+	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	CGridCtrl m_Grid_Beam;
+	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
-	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrBeamInfo, int BeamInfoIndex);
-	void TrimArray(CStringArray& arr,int index);
-	void ExpandArray(CStringArray& arr, int iColCount,int index);
-	CString GetComboBoxIndex(CStringArray& arr, int nCol);
+	
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;
-	
 };
