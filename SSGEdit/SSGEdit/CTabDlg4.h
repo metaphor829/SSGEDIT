@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "GridCtrl.h"
 #include "GridCellCombo.h"
+#include "CDataFile.h"
 #include <SplitStr.h>
 #include <string>
 #include <cstring>
@@ -38,11 +39,47 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	typedef struct WallStruc
+	{
+		int ID;
+		int iPKPM;
+		int nLine;
+		int iNode[50];
+		int iType;
+		int iSection;
+		int iSubType;
+		int nRebarLayer;
+		int iConcMat;
+		int iRebarMat;
+		int iSteelMat;
+		int iBottomStory;
+		int idmStory;
+		int iStage;
+		int iTower;
+		float fOffset;
+		float fHRebarArea;
+		float fAngle1;
+		float fVRebarArea;
+		float fAngle2;
+		int iMidPerformType;
+		int iSeverePerformType;
+		int iStructType;
+		int iMidNormSectPerformObject;
+		int	intiMidDiagSectPerformObject;
+		int	iRareNormSectPerformObject;
+		int iRareDiagSectPerformObject;
+		int iParaNumbers;
+		float fAxisFactor;
+		float fMomentFactor;
+		float fShearFactor;
+	}Wall;
+	std::vector<Wall>vWall;
 	CGridCtrl m_Grid_Wall;
-	void TrimArray(CStringArray& arrText, CStringArray& arrInfo);
-	void ExpandArray(CStringArray& arr, int iCount);
-	CString GetComboBoxIndex(CStringArray& arr, int nCol);
-	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex);
+	void SetWallData(Wall& wall, CDataFile& fin);
+	void GetWallData(CGridCtrl& m_Grid_Wall, int iRow);
+	void WriteWallData(int iRow, CString& sNewLine);
+	int GetComboBoxIndex(CString sMat);
+	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);

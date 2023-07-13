@@ -4,6 +4,7 @@
 #include "afxcmn.h"
 #include "afx.h"
 #include "pch.h"
+#include "tchar.h"
 
 IMPLEMENT_DYNAMIC(CDataFile, CStdioFile)
 
@@ -16,6 +17,7 @@ CDataFile::~CDataFile()
 {
     
 }
+
 
 CString CDataFile::sData = " ";
 CStringArray CDataFile::arrInfo = { };

@@ -260,17 +260,31 @@ void CSSGEditDlg::OnBnClickedButton1()
 {
 	CFileDialog dlg(TRUE);//弹出打开文件对话框
 	CString strFileName;
+	CStdioFile cFile;
 	if (dlg.DoModal() == IDOK)
 		strFileName = dlg.GetPathName();
 	else
 		strFileName.Empty();
-	int iEndPos = 0;
-
-	if (strFileName.IsEmpty())
+	BOOL ret=cFile.Open(strFileName, CFile::modeRead);
+	CString sLine;
+	int iVer = 0;
+	while (cFile.ReadString(sLine))
 	{
-		MessageBox(TEXT("未能打开文件"));
+		if (sLine.Find(TEXT("VER=")) != -1)
+		{
+			iVer = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+			if (iVer < 2020)
+			{
+				MessageBox(TEXT("请打开v2020以上的版本"));
+			}
+			break;
+		}
 	}
-	if (!strFileName.IsEmpty())
+	if (ret==0)
+	{
+		MessageBox(TEXT("无法打开文件"));
+	}
+	else if(ret != 0&& iVer>=2020)
 	{
 		//向对话框发送消息
 		::PostMessage(cTabDlg1->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
@@ -279,9 +293,11 @@ void CSSGEditDlg::OnBnClickedButton1()
 		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 		::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+		m_filename = strFileName;
+		UpdateData(FALSE);
 	}
-	m_filename = strFileName;
-	UpdateData(FALSE);
+	cFile.Close();
+	
 	// TODO: 在此添加控件通知处理程序代码
 }
 

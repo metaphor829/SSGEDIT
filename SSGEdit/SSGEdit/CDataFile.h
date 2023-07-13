@@ -22,7 +22,6 @@ public:
 	
 	CDataFile();
 	virtual ~CDataFile();
-	
 	void SetData(CString sData);
 	CString GetStr();
 	int GetInt();

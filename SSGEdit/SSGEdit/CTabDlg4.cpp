@@ -68,62 +68,183 @@ END_MESSAGE_MAP()
 
 // CTabDlg4 消息处理程序
 
-
-void CTabDlg4::TrimArray(CStringArray& arrText, CStringArray& arrInfo)
+void CTabDlg4::SetWallData(Wall& wall, CDataFile& fin)
 {
-	
-	int iTrimSize=arrText.GetSize()- arrInfo.GetSize();
-	for (int i = 0; i < iTrimSize; i++)
+	wall.ID = fin.GetInt();
+	wall.iPKPM = fin.GetInt();
+	wall.nLine = fin.GetInt();
+	for (int i = 0; i < wall.nLine; i++)
 	{
-		arrText.RemoveAt(9 - iTrimSize);
+		wall.iNode[i] = fin.GetInt();
 	}
+	wall.iType = fin.GetInt();
+	wall.iSection = fin.GetInt();
+	wall.iSubType = fin.GetInt();
+	wall.nRebarLayer = fin.GetInt();
+	wall.iConcMat = fin.GetInt();
+	wall.iRebarMat = fin.GetInt();
+	wall.iSteelMat = fin.GetInt();
+	wall.iBottomStory = fin.GetInt();
+	wall.idmStory = fin.GetInt();
+	wall.iStage = fin.GetInt();
+	wall.iTower = fin.GetInt();
+	wall.fOffset = fin.GetFloat();
+	wall.fHRebarArea = fin.GetFloat();
+	wall.fAngle1 = fin.GetFloat();
+	wall.fVRebarArea = fin.GetFloat();
+	wall.fAngle2 = fin.GetFloat();
+	wall.iMidPerformType = fin.GetInt();
+	wall.iSeverePerformType = fin.GetInt();
+	wall.iStructType = fin.GetInt();
+	wall.iMidNormSectPerformObject = fin.GetInt();
+	wall.intiMidDiagSectPerformObject = fin.GetInt();
+	wall.iRareNormSectPerformObject = fin.GetInt();
+	wall.iRareDiagSectPerformObject = fin.GetInt();
+	wall.iParaNumbers = fin.GetInt();
+	wall.fAxisFactor = fin.GetFloat();
+	wall.fMomentFactor = fin.GetFloat();
+	wall.fShearFactor = fin.GetFloat();
 }
 
-void CTabDlg4::ExpandArray(CStringArray& arr, int iCount)
+void CTabDlg4::GetWallData(CGridCtrl& m_Grid_Wall, int iRow)
 {
-	int iExpandSize=iCount-arr.GetSize();
-	arr.SetSize(iCount);
-	for (int i = 0; i < iExpandSize; i++)
-	{
-		arr.InsertAt(9-iExpandSize, _T("0"));
-	}
-
+	vWall[iRow].ID = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 0));
+	vWall[iRow].iPKPM = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 1));
+	vWall[iRow].nLine = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 2));
+	vWall[iRow].iNode[0] = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 3));
+	vWall[iRow].iNode[1] = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 4));
+	vWall[iRow].iNode[2] = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 5));
+	vWall[iRow].iNode[3] = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 6));
+	vWall[iRow].iNode[4] = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 7));
+	vWall[iRow].iNode[5] = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 8));
+	vWall[iRow].iType = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 9));
+	vWall[iRow].iSection = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 10));
+	vWall[iRow].iSubType = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 11));
+	vWall[iRow].nRebarLayer = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 12));
+	vWall[iRow].iConcMat = GetComboBoxIndex(m_Grid_Wall.GetItemText(iRow + 1, 13));;//ComboBox需转换为序号
+	vWall[iRow].iRebarMat = GetComboBoxIndex(m_Grid_Wall.GetItemText(iRow + 1, 14));//ComboBox需转换为序号
+	vWall[iRow].iSteelMat = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 15));
+	vWall[iRow].iBottomStory = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 16));
+	vWall[iRow].idmStory = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 17));
+	vWall[iRow].iStage = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 18));
+	vWall[iRow].iTower = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 19));
+	vWall[iRow].fOffset = _ttof(m_Grid_Wall.GetItemText(iRow + 1, 20));
+	vWall[iRow].fHRebarArea = _ttof(m_Grid_Wall.GetItemText(iRow + 1, 21));
+	vWall[iRow].fAngle1 = _ttof(m_Grid_Wall.GetItemText(iRow + 1, 22));
+	vWall[iRow].fVRebarArea = _ttof(m_Grid_Wall.GetItemText(iRow + 1, 23));
+	vWall[iRow].fAngle2 = _ttof(m_Grid_Wall.GetItemText(iRow + 1, 24));
+	vWall[iRow].iMidPerformType = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 25));
+	vWall[iRow].iSeverePerformType = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 26));
+	vWall[iRow].iStructType = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 27));
+	vWall[iRow].iMidNormSectPerformObject = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 28));
+	vWall[iRow].intiMidDiagSectPerformObject = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 29));
+	vWall[iRow].iRareNormSectPerformObject = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 30));
+	vWall[iRow].iRareDiagSectPerformObject = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 31));
+	vWall[iRow].iParaNumbers = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 32));
+	vWall[iRow].fAxisFactor = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 33));
+	vWall[iRow].fMomentFactor = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 34));
+	vWall[iRow].fShearFactor = _ttoi(m_Grid_Wall.GetItemText(iRow + 1, 35));
 }
 
-CString CTabDlg4::GetComboBoxIndex(CStringArray& arr, int nCol)
+void CTabDlg4::WriteWallData(int iRow, CString& sNewLine)
+{
+	char temp[512];
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].ID);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iPKPM);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].nLine);
+	sNewLine += temp;
+	for (int i = 0; i < vWall[iRow].nLine; i++)
+	{
+		sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iNode[i]);
+		sNewLine += temp;
+	}
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iSection);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iSubType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].nRebarLayer);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iConcMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iRebarMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iSteelMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iBottomStory);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].idmStory);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iStage);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iTower);
+	sNewLine += temp;
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vWall[iRow].fOffset);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.4f ", vWall[iRow].fHRebarArea);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vWall[iRow].fAngle1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.4f ", vWall[iRow].fVRebarArea);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vWall[iRow].fAngle2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iMidPerformType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iSeverePerformType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iMidNormSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].intiMidDiagSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iRareNormSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iRareDiagSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vWall[iRow].iParaNumbers);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vWall[iRow].fAxisFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vWall[iRow].fMomentFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%.0f ", vWall[iRow].fShearFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
+	sNewLine += temp;
+}
+
+int CTabDlg4::GetComboBoxIndex(CString sMat)
 {
 	for (int i = 0; i < arrConcMat.GetSize(); i++)
 	{
-		if (arrConcMat.GetAt(i) == arr.GetAt(nCol))
+		if (arrConcMat.GetAt(i) == sMat)
 		{
-			CString String;
-			String.Format(_T("%d"), i);
-			return String;
+			return i;
 		}
 	}
 	for (int i = 0; i < arrRebarMat.GetSize(); i++)
 	{
-		if (arrRebarMat.GetAt(i) == arr.GetAt(nCol))
+		if (arrRebarMat.GetAt(i) == sMat)
 		{
-			CString String;
-			String.Format(_T("%d"), i + 101);
-			return String;
+			return i + 101;
 		}
 	}
-	
-	return CString();
 }
 
-void CTabDlg4::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex)
+void CTabDlg4::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)
 {
 	CGridCellCombo* pCell = (CGridCellCombo*)m_Grid.GetCell(nRow, nCol);
 	pCell->SetOptions(arrText);
-	int iBeamInfo = _ttoi(arrInfo.GetAt(InfoIndex));
-	if (iBeamInfo < 100) {
-		pCell->SetText(arrText.GetAt(_ttoi(arrInfo.GetAt(InfoIndex))));
+	if (iMat < 100)
+	{
+		pCell->SetText(arrText.GetAt(iMat));
 	}
 	else {
-		pCell->SetText(arrText.GetAt(_ttoi(arrInfo.GetAt(InfoIndex)) - 101));
+		pCell->SetText(arrText.GetAt((iMat - 101)));
 	}
 }
 
@@ -132,7 +253,7 @@ BOOL CTabDlg4::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	CRect cr;
 	m_Grid_Wall.GetClientRect(&cr);
-	m_Grid_Wall.SetColumnCount(41);//设置列数
+	m_Grid_Wall.SetColumnCount(36);//设置列数
 	m_Grid_Wall.SetFixedRowCount(1);//设置表头
 	m_Grid_Wall.SetItemText(0, 0, _T("ID"));
 	m_Grid_Wall.SetItemText(0, 1, _T("PKPM结构线编号"));
@@ -170,36 +291,14 @@ BOOL CTabDlg4::OnInitDialog()
 	m_Grid_Wall.SetItemText(0, 33, _T("轴力内力调整系数"));
 	m_Grid_Wall.SetItemText(0, 34, _T("弯矩内力调整系数"));
 	m_Grid_Wall.SetItemText(0, 35, _T("剪力内力调整系数"));
-	m_Grid_Wall.SetItemText(0, 36, _T("0"));
-	m_Grid_Wall.SetItemText(0, 37, _T("0"));
-	m_Grid_Wall.SetItemText(0, 38, _T("0"));
-	m_Grid_Wall.SetItemText(0, 39, _T("0"));
-	m_Grid_Wall.SetItemText(0, 40, _T("0"));
 	// TODO:  在此添加额外的初始化
 	//设置列宽，并将部分列隐藏
-	m_Grid_Wall.SetColumnWidth(0, 50);
+	for (int i = 0; i < 36; i++)
+	{
+		m_Grid_Wall.SetColumnWidth(i, 60);
+	}
 	m_Grid_Wall.SetColumnWidth(1, 0);
-	m_Grid_Wall.SetColumnWidth(2, 50);
-	m_Grid_Wall.SetColumnWidth(3, 60);
-	m_Grid_Wall.SetColumnWidth(4, 60);
-	m_Grid_Wall.SetColumnWidth(5, 60);
-	m_Grid_Wall.SetColumnWidth(6, 60);
-	m_Grid_Wall.SetColumnWidth(7, 60);
-	m_Grid_Wall.SetColumnWidth(8, 60);
-	m_Grid_Wall.SetColumnWidth(9, 60);
-	m_Grid_Wall.SetColumnWidth(10, 60);
-	m_Grid_Wall.SetColumnWidth(11, 60);
-	m_Grid_Wall.SetColumnWidth(12, 60);
-	m_Grid_Wall.SetColumnWidth(17, 60);
-	m_Grid_Wall.SetColumnWidth(18, 60);
-	m_Grid_Wall.SetColumnWidth(19, 60);
-	m_Grid_Wall.SetColumnWidth(20, 60);
 	m_Grid_Wall.SetColumnWidth(32, 0);
-	m_Grid_Wall.SetColumnWidth(36, 0);
-	m_Grid_Wall.SetColumnWidth(37, 0);
-	m_Grid_Wall.SetColumnWidth(38, 0);
-	m_Grid_Wall.SetColumnWidth(39, 0);
-	m_Grid_Wall.SetColumnWidth(40, 0);
 	m_Grid_Wall.EnableHiddenColUnhide(FALSE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
@@ -207,61 +306,51 @@ BOOL CTabDlg4::OnInitDialog()
 
 LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 {
-	CStdioFile cFile;
-	CStdioFile cNewFile;
+	CDataFile fin;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
 	CString sPath = pParent->m_filename;
-	CString sNewPath = sPath.Left(sPath.ReverseFind('.')) + _T("(new)") + sPath.Mid(sPath.ReverseFind('.'));
-	cFile.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
-	cNewFile.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
-	cFile.SeekToBegin();// 将文件指针指向文件开始处
-	cNewFile.SeekToBegin();
-	int iWallCount = m_Grid_Wall.GetColumnCount();
+	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
+	fin.SeekToBegin();
 	CString sLine;
-	CString sNewLine;
-	static int iWallNumbers = 0;
-	static CString sWallNumbers;
-	while (cFile.ReadString(sLine))
+	int iWallNumbers = 0;
+	int iColCount = m_Grid_Wall.GetColumnCount();
+	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)
 		{
-			sWallNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iWallNumbers = _ttoi(sWallNumbers);
+			iWallNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			m_Grid_Wall.SetRowCount(iWallNumbers + 1);
+			//MessageBox(TEXT("ok"));
 			break;
 		}
 	}
-	
 	for (int i = 0; i < iWallNumbers; i++)
 	{
-		cFile.ReadString(sLine);
-		CSplitStr Split;
-		Split.SetData(sLine);
-		Split.SetSplitFlag(TEXT(" "));
-		CStringArray arrWallInfo;
-		Split.GetSplitStrArray(arrWallInfo);
+		fin.ReadString(sLine);
+		fin.SetData(sLine);
+		Wall wall;
+		SetWallData(wall, fin);
+		int nLine = wall.nLine;
+		vWall.push_back(wall);
+		for (int j = 0; j < iColCount; j++)
+		{
 
-		if (arrWallInfo.GetSize() == iWallCount)//将arrBeamInfo中的信息填入到网格中
-		{
-			for (int j = 0; j < arrWallInfo.GetSize(); j++)
+			if (j < (nLine + 3) && j < 9)
 			{
-				m_Grid_Wall.SetItemText(i + 1, j, (LPCTSTR)arrWallInfo.GetAt(j));
+				m_Grid_Wall.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[j]);
+			}
+			if (j >= 9)
+			{
+				m_Grid_Wall.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[(j - (6 - nLine))]);
 			}
 		}
-		else
-		{
-			ExpandArray(arrWallInfo, iWallCount);
-			for (int j = 0; j < arrWallInfo.GetSize(); j++)
-			{
-				m_Grid_Wall.SetItemText(i + 1, j, (LPCTSTR)arrWallInfo.GetAt(j));
-			}
-		}
+		fin.arrInfo.RemoveAll();
 
 		//ComboBox内容的单独设置
 		m_Grid_Wall.SetCellType(i + 1, 13, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Wall, i + 1, 13, arrConcMat, arrWallInfo, 13);
+		SetCellComboText(m_Grid_Wall, i + 1, 13, arrConcMat, wall.iConcMat);
 		m_Grid_Wall.SetCellType(i + 1, 14, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Wall, i + 1, 14, arrRebarMat, arrWallInfo, 14); 
+		SetCellComboText(m_Grid_Wall, i + 1, 14, arrRebarMat, wall.iRebarMat);
 
 	}
 	return LRESULT();
@@ -269,75 +358,41 @@ LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 
 LRESULT CTabDlg4::OnWriteDate(WPARAM wParam, LPARAM lParam)
 {
-	CStdioFile cFile;
-	CStdioFile cNewFile;
+	CDataFile fin;
+	CDataFile fout;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
 	CString sPath = pParent->m_filename;
 	CString sNewPath = sPath.Left(sPath.ReverseFind('.')) + _T("(new)") + sPath.Mid(sPath.ReverseFind('.'));
-	cFile.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
-	cNewFile.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
-	cFile.SeekToBegin();// 将文件指针指向文件开始处
-	cNewFile.SeekToBegin();
-	int iWallCount = m_Grid_Wall.GetColumnCount();
+	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
+	fout.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
+	fin.SeekToBegin();
+	fout.SeekToBegin();
 	CString sLine;
 	CString sNewLine;
-	static int iWallNumbers = 0;
-	static CString sWallNumbers;
-	while (cFile.ReadString(sLine))
+	int iColCount = m_Grid_Wall.GetColumnCount();
+	int iWallNumbers = 0;
+	while (fin.ReadString(sLine))
 	{
-		cNewFile.WriteString(sLine + _T("\n"));
-		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)//先定位至COLUMN NUMBER所在行
+		fout.WriteString(sLine + _T("\n"));
+		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)//先定位
 		{
-			sWallNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iWallNumbers = _ttoi(sWallNumbers);
+			iWallNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			for (int i = 0; i < iWallNumbers; i++)
 			{
-				cFile.ReadString(sLine);
-				CSplitStr Split;
-				Split.SetData(sLine);
-				Split.SetSplitFlag(TEXT(" "));
-				CStringArray arrWallInfo;
-				Split.GetSplitStrArray(arrWallInfo);
-				CStringArray arrCellText;
-				for (int j = 0; j < iWallCount; j++)
-				{
-					arrCellText.Add(m_Grid_Wall.GetItemText(i + 1, j));
-				}
-				//将ComboBox项的内容转换为索引号
+				fin.ReadString(sLine);
 
-				arrCellText.SetAt(13, GetComboBoxIndex(arrCellText, 13));
-				arrCellText.SetAt(14, GetComboBoxIndex(arrCellText, 14));
-
-				if (arrCellText.GetSize() == arrWallInfo.GetSize())//将arrCellText中的信息填入到NewLine进行替换
-				{
-					for (int k = 0; k < arrCellText.GetSize(); k++)
-					{
-						sNewLine += arrCellText.GetAt(k);
-						sNewLine += TEXT(" ");
-					}
-				}
-				else
-				{
-					TrimArray(arrCellText, arrWallInfo);
-					for (int k = 0; k < arrCellText.GetSize(); k++)
-					{
-						sNewLine += arrCellText.GetAt(k);
-						sNewLine += TEXT(" ");
-					}
-				}
-
+				GetWallData(m_Grid_Wall, i);
+				WriteWallData(i, sNewLine);
 				//MessageBox(sNewLine);
-				cNewFile.WriteString(sNewLine + _T("\n"));
+				fout.WriteString(sNewLine + _T("\n"));
 				sNewLine.Empty();
-				arrCellText.RemoveAll();
-				arrWallInfo.RemoveAll();
+
 			}
 		}
 	}
-	cFile.Close();
-	cNewFile.Close();
-	cFile.Remove(sPath);
-	cNewFile.Rename(sNewPath, sPath);
-
+	fin.Close();
+	fout.Close();
+	fin.Remove(sPath);
+	fout.Rename(sNewPath, sPath);
 	return LRESULT();
 }
