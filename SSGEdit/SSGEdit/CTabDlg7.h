@@ -19,19 +19,19 @@
 #include <algorithm>
 
 
-// CTabDlg5 对话框
+// CTabDlg7 对话框
 
-class CTabDlg5 : public CDialogEx
+class CTabDlg7 : public CDialogEx
 {
-	DECLARE_DYNAMIC(CTabDlg5)
+	DECLARE_DYNAMIC(CTabDlg7)
 
 public:
-	CTabDlg5(CWnd* pParent = nullptr);   // 标准构造函数
-	virtual ~CTabDlg5();
+	CTabDlg7(CWnd* pParent = nullptr);   // 标准构造函数
+	virtual ~CTabDlg7();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_TAB_DIALOG5 };
+	enum { IDD = IDD_TAB_DIALOG7 };
 #endif
 
 protected:
@@ -39,29 +39,36 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	typedef struct SlabStruc
+	typedef struct BraceStruc
 	{
 		int ID;
 		int iPKPM;
-		int nLine;
-		int iNode[50];
+		int iLine;
 		int iType;
 		int iSection;
 		int iSubType;
-		int nRebarLayer;
+		int bArtiNode1;
+		int bArtiNode2;
 		int iConcMat;
 		int iRebarMat;
+		int iStirrupMat;
 		int iSteelMat;
+		int iBottomStory;
 		int iStory;
 		int iStage;
 		int iTower;
-		float fF1;
-		float fF2;
-		float fOffset;
-		float fRebarRatio1;
-		float fAngle1;
-		float fRebarRatio2;
-		float fAngle2;
+		float fRotateAng;
+		float fOffsetX1;
+		float fOffsetY1;
+		float fOffsetZ1;
+		float fOffsetX2;
+		float fOffsetY2;
+		float fOffsetZ2;
+		float fConnerArea;
+		float fBsideArea;
+		float fHsideArea;
+		float fStirrupArea_D;
+		float fStirrupArea_UD;
 		int iMidPerformType;
 		int iSeverePerformType;
 		int iStructType;
@@ -73,15 +80,21 @@ public:
 		float fAxisFactor;
 		float fMomentFactor;
 		float fShearFactor;
-	}Slab;
-	std::vector<Slab>vSlab;
-	CGridCtrl m_Grid_Slab;
-	void SetSlabData(Slab& slab, CDataFile& fin);
-	void GetSlabData(CGridCtrl& m_Grid_Slab, int iRow);
-	void WriteSlabData(int iRow, CString& sNewLine);
-	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Slab, CDataFile& fin, Slab& slab);
+		int iAppendMat;
+		int iNode1Sec;
+		int iNode2Sec;
+		int iShearNonlinear;
+		float fBraceSpan;
+		int iReinforcedSec;
+	}Brace;
+	std::vector<Brace>vBrace;
+	void SetBraceData(Brace& brace, CDataFile& fin);
+	void GetBraceData(CGridCtrl& m_Grid_Brace, int iRow);
+	void WriteBraceData(int iRow, CString& sNewLine);
+	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Brace, CDataFile& fin, Brace& brace);
 	int GetComboBoxIndex(CString sMat);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
+	CGridCtrl m_Grid_Brace;
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);

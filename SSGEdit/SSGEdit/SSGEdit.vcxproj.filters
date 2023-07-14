@@ -99,6 +99,9 @@
     <ClInclude Include="CDataFile.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CTabDlg7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SSGEdit.cpp">
@@ -165,6 +168,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CDataFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTabDlg7.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

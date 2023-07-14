@@ -9,6 +9,7 @@
 #include "CTabDlg4.h"
 #include "CTabDlg5.h"
 #include "CTabDlg6.h"
+#include "CTabDlg7.h"
 #include "resource.h"
 #include "afxcmn.h"
 #include "afxdialogex.h"
@@ -31,6 +32,7 @@
 #define NM_E	(WM_USER + 104)
 #define NM_F	(WM_USER + 105)
 #define NM_G	(WM_USER + 106)
+#define NM_H	(WM_USER + 107)
 
 using namespace std;
 // CSSGEditDlg 对话框
@@ -67,11 +69,13 @@ public:
 	CTabDlg4* cTabDlg4;
 	CTabDlg5* cTabDlg5;
 	CTabDlg6* cTabDlg6;
+	CTabDlg7* cTabDlg7;
 	CTabCtrl r_tab1;
 	afx_msg void OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButton1();
 	CString m_filename;
 	
 	afx_msg void OnBnClickedButton2();
+	virtual void OnCancel();
 };
 

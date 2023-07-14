@@ -47,6 +47,22 @@ CTabDlg3::CTabDlg3(CWnd* pParent /*=nullptr*/)
 	arrRebarMat.SetAt(8, TEXT("HTRB630"));
 	arrRebarMat.SetAt(9, TEXT("HRB635"));
 	arrRebarMat.SetAt(10, TEXT("T63"));
+	arrSteelMat.SetSize(20);
+	arrSteelMat.SetAt(0, TEXT("Q235"));
+	arrSteelMat.SetAt(1, TEXT("Q345"));
+	arrSteelMat.SetAt(2, TEXT("Q390"));
+	arrSteelMat.SetAt(3, TEXT("Q420"));
+	arrSteelMat.SetAt(4, TEXT("Q460"));
+	arrSteelMat.SetAt(5, TEXT("Q500"));
+	arrSteelMat.SetAt(6, TEXT("Q550"));
+	arrSteelMat.SetAt(7, TEXT("Q620"));
+	arrSteelMat.SetAt(8, TEXT("Q690"));
+	arrSteelMat.SetAt(9, TEXT("Q235GJ"));
+	arrSteelMat.SetAt(10, TEXT("Q345GJ"));
+	arrSteelMat.SetAt(11, TEXT("Q390GJ"));
+	arrSteelMat.SetAt(12, TEXT("Q420GJ"));
+	arrSteelMat.SetAt(13, TEXT("Q460GJ"));
+	arrSteelMat.SetAt(14, TEXT("Q355"));
 }
 
 CTabDlg3::~CTabDlg3()
@@ -71,50 +87,362 @@ END_MESSAGE_MAP()
 
 
 
-void CTabDlg3::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrInfo, int InfoIndex)
+
+
+void CTabDlg3::SetColumnData(Column& column, CDataFile& fin)
 {
-	CGridCellCombo* pCell = (CGridCellCombo*)m_Grid.GetCell(nRow, nCol);
-	pCell->SetOptions(arrText);
-	int iBeamInfo = _ttoi(arrInfo.GetAt(InfoIndex));
-	if (iBeamInfo < 100) {
-		pCell->SetText(arrText.GetAt(_ttoi(arrInfo.GetAt(InfoIndex))));
+	column.ID = fin.GetInt();
+	column.iPKPM = fin.GetInt();
+	column.iLine = fin.GetInt();
+	column.iType = fin.GetInt();
+	column.iSection = fin.GetInt();
+	column.iSubType = fin.GetInt();
+	column.bArtiNode1 = fin.GetInt();
+	column.bArtiNode2 = fin.GetInt();
+	column.iConcMat = fin.GetInt();
+	column.iRebarMat = fin.GetInt();
+	column.iStirrupMat = fin.GetInt();
+	column.iSteelMat = fin.GetInt();
+	column.iBottomStory = fin.GetInt();
+	column.iStory = fin.GetInt();
+	column.iStage = fin.GetInt();
+	column.iTower = fin.GetInt();
+	column.fRotateAng = fin.GetFloat();
+	column.fOffsetX1 = fin.GetFloat();
+	column.fOffsetY1 = fin.GetFloat();
+	column.fOffsetZ1 = fin.GetFloat();
+	column.fOffsetX2 = fin.GetFloat();
+	column.fOffsetY2 = fin.GetFloat();
+	column.fOffsetZ2 = fin.GetFloat();
+	column.fConnerArea = fin.GetFloat();
+	column.fBsideArea = fin.GetFloat();
+	column.fHsideArea = fin.GetFloat();
+	column.fStirrupArea_D = fin.GetFloat();
+	column.fStirrupArea_UD = fin.GetFloat();
+	column.fForce = fin.GetFloat();
+	column.iMidPerformType = fin.GetInt();
+	column.iSeverePerformType = fin.GetInt();
+	column.iStructType = fin.GetInt();
+	column.iMidNormSectPerformObject = fin.GetInt();
+	column.iMidDiagSectPerformObject = fin.GetInt();
+	column.iRareNormSectPerformObject = fin.GetInt();
+	column.iRareDiagSectPerformObject = fin.GetInt();
+	column.iParaNumbers = fin.GetInt();
+	if (column.iParaNumbers == 8)
+	{
+		column.fAxisFactor = fin.GetFloat();
+		column.fMomentFactor = fin.GetFloat();
+		column.fShearFactor = fin.GetFloat();
+		column.iAppendMat = fin.GetInt();
+		column.iNode1Sec = fin.GetInt();
+		column.iNode2Sec = fin.GetInt();
+		column.iShearNonlinear = fin.GetInt();
+		column.fColumnSpan = fin.GetFloat();
 	}
-	else {
-		pCell->SetText(arrText.GetAt(_ttoi(arrInfo.GetAt(InfoIndex)) - 101));
+	if (column.iParaNumbers == 9)
+	{
+		column.fAxisFactor = fin.GetFloat();
+		column.fMomentFactor = fin.GetFloat();
+		column.fShearFactor = fin.GetFloat();
+		column.iAppendMat = fin.GetInt();
+		column.iNode1Sec = fin.GetInt();
+		column.iNode2Sec = fin.GetInt();
+		column.iShearNonlinear = fin.GetInt();
+		column.fColumnSpan = fin.GetFloat();
+		column.iReinforcedSec = fin.GetInt();
 	}
 }
 
+void CTabDlg3::GetColumnData(CGridCtrl& m_Grid_Column, int iRow)
+{
+	vColumn[iRow].ID = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 0));
+	vColumn[iRow].iPKPM = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 1));
+	vColumn[iRow].iLine = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 2));
+	vColumn[iRow].iType = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 3));
+	vColumn[iRow].iSection = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 4));
+	vColumn[iRow].iSubType = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 5));
+	vColumn[iRow].bArtiNode1 = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 6));
+	vColumn[iRow].bArtiNode2 = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 7));
+	if (m_Grid_Column.GetItemText(iRow + 1, 8) != _T("0"))
+	{
+		vColumn[iRow].iConcMat = GetComboBoxIndex(m_Grid_Column.GetItemText(iRow + 1, 8));
+	}
+	else
+	{
+		vColumn[iRow].iConcMat = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 8));
+	}
+	if (m_Grid_Column.GetItemText(iRow + 1, 9) != _T("0"))
+	{
+		vColumn[iRow].iRebarMat = GetComboBoxIndex(m_Grid_Column.GetItemText(iRow + 1, 9));
+	}
+	else
+	{
+		vColumn[iRow].iRebarMat = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 9));
+	}
+	if (m_Grid_Column.GetItemText(iRow + 1, 10) != _T("0"))
+	{
+		vColumn[iRow].iStirrupMat = GetComboBoxIndex(m_Grid_Column.GetItemText(iRow + 1, 10));
+	}
+	else
+	{
+		vColumn[iRow].iStirrupMat = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 10));
+	}
+	if (m_Grid_Column.GetItemText(iRow + 1, 11) != _T("0"))
+	{
+		vColumn[iRow].iSteelMat = GetComboBoxIndex(m_Grid_Column.GetItemText(iRow + 1, 11));
+	}
+	else
+	{
+		vColumn[iRow].iSteelMat = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 11));
+	}
+	vColumn[iRow].iBottomStory = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 12));
+	vColumn[iRow].iStory = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 13));
+	vColumn[iRow].iStage = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 14));
+	vColumn[iRow].iTower = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 15));
+	vColumn[iRow].fRotateAng = _ttof(m_Grid_Column.GetItemText(iRow + 1, 16));
+	vColumn[iRow].fOffsetX1 = _ttof(m_Grid_Column.GetItemText(iRow + 1, 17));
+	vColumn[iRow].fOffsetY1 = _ttof(m_Grid_Column.GetItemText(iRow + 1, 18));
+	vColumn[iRow].fOffsetZ1 = _ttof(m_Grid_Column.GetItemText(iRow + 1, 19));
+	vColumn[iRow].fOffsetX2 = _ttof(m_Grid_Column.GetItemText(iRow + 1, 20));
+	vColumn[iRow].fOffsetY2 = _ttof(m_Grid_Column.GetItemText(iRow + 1, 21));
+	vColumn[iRow].fOffsetZ2 = _ttof(m_Grid_Column.GetItemText(iRow + 1, 22));
+	vColumn[iRow].fConnerArea = _ttof(m_Grid_Column.GetItemText(iRow + 1, 23));
+	vColumn[iRow].fBsideArea = _ttof(m_Grid_Column.GetItemText(iRow + 1, 24));
+	vColumn[iRow].fHsideArea = _ttof(m_Grid_Column.GetItemText(iRow + 1, 25));
+	vColumn[iRow].fStirrupArea_D = _ttof(m_Grid_Column.GetItemText(iRow + 1, 26));
+	vColumn[iRow].fStirrupArea_UD = _ttof(m_Grid_Column.GetItemText(iRow + 1, 27));
+	vColumn[iRow].fForce = _ttof(m_Grid_Column.GetItemText(iRow + 1, 28));
+	vColumn[iRow].iMidPerformType = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 29));
+	vColumn[iRow].iSeverePerformType = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 30));
+	vColumn[iRow].iStructType = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 31));
+	vColumn[iRow].iMidNormSectPerformObject = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 32));
+	vColumn[iRow].iMidDiagSectPerformObject = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 33));
+	vColumn[iRow].iRareNormSectPerformObject = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 34));
+	vColumn[iRow].iRareDiagSectPerformObject = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 35));
+	vColumn[iRow].iParaNumbers = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 36));
+	if (vColumn[iRow].iParaNumbers == 8)
+	{
+		vColumn[iRow].fAxisFactor = _ttof(m_Grid_Column.GetItemText(iRow + 1, 37));
+		vColumn[iRow].fMomentFactor = _ttof(m_Grid_Column.GetItemText(iRow + 1, 38));
+		vColumn[iRow].fShearFactor = _ttof(m_Grid_Column.GetItemText(iRow + 1, 39));
+		vColumn[iRow].iAppendMat = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 40));
+		vColumn[iRow].iNode1Sec = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 41));
+		vColumn[iRow].iNode2Sec = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 42));
+		vColumn[iRow].iShearNonlinear = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 43));
+		vColumn[iRow].fColumnSpan = _ttof(m_Grid_Column.GetItemText(iRow + 1, 44));
+	}
+	if (vColumn[iRow].iParaNumbers == 9)
+	{
+		vColumn[iRow].fAxisFactor = _ttof(m_Grid_Column.GetItemText(iRow + 1, 37));
+		vColumn[iRow].fMomentFactor = _ttof(m_Grid_Column.GetItemText(iRow + 1, 38));
+		vColumn[iRow].fShearFactor = _ttof(m_Grid_Column.GetItemText(iRow + 1, 39));
+		vColumn[iRow].iAppendMat = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 40));
+		vColumn[iRow].iNode1Sec = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 41));
+		vColumn[iRow].iNode2Sec = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 42));
+		vColumn[iRow].iShearNonlinear = _ttoi(m_Grid_Column.GetItemText(iRow + 1, 43));
+		vColumn[iRow].fColumnSpan = _ttof(m_Grid_Column.GetItemText(iRow + 1, 44));
+		vColumn[iRow].iReinforcedSec = _ttof(m_Grid_Column.GetItemText(iRow + 1, 45));
+	}
+}
 
+void CTabDlg3::WriteColumnData(int iRow, CString& sNewLine)
+{
+	char temp[512];
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].ID);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iPKPM);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iLine);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iSection);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iSubType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].bArtiNode1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].bArtiNode2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iConcMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iRebarMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iStirrupMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iSteelMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iBottomStory);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iStory);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iStage);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iTower);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fRotateAng);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fOffsetX1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fOffsetY1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fOffsetZ1);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fOffsetX2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fOffsetY2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fOffsetZ2);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fConnerArea);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fBsideArea);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fHsideArea);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fStirrupArea_D);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fStirrupArea_UD);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fForce);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iMidPerformType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iSeverePerformType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iStructType);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iMidNormSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iMidDiagSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iRareNormSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iRareDiagSectPerformObject);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iParaNumbers);
+	sNewLine += temp;
+	if (vColumn[iRow].iParaNumbers == 8) {
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fAxisFactor);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fMomentFactor);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fShearFactor);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iAppendMat);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iNode1Sec);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iNode2Sec);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iShearNonlinear);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fColumnSpan);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
+		sNewLine += temp;
+	}
+	if (vColumn[iRow].iParaNumbers == 9) {
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fAxisFactor);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fMomentFactor);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fShearFactor);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iAppendMat);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iNode1Sec);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iNode2Sec);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iShearNonlinear);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%g ", vColumn[iRow].fColumnSpan);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "%d ", vColumn[iRow].iReinforcedSec);
+		sNewLine += temp;
+		sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
+		sNewLine += temp;
+	}
+}
 
+void CTabDlg3::SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Column, CDataFile& fin, Column& column)
+{
+	for (int j = 0; j < iColCount; j++)
+	{
+		if (j <=44)
+		{
+			m_Grid_Column.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j]);
+		}
+		if (column.iParaNumbers == 9 && j == 45)
+		{
+			m_Grid_Column.SetItemText(iRow + 1, 45, (LPCTSTR)fin.arrInfo[45]);
+		}
+	}
+	fin.arrInfo.RemoveAll();
+	//ComboBox内容的单独设置
+	if (column.iConcMat != 0) {
+		m_Grid_Column.SetCellType(iRow + 1, 8, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Column, iRow + 1, 8, arrConcMat, column.iConcMat);
+	}
+	if (column.iRebarMat != 0)
+	{
+		m_Grid_Column.SetCellType(iRow + 1, 9, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Column, iRow + 1, 9, arrRebarMat, column.iRebarMat);
+	}
+	if (column.iStirrupMat != 0)
+	{
+		m_Grid_Column.SetCellType(iRow + 1, 10, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Column, iRow + 1, 10, arrRebarMat, column.iStirrupMat);
+	}
+	if (column.iSteelMat != 0)
+	{
+		m_Grid_Column.SetCellType(iRow + 1, 11, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Column, iRow + 1, 11, arrRebarMat, column.iSteelMat);
+	}
+}
 
-CString CTabDlg3::GetComboBoxIndex(CStringArray& arr, int nCol)
+int CTabDlg3::GetComboBoxIndex(CString sMat)
 {
 	for (int i = 0; i < arrConcMat.GetSize(); i++)
 	{
-		if (arrConcMat.GetAt(i) == arr.GetAt(nCol))
+		if (arrConcMat.GetAt(i) == sMat)
 		{
-			CString String;
-			String.Format(_T("%d"), i);
-			return String;
+			return i + 1;
 		}
 	}
 	for (int i = 0; i < arrRebarMat.GetSize(); i++)
 	{
-		if (arrRebarMat.GetAt(i) == arr.GetAt(nCol))
+		if (arrRebarMat.GetAt(i) == sMat)
 		{
-			CString String;
-			String.Format(_T("%d"), i + 101);
-			return String;
-		}	
+			return i + 101;
+		}
 	}
-	if (arr.GetAt(nCol)== _T("HRB300"))
+	for (int i = 0; i < arrSteelMat.GetSize(); i++)
 	{
-		CString String;
-		String=_T("102");
-		return String;
+		if (arrSteelMat.GetAt(i) == sMat)
+		{
+			return i + 201;
+		}
 	}
+}
 
-	return CString();
+void CTabDlg3::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)
+{
+	CGridCellCombo* pCell = (CGridCellCombo*)m_Grid.GetCell(nRow, nCol);
+	pCell->SetOptions(arrText);
+	if (iMat < 100)
+	{
+		pCell->SetText(arrText.GetAt(iMat));
+	}
+	else if (iMat < 200)
+	{
+		pCell->SetText(arrText.GetAt((iMat - 101)));
+	}
+	else if (iMat < 300)
+	{
+		pCell->SetText(arrText.GetAt((iMat - 201)));
+	}
 }
 
 BOOL CTabDlg3::OnInitDialog()
@@ -122,7 +450,7 @@ BOOL CTabDlg3::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	CRect cr;
 	m_Grid_Column.GetClientRect(&cr);
-	m_Grid_Column.SetColumnCount(50);//设置列数
+	m_Grid_Column.SetColumnCount(46);//设置列数
 	m_Grid_Column.SetFixedRowCount(1);//设置表头
 	m_Grid_Column.SetItemText(0, 0, _T("ID"));
 	m_Grid_Column.SetItemText(0, 1, _T("PKPM结构线编号"));
@@ -160,7 +488,7 @@ BOOL CTabDlg3::OnInitDialog()
 	m_Grid_Column.SetItemText(0, 33, _T("中震斜截面性能"));
 	m_Grid_Column.SetItemText(0, 34, _T("大震正截面性能"));
 	m_Grid_Column.SetItemText(0, 35, _T("大震斜截面性能"));
-	m_Grid_Column.SetItemText(0, 36, _T("8"));
+	m_Grid_Column.SetItemText(0, 36, _T("性能化参数个数"));
 	m_Grid_Column.SetItemText(0, 37, _T("轴力内力调整系数"));
 	m_Grid_Column.SetItemText(0, 38, _T("弯矩内力调整系数"));
 	m_Grid_Column.SetItemText(0, 39, _T("剪力内力调整系数"));
@@ -169,26 +497,18 @@ BOOL CTabDlg3::OnInitDialog()
 	m_Grid_Column.SetItemText(0, 42, _T("2端半刚性属性"));
 	m_Grid_Column.SetItemText(0, 43, _T("剪切属性"));
 	m_Grid_Column.SetItemText(0, 44, _T("构件跨度"));
-	m_Grid_Column.SetItemText(0, 45, _T("0"));
-	m_Grid_Column.SetItemText(0, 46, _T("0"));
-	m_Grid_Column.SetItemText(0, 47, _T("0"));
-	m_Grid_Column.SetItemText(0, 48, _T("0"));
-	m_Grid_Column.SetItemText(0, 49, _T("0"));
+	m_Grid_Column.SetItemText(0, 45, _T("附加加固截面"));
+	
 	//设置列宽，并将部分列隐藏
-	m_Grid_Column.SetColumnWidth(0, 50);
+	for (int i = 0; i < 46; i++)
+	{
+		m_Grid_Column.SetColumnWidth(i, 60);
+	}
 	m_Grid_Column.SetColumnWidth(1, 0);
-	m_Grid_Column.SetColumnWidth(2, 80);
-	m_Grid_Column.SetColumnWidth(3, 60);
-	m_Grid_Column.SetColumnWidth(4, 60);
-	m_Grid_Column.SetColumnWidth(5, 60);
-	m_Grid_Column.SetColumnWidth(6, 60);
-	m_Grid_Column.SetColumnWidth(7, 60);
+	m_Grid_Column.SetColumnWidth(12, 0);
+	m_Grid_Column.SetColumnWidth(28, 0);
 	m_Grid_Column.SetColumnWidth(36, 0);
 	m_Grid_Column.SetColumnWidth(45, 0);
-	m_Grid_Column.SetColumnWidth(46, 0);
-	m_Grid_Column.SetColumnWidth(47, 0);
-	m_Grid_Column.SetColumnWidth(48, 0);
-	m_Grid_Column.SetColumnWidth(49, 0);
 	m_Grid_Column.EnableHiddenColUnhide(FALSE);
 
 	return TRUE;// TODO:  在此添加额外的初始化
@@ -199,123 +519,72 @@ BOOL CTabDlg3::OnInitDialog()
 
 LRESULT CTabDlg3::OnUpDate(WPARAM wParam, LPARAM lParam)
 {
-	CStdioFile cFile;
-	CStdioFile cNewFile;
+	CDataFile fin;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
 	CString sPath = pParent->m_filename;
-	CString sNewPath = sPath.Left(sPath.ReverseFind('.')) + _T("(new)") + sPath.Mid(sPath.ReverseFind('.'));
-	cFile.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
-	cNewFile.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
-	cFile.SeekToBegin();// 将文件指针指向文件开始处
-	cNewFile.SeekToBegin();
-	int iColCount = m_Grid_Column.GetColumnCount();
+	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
+	fin.SeekToBegin();
 	CString sLine;
-	CString sNewLine;
-	static int iColumnNumbers = 0;
-	static CString sColumnNumbers;
-	while (cFile.ReadString(sLine))
+	int iColumnNumbers = 0;
+	int iColCount = m_Grid_Column.GetColumnCount();
+	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("COLUMN NUMBER=")) != -1)
 		{
-			sColumnNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iColumnNumbers = _ttoi(sColumnNumbers);
+			iColumnNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			m_Grid_Column.SetRowCount(iColumnNumbers + 1);
 			break;
 		}
 	}
-
 	for (int i = 0; i < iColumnNumbers; i++)
 	{
-		cFile.ReadString(sLine);
-		CSplitStr Split;
-		Split.SetData(sLine);
-		Split.SetSplitFlag(TEXT(" "));
-		CStringArray arrColumnInfo;
-		Split.GetSplitStrArray(arrColumnInfo);
-
-		if (arrColumnInfo.GetSize() == iColCount)//将arrBeamInfo中的信息填入到网格中
-		{
-			for (int j = 0; j < arrColumnInfo.GetSize(); j++)
-			{
-				m_Grid_Column.SetItemText(i + 1, j, (LPCTSTR)arrColumnInfo.GetAt(j));
-			}
-		}
-
-		//ComboBox内容的单独设置
-		m_Grid_Column.SetCellType(i + 1, 8, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Column, i + 1, 8, arrConcMat, arrColumnInfo, 8);
-		m_Grid_Column.SetCellType(i + 1, 9, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Column, i + 1, 9, arrRebarMat, arrColumnInfo, 9);
-		m_Grid_Column.SetCellType(i + 1, 10, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Column, i + 1, 10, arrRebarMat, arrColumnInfo, 10);
-
-
+		fin.ReadString(sLine);
+		fin.SetData(sLine);
+		Column column;
+		SetColumnData(column, fin);
+		vColumn.push_back(column);
+		SetGridItemText(i, iColCount, m_Grid_Column, fin, column);
 	}
 	return LRESULT();
 }
 
 LRESULT CTabDlg3::OnWriteDate(WPARAM wParam, LPARAM lParam)
 {
-	CStdioFile cFile;
-	CStdioFile cNewFile;
+	CDataFile fin;
+	CDataFile fout;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
 	CString sPath = pParent->m_filename;
 	CString sNewPath = sPath.Left(sPath.ReverseFind('.')) + _T("(new)") + sPath.Mid(sPath.ReverseFind('.'));
-	cFile.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
-	cNewFile.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
-	cFile.SeekToBegin();// 将文件指针指向文件开始处
-	cNewFile.SeekToBegin();
-	int iColCount = m_Grid_Column.GetColumnCount();
+	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
+	fout.Open(sNewPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone);
+	fin.SeekToBegin();
+	fout.SeekToBegin();
 	CString sLine;
 	CString sNewLine;
-	static int iColumnNumbers = 0;
-	static CString sColumnNumbers;
-	while (cFile.ReadString(sLine))
+	int iColCount = m_Grid_Column.GetColumnCount();
+	int iColumnNumbers = 0;
+	while (fin.ReadString(sLine))
 	{
-		cNewFile.WriteString(sLine + _T("\n"));
-		if (sLine.Find(TEXT("COLUMN NUMBER=")) != -1)//先定位至COLUMN NUMBER所在行
+		fout.WriteString(sLine + _T("\n"));
+		if (sLine.Find(TEXT("COLUMN NUMBER=")) != -1)//先定位
 		{
-			sColumnNumbers = sLine.Mid(sLine.Find(TEXT("=")) + 1);
-			iColumnNumbers = _ttoi(sColumnNumbers);
+			iColumnNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			for (int i = 0; i < iColumnNumbers; i++)
 			{
-				cFile.ReadString(sLine);
-				CSplitStr Split;
-				Split.SetData(sLine);
-				Split.SetSplitFlag(TEXT(" "));
-				CStringArray arrColumnInfo;
-				Split.GetSplitStrArray(arrColumnInfo);
-				CStringArray arrCellText;
-				for (int j = 0; j < iColCount; j++)
-				{
-					arrCellText.Add(m_Grid_Column.GetItemText(i + 1, j));
-				}
-				//将ComboBox项的内容转换为索引号
-				
-				arrCellText.SetAt(8, GetComboBoxIndex(arrCellText,8));
-				arrCellText.SetAt(9, GetComboBoxIndex(arrCellText, 9));
-				arrCellText.SetAt(10, GetComboBoxIndex(arrCellText,10));
-				if (arrCellText.GetSize() == arrColumnInfo.GetSize())//将arrCellText中的信息填入到NewLine进行替换
-				{
-					for (int k = 0; k < arrCellText.GetSize(); k++)
-					{
-						sNewLine += arrCellText.GetAt(k);
-						sNewLine += TEXT(" ");
-					}
-
-				}
-
+				fin.ReadString(sLine);
+				GetColumnData(m_Grid_Column, i);
+				WriteColumnData(i, sNewLine);
 				//MessageBox(sNewLine);
-				cNewFile.WriteString(sNewLine + _T("\n"));
+				fout.WriteString(sNewLine + _T("\n"));
 				sNewLine.Empty();
-				arrCellText.RemoveAll();
-				arrColumnInfo.RemoveAll();
+
 			}
 		}
 	}
-	cFile.Close();
-	cNewFile.Close();
-	cFile.Remove(sPath);
-	cNewFile.Rename(sNewPath, sPath);
+	fin.Close();
+	fout.Close();
+	fin.Remove(sPath);
+	fout.Rename(sNewPath, sPath);
+	return LRESULT();
 	return LRESULT();
 }

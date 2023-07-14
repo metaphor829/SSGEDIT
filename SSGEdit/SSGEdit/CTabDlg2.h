@@ -91,11 +91,13 @@ public:
 		int iNode2Sec;
 		int iShearNonlinear;
 		float fBeamSpan;
+		int iReinforcedSec;
 	}Beam;
 	std::vector<Beam>vBeam;
 	void SetBeamData(Beam& beam, CDataFile& fin);
 	void GetBeamData(CGridCtrl& m_Grid_Beam, int iRow);
 	void WriteBeamData(int iRow, CString& sNewLine);
+	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Beam, CDataFile& fin, Beam& beam);
 	int GetComboBoxIndex(CString sMat);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	CGridCtrl m_Grid_Beam;
@@ -106,4 +108,5 @@ public:
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;
+	CStringArray arrSteelMat;
 };

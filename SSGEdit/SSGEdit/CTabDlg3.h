@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "GridCtrl.h"
 #include "GridCellCombo.h"
-#include <SplitStr.h>
+#include "CDataFile.h"
 #include <string>
 #include <cstring>
 #include <io.h>
@@ -39,13 +39,69 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CString GetComboBoxIndex(CStringArray& arr, int nCol);
-	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, CStringArray& arrnfo, int InfoIndex);
-	virtual BOOL OnInitDialog();
+
+	typedef struct ColumnStruc
+	{
+		int ID;
+		int iPKPM;
+		int iLine;
+		int iType;
+		int iSection;
+		int iSubType;
+		int bArtiNode1;
+		int bArtiNode2;
+		int iConcMat;
+		int iRebarMat;
+		int iStirrupMat;
+		int iSteelMat;
+		int iBottomStory;
+		int iStory;
+		int iStage;
+		int iTower;
+		float fRotateAng;
+		float fOffsetX1;
+		float fOffsetY1;
+		float fOffsetZ1;
+		float fOffsetX2;
+		float fOffsetY2;
+		float fOffsetZ2;
+		float fConnerArea;
+		float fBsideArea;
+		float fHsideArea;
+		float fStirrupArea_D;
+		float fStirrupArea_UD;
+		float fForce;
+		int iMidPerformType;
+		int iSeverePerformType;
+		int iStructType;
+		int iMidNormSectPerformObject;
+		int	iMidDiagSectPerformObject;
+		int	iRareNormSectPerformObject;
+		int iRareDiagSectPerformObject;
+		int iParaNumbers;
+		float fAxisFactor;
+		float fMomentFactor;
+		float fShearFactor;
+		int iAppendMat;
+		int iNode1Sec;
+		int iNode2Sec;
+		int iShearNonlinear;
+		float fColumnSpan;
+		int iReinforcedSec;
+	}Column;
+	std::vector<Column>vColumn;
+	void SetColumnData(Column& column, CDataFile& fin);
+	void GetColumnData(CGridCtrl& m_Grid_Column, int iRow);
+	void WriteColumnData(int iRow, CString& sNewLine);
+	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Column, CDataFile& fin, Column& column);
+	int GetComboBoxIndex(CString sMat);
+	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	CGridCtrl m_Grid_Column;
+	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;
+	CStringArray arrSteelMat;
 };

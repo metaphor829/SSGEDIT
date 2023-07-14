@@ -49,6 +49,22 @@ CTabDlg5::CTabDlg5(CWnd* pParent /*=nullptr*/)
 	arrRebarMat.SetAt(8, TEXT("HTRB630"));
 	arrRebarMat.SetAt(9, TEXT("HRB635"));
 	arrRebarMat.SetAt(10, TEXT("T63"));
+	arrSteelMat.SetSize(20);
+	arrSteelMat.SetAt(0, TEXT("Q235"));
+	arrSteelMat.SetAt(1, TEXT("Q345"));
+	arrSteelMat.SetAt(2, TEXT("Q390"));
+	arrSteelMat.SetAt(3, TEXT("Q420"));
+	arrSteelMat.SetAt(4, TEXT("Q460"));
+	arrSteelMat.SetAt(5, TEXT("Q500"));
+	arrSteelMat.SetAt(6, TEXT("Q550"));
+	arrSteelMat.SetAt(7, TEXT("Q620"));
+	arrSteelMat.SetAt(8, TEXT("Q690"));
+	arrSteelMat.SetAt(9, TEXT("Q235GJ"));
+	arrSteelMat.SetAt(10, TEXT("Q345GJ"));
+	arrSteelMat.SetAt(11, TEXT("Q390GJ"));
+	arrSteelMat.SetAt(12, TEXT("Q420GJ"));
+	arrSteelMat.SetAt(13, TEXT("Q460GJ"));
+	arrSteelMat.SetAt(14, TEXT("Q355"));
 }
 
 CTabDlg5::~CTabDlg5()
@@ -123,9 +139,30 @@ void CTabDlg5::GetSlabData(CGridCtrl& m_Grid_Slab, int iRow)
 	vSlab[iRow].iSection = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 10));
 	vSlab[iRow].iSubType = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 11));
 	vSlab[iRow].nRebarLayer = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 12));
-	vSlab[iRow].iConcMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 13));;//ComboBox需转换为序号
-	vSlab[iRow].iRebarMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 14));//ComboBox需转换为序号
-	vSlab[iRow].iSteelMat = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 15));
+	if (m_Grid_Slab.GetItemText(iRow + 1, 13) != _T("0"))//ComboBox需转换为序号
+	{
+		vSlab[iRow].iConcMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 13));
+	}
+	else
+	{
+		vSlab[iRow].iConcMat = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 13));
+	}
+	if (m_Grid_Slab.GetItemText(iRow + 1, 14) != _T("0"))//ComboBox需转换为序号
+	{
+		vSlab[iRow].iRebarMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 14));
+	}
+	else
+	{
+		vSlab[iRow].iRebarMat = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 14));
+	}
+	if (m_Grid_Slab.GetItemText(iRow + 1, 15) != _T("0"))//ComboBox需转换为序号
+	{
+		vSlab[iRow].iSteelMat = GetComboBoxIndex(m_Grid_Slab.GetItemText(iRow + 1, 15));
+	}
+	else
+	{
+		vSlab[iRow].iSteelMat = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 15));
+	}
 	vSlab[iRow].iStory = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 16));
 	vSlab[iRow].iStage = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 17));
 	vSlab[iRow].iTower = _ttoi(m_Grid_Slab.GetItemText(iRow + 1, 18));
@@ -224,13 +261,48 @@ void CTabDlg5::WriteSlabData(int iRow, CString& sNewLine)
 	
 }
 
+void CTabDlg5::SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Slab, CDataFile& fin, Slab& slab)
+{
+	for (int j = 0; j < iColCount; j++)
+	{
+
+		if (j < (slab.nLine + 3) && j < 9)
+		{
+			m_Grid_Slab.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j]);
+		}
+		if (j >= 9)
+		{
+			m_Grid_Slab.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[(j - (6 - slab.nLine))]);
+		}
+	}
+	fin.arrInfo.RemoveAll();
+
+	//ComboBox内容的单独设置
+	if (slab.iConcMat != 0) 
+	{
+		m_Grid_Slab.SetCellType(iRow + 1, 13, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Slab, iRow + 1, 13, arrConcMat, slab.iConcMat);
+	}
+	if (slab.iRebarMat != 0) 
+	{
+		m_Grid_Slab.SetCellType(iRow + 1, 14, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Slab, iRow + 1, 14, arrRebarMat, slab.iRebarMat);
+	}
+	if (slab.iSteelMat != 0)
+	{
+		m_Grid_Slab.SetCellType(iRow + 1, 15, RUNTIME_CLASS(CGridCellCombo));
+		SetCellComboText(m_Grid_Slab, iRow + 1, 15, arrRebarMat, slab.iSteelMat);
+	}
+	
+}
+
 int CTabDlg5::GetComboBoxIndex(CString sMat)
 {
 	for (int i = 0; i < arrConcMat.GetSize(); i++)
 	{
 		if (arrConcMat.GetAt(i) == sMat)
 		{
-			return i;
+			return i+1;
 		}
 	}
 	for (int i = 0; i < arrRebarMat.GetSize(); i++)
@@ -238,6 +310,13 @@ int CTabDlg5::GetComboBoxIndex(CString sMat)
 		if (arrRebarMat.GetAt(i) == sMat)
 		{
 			return i + 101;
+		}
+	}
+	for (int i = 0; i < arrSteelMat.GetSize(); i++)
+	{
+		if (arrSteelMat.GetAt(i) == sMat)
+		{
+			return i + 201;
 		}
 	}
 }
@@ -250,8 +329,13 @@ void CTabDlg5::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringAr
 	{
 		pCell->SetText(arrText.GetAt(iMat));
 	}
-	else {
+	else if (iMat < 200)
+	{
 		pCell->SetText(arrText.GetAt((iMat - 101)));
+	}
+	else if (iMat < 300)
+	{
+		pCell->SetText(arrText.GetAt((iMat - 201)));
 	}
 }
 
@@ -342,25 +426,9 @@ LRESULT CTabDlg5::OnUpDate(WPARAM wParam, LPARAM lParam)
 		fin.SetData(sLine);
 		Slab slab;
 		SetSlabData(slab,fin);
-		int nLine = slab.nLine;
 		vSlab.push_back(slab);
-		for (int j = 0; j < iColCount; j++)
-		{
-			
-			if (j<(nLine + 3) && j<9)
-			{ m_Grid_Slab.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[j]);}
-			if (j>=9)
-			{
-			m_Grid_Slab.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[(j-(6-nLine))]);
-			}
-		}
-		fin.arrInfo.RemoveAll();
-
-		//ComboBox内容的单独设置
-		m_Grid_Slab.SetCellType(i + 1, 13, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Slab, i + 1, 13, arrConcMat, slab.iConcMat);
-		m_Grid_Slab.SetCellType(i + 1, 14, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Slab, i + 1, 14, arrRebarMat, slab.iRebarMat);
+		SetGridItemText(i, iColCount, m_Grid_Slab, fin, slab);
+		
 
 	}
 	return LRESULT();
