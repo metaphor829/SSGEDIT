@@ -16,6 +16,7 @@ IMPLEMENT_DYNAMIC(CTabDlg2, CDialogEx)
 CTabDlg2::CTabDlg2(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_DIALOG2, pParent)
 {
+	//设置combobox类的选型列表
 	arrConcMat.SetSize(20);
 	arrConcMat.SetAt(0,TEXT("C15"));
 	arrConcMat.SetAt(1,TEXT("C20"));
@@ -81,13 +82,15 @@ void CTabDlg2::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTabDlg2, CDialogEx)
 	ON_MESSAGE(NM_A, OnUpDate)
 	ON_MESSAGE(NM_C, OnWriteDate)
+	ON_MESSAGE(NM_I, OnSearchID)
+	ON_MESSAGE(NM_J, OnShowAll)
 END_MESSAGE_MAP()
 
 
 // CTabDlg2 消息处理程序
 
 
-void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)
+void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)//读取构件信息的格式设置
 {
 	beam.ID = fin.GetInt();
 	beam.iPKPM = fin.GetInt();
@@ -165,7 +168,7 @@ void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)
 	}
 }
 
-void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)
+void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)//从容器中取出构件信息
 {
 	vBeam[iRow].ID = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 0));
 	vBeam[iRow].iPKPM = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 1));
@@ -265,7 +268,7 @@ void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)
 	}
 }
 
-void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)
+void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)//写入构件信息的格式设置
 {
 	char temp[512];
 	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].ID);
@@ -395,7 +398,7 @@ void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)
 	}
 }
 
-void CTabDlg2::SetGridItemText(int iRow,int iColCount, CGridCtrl& m_Grid_Beam, CDataFile& fin, Beam& beam)
+void CTabDlg2::SetGridItemText(int iRow,int iColCount, CGridCtrl& m_Grid_Beam, CDataFile& fin, Beam& beam)//将构件信息显示在grid表格上的设置
 {
 	for (int j = 0; j < iColCount; j++)
 	{
@@ -453,7 +456,7 @@ void CTabDlg2::SetGridItemText(int iRow,int iColCount, CGridCtrl& m_Grid_Beam, C
 }
 	
 
-int CTabDlg2::GetComboBoxIndex(CString sMat)
+int CTabDlg2::GetComboBoxIndex(CString sMat)//获得Combox选项的序号
 {
 	for (int i = 0; i < arrConcMat.GetSize(); i++)
 	{
@@ -478,7 +481,7 @@ int CTabDlg2::GetComboBoxIndex(CString sMat)
 	}
 }
 
-void CTabDlg2::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)
+void CTabDlg2::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)//根据序号的值设置Combobox的内容
 {
 	CGridCellCombo* pCell = (CGridCellCombo*)m_Grid.GetCell(nRow, nCol);
 	pCell->SetOptions(arrText);
@@ -563,6 +566,7 @@ BOOL CTabDlg2::OnInitDialog()
 	}
 	m_Grid_Beam.SetColumnWidth(1, 0);
 	m_Grid_Beam.SetColumnWidth(30, 0);
+	m_Grid_Beam.SetColumnWidth(32, 0);
 	m_Grid_Beam.SetColumnWidth(41, 0);
 	m_Grid_Beam.SetColumnWidth(50, 0);
 	m_Grid_Beam.EnableHiddenColUnhide(FALSE);//使隐藏列不能显示
@@ -578,23 +582,22 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 {
 	CDataFile fin;
 	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
-	CString sPath = pParent->m_filename;
+	CString sPath = pParent->m_filename;//从父窗口得到文件路径
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iBeamNumbers = 0;
 	int iColCount = m_Grid_Beam.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("NBEAM NUMBER=")) != -1)
 		{
-			iBeamNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			m_Grid_Beam.SetRowCount(iBeamNumbers + 1);
+			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+			m_Grid_Beam.SetRowCount(iRowCount + 1);
 		
 			break;
 		}
 	}
-	for (int i = 0; i < iBeamNumbers; i++)
+	for (int i = 0; i < iRowCount; i++)
 	{
 		fin.ReadString(sLine);
 		fin.SetData(sLine);
@@ -602,8 +605,14 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 		SetBeamData(beam, fin);
 		vBeam.push_back(beam);
 		SetGridItemText(i, iColCount, m_Grid_Beam, fin, beam);
+		for (int j = 0; j < 4; j++) //设置部分列可读不可编辑
+		{
+			m_Grid_Beam.SetItemState(i + 1, j, GVIS_READONLY);
+		}
+		
 	}
 	return LRESULT();
+	
 }
 LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
 {
@@ -619,14 +628,12 @@ LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	CString sLine;
 	CString sNewLine;
 	int iColCount = m_Grid_Beam.GetColumnCount();
-	int iBeamNumbers = 0;
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
 		if (sLine.Find(TEXT("NBEAM NUMBER=")) != -1)//先定位
 		{
-			iBeamNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			for (int i = 0; i < iBeamNumbers; i++)
+			for (int i = 0; i < iRowCount; i++)
 			{
 				fin.ReadString(sLine);
 				GetBeamData(m_Grid_Beam, i);
@@ -643,6 +650,37 @@ LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fin.Remove(sPath);
 	fout.Rename(sNewPath, sPath);
 	return LRESULT();
+	return LRESULT();
+}
+
+LRESULT CTabDlg2::OnSearchID(WPARAM wParam, LPARAM lParam)
+{
+	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
+	int ID = _ttoi(pParent->m_ID);//从父窗口得到ID序号
+	if (ID != 0 && ID <= iRowCount)
+	{
+		for (int i = 1; i < iRowCount+1; i++)
+		{
+			if (i != ID)
+			{
+				m_Grid_Beam.SetRowHeight(i, 0);
+			}
+		}
+	}
+	else
+	{
+		MessageBox(TEXT("请输入列表内的ID序号进行搜索"));
+	}
+
+	return LRESULT();
+}
+
+LRESULT CTabDlg2::OnShowAll(WPARAM wParam, LPARAM lParam)
+{
+	for (int i = 0; i < iRowCount + 1; i++)
+	{
+		m_Grid_Beam.SetRowHeight(i, 25);
+	}
 	return LRESULT();
 }
 

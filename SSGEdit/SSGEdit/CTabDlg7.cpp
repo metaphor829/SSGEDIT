@@ -79,6 +79,8 @@ void CTabDlg7::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTabDlg7, CDialogEx)
 	ON_MESSAGE(NM_A, OnUpDate)
 	ON_MESSAGE(NM_H, OnWriteDate)
+	ON_MESSAGE(NM_I, OnSearchID)
+	ON_MESSAGE(NM_J, OnShowAll)
 END_MESSAGE_MAP()
 
 
@@ -450,8 +452,8 @@ BOOL CTabDlg7::OnInitDialog()
 	m_Grid_Brace.SetItemText(0, 3, _T("对象类型"));
 	m_Grid_Brace.SetItemText(0, 4, _T("截面类型"));
 	m_Grid_Brace.SetItemText(0, 5, _T("子类型"));
-	m_Grid_Brace.SetItemText(0, 6, _T("柱1端连接形式"));
-	m_Grid_Brace.SetItemText(0, 7, _T("柱2端连接形式"));
+	m_Grid_Brace.SetItemText(0, 6, _T("斜撑1端连接形式"));
+	m_Grid_Brace.SetItemText(0, 7, _T("斜撑2端连接形式"));
 	m_Grid_Brace.SetItemText(0, 8, _T("混凝土强度等级"));
 	m_Grid_Brace.SetItemText(0, 9, _T("钢筋级别"));
 	m_Grid_Brace.SetItemText(0, 10, _T("箍筋级别"));
@@ -515,18 +517,17 @@ LRESULT CTabDlg7::OnUpDate(WPARAM wParam, LPARAM lParam)
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iBraceNumbers = 0;
 	int iColCount = m_Grid_Brace.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("BRACE NUMBER=")) != -1)
 		{
-			iBraceNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			m_Grid_Brace.SetRowCount(iBraceNumbers + 1);
+			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+			m_Grid_Brace.SetRowCount(iRowCount + 1);
 			break;
 		}
 	}
-	for (int i = 0; i < iBraceNumbers; i++)
+	for (int i = 0; i < iRowCount; i++)
 	{
 		fin.ReadString(sLine);
 		fin.SetData(sLine);
@@ -534,6 +535,10 @@ LRESULT CTabDlg7::OnUpDate(WPARAM wParam, LPARAM lParam)
 		SetBraceData(brace, fin);
 		vBrace.push_back(brace);
 		SetGridItemText(i, iColCount, m_Grid_Brace, fin, brace);
+		for (int j = 0; j < 4; j++) 
+		{
+			m_Grid_Brace.SetItemState(i + 1, j, GVIS_READONLY);
+		}
 	}
 	return LRESULT();
 }
@@ -552,14 +557,13 @@ LRESULT CTabDlg7::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	CString sLine;
 	CString sNewLine;
 	int iColCount = m_Grid_Brace.GetColumnCount();
-	int iBraceNumbers = 0;
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
 		if (sLine.Find(TEXT("BRACE NUMBER=")) != -1)//先定位
 		{
-			iBraceNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			for (int i = 0; i < iBraceNumbers; i++)
+			
+			for (int i = 0; i < iRowCount; i++)
 			{
 				fin.ReadString(sLine);
 				GetBraceData(m_Grid_Brace, i);
@@ -576,5 +580,35 @@ LRESULT CTabDlg7::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fin.Remove(sPath);
 	fout.Rename(sNewPath, sPath);
 	return LRESULT();
+	return LRESULT();
+}
+
+LRESULT CTabDlg7::OnSearchID(WPARAM wParam, LPARAM lParam)
+{
+	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
+	int ID = _ttoi(pParent->m_ID);//从父窗口得到ID序号
+	if (ID != 0 && ID <= iRowCount)
+	{
+		for (int i = 1; i < iRowCount + 1; i++)
+		{
+			if (i != ID)
+			{
+				m_Grid_Brace.SetRowHeight(i, 0);
+			}
+		}
+	}
+	else
+	{
+		MessageBox(TEXT("请输入列表内的ID序号进行搜索"));
+	}
+	return LRESULT();
+}
+
+LRESULT CTabDlg7::OnShowAll(WPARAM wParam, LPARAM lParam)
+{
+	for (int i = 0; i < iRowCount + 1; i++)
+	{
+		m_Grid_Brace.SetRowHeight(i, 25);
+	}
 	return LRESULT();
 }

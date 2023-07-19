@@ -33,6 +33,8 @@
 #define NM_F	(WM_USER + 105)
 #define NM_G	(WM_USER + 106)
 #define NM_H	(WM_USER + 107)
+#define NM_I	(WM_USER + 108)
+#define NM_J	(WM_USER + 109)
 
 using namespace std;
 // CSSGEditDlg 对话框
@@ -71,11 +73,13 @@ public:
 	CTabDlg6* cTabDlg6;
 	CTabDlg7* cTabDlg7;
 	CTabCtrl r_tab1;
+	CString m_ID;
+	CString m_filename;
 	afx_msg void OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButton1();
-	CString m_filename;
-	
 	afx_msg void OnBnClickedButton2();
 	virtual void OnCancel();
+	afx_msg void OnBnClickedButtonSerach();
+	afx_msg void OnBnClickedButtonShowAll();
 };
 

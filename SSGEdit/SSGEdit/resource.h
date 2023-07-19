@@ -36,8 +36,12 @@
 #define IDC_CUSTOM4                     1032
 #define IDC_CUSTOM5                     1033
 #define IDC_CUSTOM6                     1034
+#define IDC_EDIT_ID                     1035
 #define IDC_COMBO_WALLSEISGRADE         1036
+#define IDC_BUTTON_SERACH               1036
 #define IDC_COMBO_COLSEISGRADE          1037
+#define IDC_BUTTON4                     1037
+#define IDC_BUTTON_SHOWALL              1037
 #define IDC_COMBO_SLABSEISGRADE         1038
 #define IDC_COMBO_SEISDETAILGRADE       1039
 #define IDC_COMBO_FORTICATEGORY         1040
@@ -62,7 +66,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1038
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

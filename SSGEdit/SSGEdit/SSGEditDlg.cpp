@@ -52,6 +52,8 @@ END_MESSAGE_MAP()
 CSSGEditDlg::CSSGEditDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_SSGEDIT_DIALOG, pParent)
 	, m_filename(_T(""))
+	, m_ID(_T(""))
+	
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -61,6 +63,7 @@ void CSSGEditDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TAB_CTRL, r_tab1);
 	DDX_Text(pDX, IDC_EDIT1, m_filename);
+	DDX_Text(pDX, IDC_EDIT_ID, m_ID);
 }
 
 BEGIN_MESSAGE_MAP(CSSGEditDlg, CDialogEx)
@@ -72,6 +75,8 @@ BEGIN_MESSAGE_MAP(CSSGEditDlg, CDialogEx)
 
 	
 	ON_BN_CLICKED(IDC_BUTTON2, &CSSGEditDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON_SERACH, &CSSGEditDlg::OnBnClickedButtonSerach)
+	ON_BN_CLICKED(IDC_BUTTON_SHOWALL, &CSSGEditDlg::OnBnClickedButtonShowAll)
 END_MESSAGE_MAP()
 
 
@@ -113,8 +118,8 @@ BOOL CSSGEditDlg::OnInitDialog()
 	tabRect.DeflateRect(2, 30, 5, 5);//tabrect范围
 	r_tab1.InsertItem(0, L"项目总信息");
 	r_tab1.InsertItem(1, L"梁构件");
-	r_tab1.InsertItem(2, L"斜撑构件");
-	r_tab1.InsertItem(3, L"柱构件");
+	r_tab1.InsertItem(2, L"柱构件");
+	r_tab1.InsertItem(3, L"斜撑构件");
 	r_tab1.InsertItem(4, L"墙构件");
 	r_tab1.InsertItem(5, L"板构件");
 	r_tab1.InsertItem(6, L"节点信息");
@@ -228,20 +233,20 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 	case 2:
 		cTabDlg1->ShowWindow(SW_HIDE);
 		cTabDlg2->ShowWindow(SW_HIDE);
-		cTabDlg3->ShowWindow(SW_HIDE);
-		cTabDlg4->ShowWindow(SW_HIDE);
-		cTabDlg5->ShowWindow(SW_HIDE);
-		cTabDlg6->ShowWindow(SW_HIDE);
-		cTabDlg7->ShowWindow(SW_SHOW);
-		break;
-	case 3:
-		cTabDlg1->ShowWindow(SW_HIDE);
-		cTabDlg2->ShowWindow(SW_HIDE);
 		cTabDlg3->ShowWindow(SW_SHOW);
 		cTabDlg4->ShowWindow(SW_HIDE);
 		cTabDlg5->ShowWindow(SW_HIDE);
 		cTabDlg6->ShowWindow(SW_HIDE);
 		cTabDlg7->ShowWindow(SW_HIDE);
+		break;
+	case 3:
+		cTabDlg1->ShowWindow(SW_HIDE);
+		cTabDlg2->ShowWindow(SW_HIDE);
+		cTabDlg3->ShowWindow(SW_HIDE);
+		cTabDlg4->ShowWindow(SW_HIDE);
+		cTabDlg5->ShowWindow(SW_HIDE);
+		cTabDlg6->ShowWindow(SW_HIDE);
+		cTabDlg7->ShowWindow(SW_SHOW);
 		break;
 	case 4:
 		cTabDlg1->ShowWindow(SW_HIDE);
@@ -289,40 +294,50 @@ void CSSGEditDlg::OnBnClickedButton1()
 		BOOL ret=cFile.Open(strFileName, CFile::modeRead);
 		CString sLine;
 		int iVer = 0;
-		while (cFile.ReadString(sLine))
+		CString sFileFormat = strFileName.Mid(strFileName.ReverseFind('.'));
+
+		//MessageBox(sFileFormat);
+		if (sFileFormat == ".ssg" || sFileFormat == ".txt")
 		{
-			if (sLine.Find(TEXT("VER=")) != -1)
+			while (cFile.ReadString(sLine))
 			{
-				iVer = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-				if (iVer < 2023)
+				if (sLine.Find(TEXT("VER=")) != -1)
 				{
-					MessageBox(TEXT("请打开v2023版本的.ssg文件"));
+					iVer = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+					if (iVer < 2023)
+					{
+						MessageBox(TEXT("请打开v2023版本的.ssg文件"));
+					}
+					break;
 				}
-				break;
+			}
+			if (ret == 0)
+			{
+				MessageBox(TEXT("打开文件错误！请重新生成.ssg文件"));
+			}
+			else if (ret != 0 && iVer == 2023)
+			{
+				//向对话框发送消息
+				::PostMessage(cTabDlg1->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg2->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg3->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg7->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				m_filename = strFileName;
+				UpdateData(FALSE);
 			}
 		}
-		if (ret==0)
+		else
 		{
-			MessageBox(TEXT("无法打开文件"));
-		}
-		else if(ret != 0&& iVer==2023)
-		{
-			//向对话框发送消息
-			::PostMessage(cTabDlg1->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			::PostMessage(cTabDlg2->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			::PostMessage(cTabDlg3->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			::PostMessage(cTabDlg7->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-			m_filename = strFileName;
-			UpdateData(FALSE);
+			MessageBox(TEXT("请选择.ssg文件打开"));
 		}
 		cFile.Close();
 	}
 	else
 	{
-		MessageBox(TEXT("请选择.ssg文件打开"));
+		MessageBox(TEXT("请选择文件打开"));
 	}
 	// TODO: 在此添加控件通知处理程序代码
 }
@@ -340,10 +355,10 @@ void CSSGEditDlg::OnBnClickedButton2()
 		::PostMessage(cTabDlg2->GetSafeHwnd(), NM_C, (LPARAM)0, (LPARAM)0);
 		break;
 	case 2:
-		::PostMessage(cTabDlg7->GetSafeHwnd(), NM_D, (LPARAM)0, (LPARAM)0);
+		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_D, (LPARAM)0, (LPARAM)0);
 		break;
 	case 3:
-		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_D, (LPARAM)0, (LPARAM)0);
+		::PostMessage(cTabDlg7->GetSafeHwnd(), NM_D, (LPARAM)0, (LPARAM)0);
 		break;
 	case 4:
 		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_E, (LPARAM)0, (LPARAM)0);
@@ -378,4 +393,67 @@ void CSSGEditDlg::OnCancel()
 	}
 	CDialogEx::OnCancel();
 
+}
+
+
+void CSSGEditDlg::OnBnClickedButtonSerach()
+{
+	switch (r_tab1.GetCurSel())
+	{
+	case 0:
+		::PostMessage(cTabDlg1->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	case 1:
+		::PostMessage(cTabDlg2->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	case 2:
+		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	case 3:
+		::PostMessage(cTabDlg7->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	case 4:
+		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	case 5:
+		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	case 6:
+		::PostMessage(cTabDlg6->GetSafeHwnd(), NM_I, (LPARAM)0, (LPARAM)0);
+		break;
+	}
+	UpdateData(TRUE);
+	
+	
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CSSGEditDlg::OnBnClickedButtonShowAll()
+{
+	switch (r_tab1.GetCurSel())
+	{
+	case 0:
+		::PostMessage(cTabDlg1->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	case 1:
+		::PostMessage(cTabDlg2->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	case 2:
+		::PostMessage(cTabDlg3->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	case 3:
+		::PostMessage(cTabDlg7->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	case 4:
+		::PostMessage(cTabDlg4->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	case 5:
+		::PostMessage(cTabDlg5->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	case 6:
+		::PostMessage(cTabDlg6->GetSafeHwnd(), NM_J, (LPARAM)0, (LPARAM)0);
+		break;
+	}
+	// TODO: 在此添加控件通知处理程序代码
 }

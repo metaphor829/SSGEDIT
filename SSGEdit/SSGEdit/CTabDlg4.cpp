@@ -79,6 +79,8 @@ void CTabDlg4::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTabDlg4, CDialogEx)
 	ON_MESSAGE(NM_A, OnUpDate)
 	ON_MESSAGE(NM_E, OnWriteDate)
+	ON_MESSAGE(NM_I, OnSearchID)
+	ON_MESSAGE(NM_J, OnShowAll)
 END_MESSAGE_MAP()
 
 
@@ -396,19 +398,18 @@ LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iWallNumbers = 0;
 	int iColCount = m_Grid_Wall.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)
 		{
-			iWallNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			m_Grid_Wall.SetRowCount(iWallNumbers + 1);
+			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+			m_Grid_Wall.SetRowCount(iRowCount + 1);
 			//MessageBox(TEXT("ok"));
 			break;
 		}
 	}
-	for (int i = 0; i < iWallNumbers; i++)
+	for (int i = 0; i < iRowCount; i++)
 	{
 		fin.ReadString(sLine);
 		fin.SetData(sLine);
@@ -416,6 +417,10 @@ LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 		SetWallData(wall, fin);
 		vWall.push_back(wall);
 		SetGridItemText(i, iColCount, m_Grid_Wall, fin, wall);
+		for (int j = 0; j < 10; j++)
+		{
+			m_Grid_Wall.SetItemState(i + 1, j, GVIS_READONLY);
+		}
 	}
 	return LRESULT();
 }
@@ -434,14 +439,12 @@ LRESULT CTabDlg4::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	CString sLine;
 	CString sNewLine;
 	int iColCount = m_Grid_Wall.GetColumnCount();
-	int iWallNumbers = 0;
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
 		if (sLine.Find(TEXT("WALLC NUMBER=")) != -1)//先定位
 		{
-			iWallNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			for (int i = 0; i < iWallNumbers; i++)
+			for (int i = 0; i < iRowCount; i++)
 			{
 				fin.ReadString(sLine);
 
@@ -458,5 +461,35 @@ LRESULT CTabDlg4::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fout.Close();
 	fin.Remove(sPath);
 	fout.Rename(sNewPath, sPath);
+	return LRESULT();
+}
+
+LRESULT CTabDlg4::OnSearchID(WPARAM wParam, LPARAM lParam)
+{
+	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
+	int ID = _ttoi(pParent->m_ID);//从父窗口得到ID序号
+	if (ID != 0 && ID <= iRowCount)
+	{
+		for (int i = 1; i < iRowCount + 1; i++)
+		{
+			if (i != ID)
+			{
+				m_Grid_Wall.SetRowHeight(i, 0);
+			}
+		}
+	}
+	else
+	{
+		MessageBox(TEXT("请输入列表内的ID序号进行搜索"));
+	}
+	return LRESULT();
+}
+
+LRESULT CTabDlg4::OnShowAll(WPARAM wParam, LPARAM lParam)
+{
+	for (int i = 0; i < iRowCount + 1; i++)
+	{
+		m_Grid_Wall.SetRowHeight(i, 25);
+	}
 	return LRESULT();
 }

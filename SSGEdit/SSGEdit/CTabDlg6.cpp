@@ -35,6 +35,8 @@ void CTabDlg6::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTabDlg6, CDialogEx)
 	ON_MESSAGE(NM_A, OnUpDate)
 	ON_MESSAGE(NM_G, OnWriteDate)
+	ON_MESSAGE(NM_I, OnSearchID)
+	ON_MESSAGE(NM_J, OnShowAll)
 END_MESSAGE_MAP()
 
 
@@ -88,6 +90,7 @@ void CTabDlg6::GetCoorData(Coor& coor, CGridCtrl& m_Grid_Coor, int iRow)
 	coor.iTower = _ttoi(m_Grid_Coor.GetItemText(iRow + 1, 18));
 	coor.iRigidBody = _ttoi(m_Grid_Coor.GetItemText(iRow + 1, 19));
 }
+
 
 void CTabDlg6::WriteCoorData(Coor& coor, CString& sNewLine)
 {
@@ -184,18 +187,17 @@ LRESULT CTabDlg6::OnUpDate(WPARAM wParam, LPARAM lParam)
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iCoorNumbers = 0;
 	int iColCount = m_Grid_Coor.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("COOR NUMBER=")) != -1)
 		{
-			iCoorNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			m_Grid_Coor.SetRowCount(iCoorNumbers + 1);
+			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+			m_Grid_Coor.SetRowCount(iRowCount + 1);
 			break;
 		}
 	}
-	for (int i = 0; i < iCoorNumbers; i++)
+	for (int i = 0; i < iRowCount; i++)
 	{
 		fin.ReadString(sLine);
 		fin.SetData(sLine);
@@ -205,6 +207,10 @@ LRESULT CTabDlg6::OnUpDate(WPARAM wParam, LPARAM lParam)
 		{
 			//MessageBox(fin.arrInfo[j]);
 			m_Grid_Coor.SetItemText(i + 1, j, (LPCTSTR)fin.arrInfo[j]);
+		}
+		for (int j = 0; j < 4; j++)
+		{
+			m_Grid_Coor.SetItemState(i + 1, j, GVIS_READONLY);
 		}
 		fin.arrInfo.RemoveAll();
 	}
@@ -226,14 +232,13 @@ LRESULT CTabDlg6::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	CString sLine;
 	CString sNewLine;
 	int iColCount = m_Grid_Coor.GetColumnCount();
-	int iCoorNumbers = 0;
+
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
 		if (sLine.Find(TEXT("COOR NUMBER=")) != -1)//先定位至COORNUMBER所在行
 		{
-			iCoorNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			for (int i = 0; i < iCoorNumbers; i++)
+			for (int i = 0; i < iRowCount; i++)
 			{
 				fin.ReadString(sLine);
 				Coor coor;
@@ -250,5 +255,35 @@ LRESULT CTabDlg6::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fout.Close();
 	fin.Remove(sPath);
 	fout.Rename(sNewPath, sPath);
+	return LRESULT();
+}
+
+LRESULT CTabDlg6::OnSearchID(WPARAM wParam, LPARAM lParam)
+{
+	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
+	int ID = _ttoi(pParent->m_ID);//从父窗口得到ID序号
+	if (ID != 0 && ID <= iRowCount)
+	{
+		for (int i = 1; i < iRowCount + 1; i++)
+		{
+			if (i != ID)
+			{
+				m_Grid_Coor.SetRowHeight(i, 0);
+			}
+		}
+	}
+	else
+	{
+		MessageBox(TEXT("请输入列表内的ID序号进行搜索"));
+	}
+	return LRESULT();
+}
+
+LRESULT CTabDlg6::OnShowAll(WPARAM wParam, LPARAM lParam)
+{
+	for (int i = 0; i < iRowCount + 1; i++)
+	{
+		m_Grid_Coor.SetRowHeight(i, 25);
+	}
 	return LRESULT();
 }

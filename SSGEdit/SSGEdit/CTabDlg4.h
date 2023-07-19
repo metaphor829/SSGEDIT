@@ -72,6 +72,7 @@ public:
 		float fMomentFactor;
 		float fShearFactor;
 	}Wall;
+	int iRowCount;
 	std::vector<Wall>vWall;
 	CGridCtrl m_Grid_Wall;
 	void SetWallData(Wall& wall, CDataFile& fin);
@@ -83,6 +84,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
 
 private:
 	CStringArray arrConcMat;

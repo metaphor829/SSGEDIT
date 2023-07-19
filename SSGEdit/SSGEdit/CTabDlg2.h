@@ -93,6 +93,7 @@ public:
 		float fBeamSpan;
 		int iReinforcedSec;
 	}Beam;
+	int iRowCount;
 	std::vector<Beam>vBeam;
 	void SetBeamData(Beam& beam, CDataFile& fin);
 	void GetBeamData(CGridCtrl& m_Grid_Beam, int iRow);
@@ -104,6 +105,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
 	
 private:
 	CStringArray arrConcMat;

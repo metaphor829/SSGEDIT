@@ -79,6 +79,8 @@ void CTabDlg3::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTabDlg3, CDialogEx)
 	ON_MESSAGE(NM_A, OnUpDate)
 	ON_MESSAGE(NM_D, OnWriteDate)
+	ON_MESSAGE(NM_I, OnSearchID)
+	ON_MESSAGE(NM_J, OnShowAll)
 END_MESSAGE_MAP()
 
 
@@ -525,18 +527,17 @@ LRESULT CTabDlg3::OnUpDate(WPARAM wParam, LPARAM lParam)
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iColumnNumbers = 0;
 	int iColCount = m_Grid_Column.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("COLUMN NUMBER=")) != -1)
 		{
-			iColumnNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			m_Grid_Column.SetRowCount(iColumnNumbers + 1);
+			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
+			m_Grid_Column.SetRowCount(iRowCount + 1);
 			break;
 		}
 	}
-	for (int i = 0; i < iColumnNumbers; i++)
+	for (int i = 0; i < iRowCount; i++)
 	{
 		fin.ReadString(sLine);
 		fin.SetData(sLine);
@@ -544,6 +545,10 @@ LRESULT CTabDlg3::OnUpDate(WPARAM wParam, LPARAM lParam)
 		SetColumnData(column, fin);
 		vColumn.push_back(column);
 		SetGridItemText(i, iColCount, m_Grid_Column, fin, column);
+		for (int j = 0; j < 4; j++)
+		{
+			m_Grid_Column.SetItemState(i + 1, j, GVIS_READONLY);
+		}
 	}
 	return LRESULT();
 }
@@ -562,14 +567,12 @@ LRESULT CTabDlg3::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	CString sLine;
 	CString sNewLine;
 	int iColCount = m_Grid_Column.GetColumnCount();
-	int iColumnNumbers = 0;
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
 		if (sLine.Find(TEXT("COLUMN NUMBER=")) != -1)//先定位
 		{
-			iColumnNumbers = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
-			for (int i = 0; i < iColumnNumbers; i++)
+			for (int i = 0; i < iRowCount; i++)
 			{
 				fin.ReadString(sLine);
 				GetColumnData(m_Grid_Column, i);
@@ -586,5 +589,35 @@ LRESULT CTabDlg3::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fin.Remove(sPath);
 	fout.Rename(sNewPath, sPath);
 	return LRESULT();
+	return LRESULT();
+}
+
+LRESULT CTabDlg3::OnSearchID(WPARAM wParam, LPARAM lParam)
+{
+	CSSGEditDlg* pParent = (CSSGEditDlg*)GetParent()->GetParent();//需要调用两次GetParent()函数
+	int ID = _ttoi(pParent->m_ID);//从父窗口得到ID序号
+	if (ID != 0 && ID <= iRowCount)
+	{
+		for (int i = 1; i < iRowCount + 1; i++)
+		{
+			if (i != ID)
+			{
+				m_Grid_Column.SetRowHeight(i, 0);
+			}
+		}
+	}
+	else
+	{
+		MessageBox(TEXT("请输入列表内的ID序号进行搜索"));
+	}
+	return LRESULT();
+}
+
+LRESULT CTabDlg3::OnShowAll(WPARAM wParam, LPARAM lParam)
+{
+	for (int i = 0; i < iRowCount + 1; i++)
+	{
+		m_Grid_Column.SetRowHeight(i, 25);
+	}
 	return LRESULT();
 }

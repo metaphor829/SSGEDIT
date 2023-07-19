@@ -89,6 +89,7 @@ public:
 		float fColumnSpan;
 		int iReinforcedSec;
 	}Column;
+	int iRowCount;
 	std::vector<Column>vColumn;
 	void SetColumnData(Column& column, CDataFile& fin);
 	void GetColumnData(CGridCtrl& m_Grid_Column, int iRow);
@@ -100,6 +101,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;

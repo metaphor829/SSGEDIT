@@ -87,6 +87,7 @@ public:
 		float fBraceSpan;
 		int iReinforcedSec;
 	}Brace;
+	int iRowCount;
 	std::vector<Brace>vBrace;
 	void SetBraceData(Brace& brace, CDataFile& fin);
 	void GetBraceData(CGridCtrl& m_Grid_Brace, int iRow);
@@ -98,6 +99,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;

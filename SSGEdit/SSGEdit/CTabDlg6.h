@@ -60,7 +60,8 @@ public:
 		int iStage;
 		int iTower;
 		int iRigidBody;
-	}Coor;
+	}Coor; 
+	int iRowCount;
 	CGridCtrl m_Grid_Coor;
 	void SetCoorData(Coor& coor, CDataFile& fin);
 	void GetCoorData(Coor& coor, CGridCtrl& m_Grid_Coor,int iRow);
@@ -68,4 +69,6 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
 };

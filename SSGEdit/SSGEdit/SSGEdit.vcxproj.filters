@@ -90,9 +90,6 @@
     <ClInclude Include="Gridcrtl\StdAfx.h">
       <Filter>GridCtrl</Filter>
     </ClInclude>
-    <ClInclude Include="SplitStr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CTabDlg6.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -160,9 +157,6 @@
     </ClCompile>
     <ClCompile Include="Gridcrtl\StdAfx.cpp">
       <Filter>GridCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="SplitStr.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CTabDlg6.cpp">
       <Filter>源文件</Filter>

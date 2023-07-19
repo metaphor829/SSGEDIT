@@ -74,6 +74,7 @@ public:
 		float fMomentFactor;
 		float fShearFactor;
 	}Slab;
+	int iRowCount;
 	std::vector<Slab>vSlab;
 	CGridCtrl m_Grid_Slab;
 	void SetSlabData(Slab& slab, CDataFile& fin);
@@ -85,6 +86,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;
