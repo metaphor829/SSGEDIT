@@ -92,7 +92,7 @@ public:
 	void SetBraceData(Brace& brace, CDataFile& fin);
 	void GetBraceData(CGridCtrl& m_Grid_Brace, int iRow);
 	void WriteBraceData(int iRow, CString& sNewLine);
-	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Brace, CDataFile& fin, Brace& brace);
+	void SetGridItemText(int iRow,CGridCtrl& m_Grid_Brace,Brace& brace);
 	int GetComboBoxIndex(CString sMat);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	CGridCtrl m_Grid_Brace;

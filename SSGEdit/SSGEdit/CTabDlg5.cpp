@@ -263,39 +263,103 @@ void CTabDlg5::WriteSlabData(int iRow, CString& sNewLine)
 	
 }
 
-void CTabDlg5::SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Slab, CDataFile& fin, Slab& slab)
+void CTabDlg5::SetGridItemText(int iRow,CGridCtrl& m_Grid_Slab,Slab& slab)
 {
-	for (int j = 0; j < iColCount; j++)
+	CString temp;
+	temp.Format(_T("%d"), slab.ID);
+	m_Grid_Slab.SetItemText(iRow + 1, 0, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iPKPM);
+	m_Grid_Slab.SetItemText(iRow + 1, 1, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.nLine);
+	m_Grid_Slab.SetItemText(iRow + 1, 2, (LPCTSTR)temp);
+	for (int i = 0; i < slab.nLine && i < 6; i++)
 	{
-
-		if (j < (slab.nLine + 3) && j < 9)
-		{
-			m_Grid_Slab.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j]);
-		}
-		if (j >= 9)
-		{
-			m_Grid_Slab.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[(j - (6 - slab.nLine))]);
-		}
+		temp.Format(_T("%d"), slab.iNode[i]);
+		m_Grid_Slab.SetItemText(iRow + 1, 3 + i, (LPCTSTR)temp);
 	}
-	fin.arrInfo.RemoveAll();
-
-	//ComboBox内容的单独设置
-	if (slab.iConcMat != 0) 
-	{
+	temp.Format(_T("%d"), slab.iType);
+	m_Grid_Slab.SetItemText(iRow + 1, 9, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iSection);
+	m_Grid_Slab.SetItemText(iRow + 1, 10, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iSubType);
+	m_Grid_Slab.SetItemText(iRow + 1, 11, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.nRebarLayer);
+	m_Grid_Slab.SetItemText(iRow + 1, 12, (LPCTSTR)temp);
+	if (slab.iConcMat != 0) {
 		m_Grid_Slab.SetCellType(iRow + 1, 13, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Slab, iRow + 1, 13, arrConcMat, slab.iConcMat);
 	}
-	if (slab.iRebarMat != 0) 
+	else
+	{
+		temp.Format(_T("%d"), slab.iConcMat);
+		m_Grid_Slab.SetItemText(iRow + 1, 13, (LPCTSTR)temp);
+	}
+	if (slab.iRebarMat != 0)
 	{
 		m_Grid_Slab.SetCellType(iRow + 1, 14, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Slab, iRow + 1, 14, arrRebarMat, slab.iRebarMat);
+	}
+	else
+	{
+		temp.Format(_T("%d"), slab.iRebarMat);
+		m_Grid_Slab.SetItemText(iRow + 1, 14, (LPCTSTR)temp);
 	}
 	if (slab.iSteelMat != 0)
 	{
 		m_Grid_Slab.SetCellType(iRow + 1, 15, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Slab, iRow + 1, 15, arrRebarMat, slab.iSteelMat);
 	}
-	
+	else
+	{
+		temp.Format(_T("%d"), slab.iSteelMat);
+		m_Grid_Slab.SetItemText(iRow + 1, 15, (LPCTSTR)temp);
+	}
+	temp.Format(_T("%d"), slab.iStory);
+	m_Grid_Slab.SetItemText(iRow + 1, 16, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iStage);
+	m_Grid_Slab.SetItemText(iRow + 1, 17, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iTower);
+	m_Grid_Slab.SetItemText(iRow + 1, 18, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fF1);
+	m_Grid_Slab.SetItemText(iRow + 1, 19, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fF2);
+	m_Grid_Slab.SetItemText(iRow + 1, 20, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fOffset);
+	m_Grid_Slab.SetItemText(iRow + 1, 21, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fRebarRatio1);
+	m_Grid_Slab.SetItemText(iRow + 1, 22, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fAngle1);
+	m_Grid_Slab.SetItemText(iRow + 1, 23, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fRebarRatio2);
+	m_Grid_Slab.SetItemText(iRow + 1, 24, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fAngle2);
+	m_Grid_Slab.SetItemText(iRow + 1, 25, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iMidPerformType);
+	m_Grid_Slab.SetItemText(iRow + 1, 26, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iSeverePerformType);
+	m_Grid_Slab.SetItemText(iRow + 1, 27, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iStructType);
+	m_Grid_Slab.SetItemText(iRow + 1, 28, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iMidNormSectPerformObject);
+	m_Grid_Slab.SetItemText(iRow + 1, 29, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iMidDiagSectPerformObject);
+	m_Grid_Slab.SetItemText(iRow + 1, 30, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iRareNormSectPerformObject);
+	m_Grid_Slab.SetItemText(iRow + 1, 31, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iRareDiagSectPerformObject);
+	m_Grid_Slab.SetItemText(iRow + 1, 32, (LPCTSTR)temp);
+	temp.Format(_T("%d"), slab.iParaNumbers);
+	m_Grid_Slab.SetItemText(iRow + 1, 33, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fAxisFactor);
+	m_Grid_Slab.SetItemText(iRow + 1, 34, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fMomentFactor);
+	m_Grid_Slab.SetItemText(iRow + 1, 35, (LPCTSTR)temp);
+	temp.Format(_T("%g"), slab.fShearFactor);
+	m_Grid_Slab.SetItemText(iRow + 1, 36, (LPCTSTR)temp);
+	for (int j = 0; j < 10; j++)
+	{
+		m_Grid_Slab.SetItemState(iRow + 1, j, GVIS_READONLY);
+	}
 }
 
 int CTabDlg5::GetComboBoxIndex(CString sMat)
@@ -428,12 +492,7 @@ LRESULT CTabDlg5::OnUpDate(WPARAM wParam, LPARAM lParam)
 		Slab slab;
 		SetSlabData(slab,fin);
 		vSlab.push_back(slab);
-		SetGridItemText(i, iColCount, m_Grid_Slab, fin, slab);
-		for (int j = 0; j < 10; j++)
-		{
-			m_Grid_Slab.SetItemState(i + 1, j, GVIS_READONLY);
-		}
-
+		SetGridItemText(i, m_Grid_Slab,slab);
 	}
 	return LRESULT();
 }

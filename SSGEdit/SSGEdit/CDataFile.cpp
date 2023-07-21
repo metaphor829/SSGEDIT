@@ -22,7 +22,6 @@ CDataFile::~CDataFile()
 CString CDataFile::sData = " ";
 CStringArray CDataFile::arrInfo = { };
 
-
 void CDataFile::SetData(CString sLine)
 {
     sData = sLine;

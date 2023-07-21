@@ -80,7 +80,7 @@ public:
 	void SetSlabData(Slab& slab, CDataFile& fin);
 	void GetSlabData(CGridCtrl& m_Grid_Slab, int iRow);
 	void WriteSlabData(int iRow, CString& sNewLine);
-	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Slab, CDataFile& fin, Slab& slab);
+	void SetGridItemText(int iRow,CGridCtrl& m_Grid_Slab,Slab& slab);
 	int GetComboBoxIndex(CString sMat);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	virtual BOOL OnInitDialog();

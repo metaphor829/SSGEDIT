@@ -125,27 +125,16 @@ void CTabDlg7::SetBraceData(Brace& Brace, CDataFile& fin)
 	Brace.iRareNormSectPerformObject = fin.GetInt();
 	Brace.iRareDiagSectPerformObject = fin.GetInt();
 	Brace.iParaNumbers = fin.GetInt();
-	if (Brace.iParaNumbers == 8)
-	{
-		Brace.fAxisFactor = fin.GetFloat();
-		Brace.fMomentFactor = fin.GetFloat();
-		Brace.fShearFactor = fin.GetFloat();
-		Brace.iAppendMat = fin.GetInt();
-		Brace.iNode1Sec = fin.GetInt();
-		Brace.iNode2Sec = fin.GetInt();
-		Brace.iShearNonlinear = fin.GetInt();
-		Brace.fBraceSpan = fin.GetFloat();
-	}
+	Brace.fAxisFactor = fin.GetFloat();
+	Brace.fMomentFactor = fin.GetFloat();
+	Brace.fShearFactor = fin.GetFloat();
+	Brace.iAppendMat = fin.GetInt();
+	Brace.iNode1Sec = fin.GetInt();
+	Brace.iNode2Sec = fin.GetInt();
+	Brace.iShearNonlinear = fin.GetInt();
+	Brace.fBraceSpan = fin.GetFloat();
 	if (Brace.iParaNumbers == 9)
 	{
-		Brace.fAxisFactor = fin.GetFloat();
-		Brace.fMomentFactor = fin.GetFloat();
-		Brace.fShearFactor = fin.GetFloat();
-		Brace.iAppendMat = fin.GetInt();
-		Brace.iNode1Sec = fin.GetInt();
-		Brace.iNode2Sec = fin.GetInt();
-		Brace.iShearNonlinear = fin.GetInt();
-		Brace.fBraceSpan = fin.GetFloat();
 		Brace.iReinforcedSec = fin.GetInt();
 	}
 }
@@ -216,27 +205,16 @@ void CTabDlg7::GetBraceData(CGridCtrl& m_Grid_Brace, int iRow)
 	vBrace[iRow].iRareNormSectPerformObject = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 33));
 	vBrace[iRow].iRareDiagSectPerformObject = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 34));
 	vBrace[iRow].iParaNumbers = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 35));
-	if (vBrace[iRow].iParaNumbers == 8)
-	{
-		vBrace[iRow].fAxisFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 36));
-		vBrace[iRow].fMomentFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 37));
-		vBrace[iRow].fShearFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 38));
-		vBrace[iRow].iAppendMat = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 39));
-		vBrace[iRow].iNode1Sec = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 40));
-		vBrace[iRow].iNode2Sec = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 41));
-		vBrace[iRow].iShearNonlinear = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 42));
-		vBrace[iRow].fBraceSpan = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 43));
-	}
+	vBrace[iRow].fAxisFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 36));
+	vBrace[iRow].fMomentFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 37));
+	vBrace[iRow].fShearFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 38));
+	vBrace[iRow].iAppendMat = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 39));
+	vBrace[iRow].iNode1Sec = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 40));
+	vBrace[iRow].iNode2Sec = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 41));
+	vBrace[iRow].iShearNonlinear = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 42));
+	vBrace[iRow].fBraceSpan = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 43));
 	if (vBrace[iRow].iParaNumbers == 9)
 	{
-		vBrace[iRow].fAxisFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 36));
-		vBrace[iRow].fMomentFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 37));
-		vBrace[iRow].fShearFactor = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 38));
-		vBrace[iRow].iAppendMat = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 39));
-		vBrace[iRow].iNode1Sec = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 40));
-		vBrace[iRow].iNode2Sec = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 41));
-		vBrace[iRow].iShearNonlinear = _ttoi(m_Grid_Brace.GetItemText(iRow + 1, 42));
-		vBrace[iRow].fBraceSpan = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 43));
 		vBrace[iRow].iReinforcedSec = _ttof(m_Grid_Brace.GetItemText(iRow + 1, 44));
 	}
 }
@@ -316,83 +294,161 @@ void CTabDlg7::WriteBraceData(int iRow, CString& sNewLine)
 	sNewLine += temp;
 	sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iParaNumbers);
 	sNewLine += temp;
-	if (vBrace[iRow].iParaNumbers == 8) {
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fAxisFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fMomentFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fShearFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iAppendMat);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iNode1Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iNode2Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iShearNonlinear);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fBraceSpan);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
-		sNewLine += temp;
-	}
+	sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fAxisFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fMomentFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fShearFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iAppendMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iNode1Sec);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iNode2Sec);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iShearNonlinear);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fBraceSpan);
+	sNewLine += temp;
 	if (vBrace[iRow].iParaNumbers == 9) {
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fAxisFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fMomentFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fShearFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iAppendMat);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iNode1Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iNode2Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iShearNonlinear);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBrace[iRow].fBraceSpan);
-		sNewLine += temp;
+		
 		sprintf_s(temp, sizeof(temp), "%d ", vBrace[iRow].iReinforcedSec);
 		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
-		sNewLine += temp;
 	}
+	sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
+	sNewLine += temp;
 }
 
-void CTabDlg7::SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Brace, CDataFile& fin, Brace& Brace)
+
+void CTabDlg7::SetGridItemText(int iRow,CGridCtrl& m_Grid_Brace,Brace& brace)
 {
-	for (int j = 0; j < iColCount; j++)
-	{
-		if (j <= 43)
-		{
-			m_Grid_Brace.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j]);
-		}
-		if (Brace.iParaNumbers == 9 && j == 44)
-		{
-			m_Grid_Brace.SetItemText(iRow + 1, 44, (LPCTSTR)fin.arrInfo[44]);
-		}
-	}
-	fin.arrInfo.RemoveAll();
-	//ComboBox内容的单独设置
-	if (Brace.iConcMat != 0) {
+	CString temp;
+	temp.Format(_T("%d"), brace.ID);
+	m_Grid_Brace.SetItemText(iRow + 1, 0, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iPKPM);
+	m_Grid_Brace.SetItemText(iRow + 1, 1, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iLine);
+	m_Grid_Brace.SetItemText(iRow + 1, 2, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iType);
+	m_Grid_Brace.SetItemText(iRow + 1, 3, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iSection);
+	m_Grid_Brace.SetItemText(iRow + 1, 4, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iSubType);
+	m_Grid_Brace.SetItemText(iRow + 1, 5, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.bArtiNode1);
+	m_Grid_Brace.SetItemText(iRow + 1, 6, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.bArtiNode2);
+	m_Grid_Brace.SetItemText(iRow + 1, 7, (LPCTSTR)temp);
+	if (brace.iConcMat != 0) {
 		m_Grid_Brace.SetCellType(iRow + 1, 8, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Brace, iRow + 1, 8, arrConcMat, Brace.iConcMat);
+		SetCellComboText(m_Grid_Brace, iRow + 1, 8, arrConcMat, brace.iConcMat);
 	}
-	if (Brace.iRebarMat != 0)
+	else
+	{
+		temp.Format(_T("%d"), brace.iConcMat);
+		m_Grid_Brace.SetItemText(iRow + 1, 8, (LPCTSTR)temp);
+	}
+	if (brace.iRebarMat != 0)
 	{
 		m_Grid_Brace.SetCellType(iRow + 1, 9, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Brace, iRow + 1, 9, arrRebarMat, Brace.iRebarMat);
+		SetCellComboText(m_Grid_Brace, iRow + 1, 9, arrRebarMat, brace.iRebarMat);
 	}
-	if (Brace.iStirrupMat != 0)
+	else
+	{
+		temp.Format(_T("%d"), brace.iRebarMat);
+		m_Grid_Brace.SetItemText(iRow + 1, 9, (LPCTSTR)temp);
+	}
+	if (brace.iStirrupMat != 0)
 	{
 		m_Grid_Brace.SetCellType(iRow + 1, 10, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Brace, iRow + 1, 10, arrRebarMat, Brace.iStirrupMat);
+		SetCellComboText(m_Grid_Brace, iRow + 1, 10, arrRebarMat, brace.iStirrupMat);
 	}
-	if (Brace.iSteelMat != 0)
+	else
+	{
+		temp.Format(_T("%d"), brace.iStirrupMat);
+		m_Grid_Brace.SetItemText(iRow + 1, 10, (LPCTSTR)temp);
+	}
+	if (brace.iSteelMat != 0)
 	{
 		m_Grid_Brace.SetCellType(iRow + 1, 11, RUNTIME_CLASS(CGridCellCombo));
-		SetCellComboText(m_Grid_Brace, iRow + 1, 11, arrRebarMat, Brace.iSteelMat);
+		SetCellComboText(m_Grid_Brace, iRow + 1, 11, arrRebarMat, brace.iSteelMat);
+	}
+	else
+	{
+		temp.Format(_T("%d"), brace.iSteelMat);
+		m_Grid_Brace.SetItemText(iRow + 1, 11, (LPCTSTR)temp);
+	}
+	temp.Format(_T("%d"), brace.iBottomStory);
+	m_Grid_Brace.SetItemText(iRow + 1, 12, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iStory);
+	m_Grid_Brace.SetItemText(iRow + 1, 13, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iStage);
+	m_Grid_Brace.SetItemText(iRow + 1, 14, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iTower);
+	m_Grid_Brace.SetItemText(iRow + 1, 15, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fRotateAng);
+	m_Grid_Brace.SetItemText(iRow + 1, 16, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fOffsetX1);
+	m_Grid_Brace.SetItemText(iRow + 1, 17, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fOffsetY1);
+	m_Grid_Brace.SetItemText(iRow + 1, 18, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fOffsetZ1);
+	m_Grid_Brace.SetItemText(iRow + 1, 19, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fOffsetX2);
+	m_Grid_Brace.SetItemText(iRow + 1, 20, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fOffsetY2);
+	m_Grid_Brace.SetItemText(iRow + 1, 21, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fOffsetZ2);
+	m_Grid_Brace.SetItemText(iRow + 1, 22, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fConnerArea);
+	m_Grid_Brace.SetItemText(iRow + 1, 23, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fBsideArea);
+	m_Grid_Brace.SetItemText(iRow + 1, 24, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fHsideArea);
+	m_Grid_Brace.SetItemText(iRow + 1, 25, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fStirrupArea_D);
+	m_Grid_Brace.SetItemText(iRow + 1, 26, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fStirrupArea_UD);
+	m_Grid_Brace.SetItemText(iRow + 1, 27, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iMidPerformType);
+	m_Grid_Brace.SetItemText(iRow + 1, 28, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iSeverePerformType);
+	m_Grid_Brace.SetItemText(iRow + 1, 29, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iStructType);
+	m_Grid_Brace.SetItemText(iRow + 1, 30, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iMidNormSectPerformObject);
+	m_Grid_Brace.SetItemText(iRow + 1, 31, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iMidDiagSectPerformObject);
+	m_Grid_Brace.SetItemText(iRow + 1, 32, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iRareNormSectPerformObject);
+	m_Grid_Brace.SetItemText(iRow + 1, 33, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iRareDiagSectPerformObject);
+	m_Grid_Brace.SetItemText(iRow + 1, 34, (LPCTSTR)temp);
+	temp.Format(_T("%d"), brace.iParaNumbers);
+	m_Grid_Brace.SetItemText(iRow + 1, 35, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fAxisFactor);
+	m_Grid_Brace.SetItemText(iRow + 1, 36, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fMomentFactor);
+	m_Grid_Brace.SetItemText(iRow + 1, 37, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fShearFactor);
+	m_Grid_Brace.SetItemText(iRow + 1, 38, (LPCTSTR)temp);
+	temp.Format(_T("%i"), brace.iAppendMat);
+	m_Grid_Brace.SetItemText(iRow + 1, 39, (LPCTSTR)temp);
+	temp.Format(_T("%i"), brace.iNode1Sec);
+	m_Grid_Brace.SetItemText(iRow + 1, 40, (LPCTSTR)temp);
+	temp.Format(_T("%i"), brace.iNode2Sec);
+	m_Grid_Brace.SetItemText(iRow + 1, 41, (LPCTSTR)temp);
+	temp.Format(_T("%i"), brace.iShearNonlinear);
+	m_Grid_Brace.SetItemText(iRow + 1, 42, (LPCTSTR)temp);
+	temp.Format(_T("%g"), brace.fBraceSpan);
+	m_Grid_Brace.SetItemText(iRow + 1, 43, (LPCTSTR)temp);
+	if (brace.iParaNumbers == 9) {
+		temp.Format(_T("%d"), brace.iReinforcedSec);
+		m_Grid_Brace.SetItemText(iRow + 1, 44, (LPCTSTR)temp);
+	}
+	for (int j = 0; j < 4; j++) //设置部分列仅可读不可编辑
+	{
+		m_Grid_Brace.SetItemState(iRow + 1, j, GVIS_READONLY);
 	}
 }
 
@@ -534,11 +590,7 @@ LRESULT CTabDlg7::OnUpDate(WPARAM wParam, LPARAM lParam)
 		Brace brace;
 		SetBraceData(brace, fin);
 		vBrace.push_back(brace);
-		SetGridItemText(i, iColCount, m_Grid_Brace, fin, brace);
-		for (int j = 0; j < 4; j++) 
-		{
-			m_Grid_Brace.SetItemState(i + 1, j, GVIS_READONLY);
-		}
+		SetGridItemText(i,m_Grid_Brace,brace);
 	}
 	return LRESULT();
 }

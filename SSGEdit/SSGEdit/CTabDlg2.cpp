@@ -143,27 +143,16 @@ void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)//读取构件信息的格
 	beam.iRareNormSectPerformObject = fin.GetInt();
 	beam.iRareDiagSectPerformObject = fin.GetInt();
 	beam.iParaNumbers = fin.GetInt();
-	if (beam.iParaNumbers == 8)
-	{
-		beam.fAxisFactor = fin.GetFloat();
-		beam.fMomentFactor = fin.GetFloat();
-		beam.fShearFactor = fin.GetFloat();
-		beam.iAppendMat = fin.GetInt();
-		beam.iNode1Sec = fin.GetInt();
-		beam.iNode2Sec = fin.GetInt();
-		beam.iShearNonlinear = fin.GetInt();
-		beam.fBeamSpan = fin.GetFloat();
-	}
+	beam.fAxisFactor = fin.GetFloat();
+	beam.fMomentFactor = fin.GetFloat();
+	beam.fShearFactor = fin.GetFloat();
+	beam.iAppendMat = fin.GetInt();
+	beam.iNode1Sec = fin.GetInt();
+	beam.iNode2Sec = fin.GetInt();
+	beam.iShearNonlinear = fin.GetInt();
+	beam.fBeamSpan = fin.GetFloat();
 	if (beam.iParaNumbers == 9)
 	{
-		beam.fAxisFactor = fin.GetFloat();
-		beam.fMomentFactor = fin.GetFloat();
-		beam.fShearFactor = fin.GetFloat();
-		beam.iAppendMat = fin.GetInt();
-		beam.iNode1Sec = fin.GetInt();
-		beam.iNode2Sec = fin.GetInt();
-		beam.iShearNonlinear = fin.GetInt();
-		beam.fBeamSpan = fin.GetFloat();
 		beam.iReinforcedSec= fin.GetInt();
 	}
 }
@@ -243,27 +232,17 @@ void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)//从容器中取出
 	vBeam[iRow].iRareNormSectPerformObject = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 39));
 	vBeam[iRow].iRareDiagSectPerformObject = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 40));
 	vBeam[iRow].iParaNumbers = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 41));
-	if (vBeam[iRow].iParaNumbers == 8)
-	{
-		vBeam[iRow].fAxisFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 42));
-		vBeam[iRow].fMomentFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 43));
-		vBeam[iRow].fShearFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 44));
-		vBeam[iRow].iAppendMat = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 45));
-		vBeam[iRow].iNode1Sec = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 46));
-		vBeam[iRow].iNode2Sec = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 47));
-		vBeam[iRow].iShearNonlinear = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 48));
-		vBeam[iRow].fBeamSpan = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 49));
-	}
+	vBeam[iRow].fAxisFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 42));
+	vBeam[iRow].fMomentFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 43));
+	vBeam[iRow].fShearFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 44));
+	vBeam[iRow].iAppendMat = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 45));
+	vBeam[iRow].iNode1Sec = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 46));
+	vBeam[iRow].iNode2Sec = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 47));
+	vBeam[iRow].iShearNonlinear = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 48));
+	vBeam[iRow].fBeamSpan = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 49));
 	if (vBeam[iRow].iParaNumbers == 9)
 	{
-		vBeam[iRow].fAxisFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 42));
-		vBeam[iRow].fMomentFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 43));
-		vBeam[iRow].fShearFactor = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 44));
-		vBeam[iRow].iAppendMat = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 45));
-		vBeam[iRow].iNode1Sec = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 46));
-		vBeam[iRow].iNode2Sec = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 47));
-		vBeam[iRow].iShearNonlinear = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 48));
-		vBeam[iRow].fBeamSpan = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 49));
+		
 		vBeam[iRow].iReinforcedSec = _ttof(m_Grid_Beam.GetItemText(iRow + 1, 50));
 	}
 }
@@ -354,104 +333,175 @@ void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)//写入构件信息的
 	sNewLine += temp;
 	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iParaNumbers);
 	sNewLine += temp;
-	if (vBeam[iRow].iParaNumbers == 8){
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fAxisFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fMomentFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fShearFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iAppendMat);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iNode1Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iNode2Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iShearNonlinear);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fBeamSpan);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
-		sNewLine += temp;
-	}
+	sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fAxisFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fMomentFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fShearFactor);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iAppendMat);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iNode1Sec);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iNode2Sec);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iShearNonlinear);
+	sNewLine += temp;
+	sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fBeamSpan);
+	sNewLine += temp;
 	if (vBeam[iRow].iParaNumbers == 9) {
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fAxisFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fMomentFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fShearFactor);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iAppendMat);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iNode1Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iNode2Sec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iShearNonlinear);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "%g ", vBeam[iRow].fBeamSpan);
-		sNewLine += temp;
 		sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].iReinforcedSec);
-		sNewLine += temp;
-		sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
-		sNewLine += temp;
+		sNewLine += temp;	
 	}
+	sprintf_s(temp, sizeof(temp), "0 0 0 0 0");
+	sNewLine += temp;
+
 }
 
-void CTabDlg2::SetGridItemText(int iRow,int iColCount, CGridCtrl& m_Grid_Beam, CDataFile& fin, Beam& beam)//将构件信息显示在grid表格上的设置
+void CTabDlg2::SetGridItemText(int iRow, CGridCtrl& m_Grid_Beam, Beam& beam)//将构件信息显示在grid表格上的设置
 {
-	for (int j = 0; j < iColCount; j++)
-	{
-		if (j < 31)
-		{
-			m_Grid_Beam.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j]);
-		}
-		if (j >= 31 && beam.nForceParament == 2)
-		{
-			m_Grid_Beam.SetItemText(iRow + 1, 31, (LPCTSTR)fin.arrInfo[33]);
-			m_Grid_Beam.SetItemText(iRow + 1, 32, (LPCTSTR)fin.arrInfo[34]);
-			m_Grid_Beam.SetItemText(iRow + 1, 33, (LPCTSTR)fin.arrInfo[38]);
-			if (j >= 34 && j <= 49)
-			{
-				m_Grid_Beam.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j + 7]);
-			}
-			if (beam.iParaNumbers == 9 && j == 50)
-			{
-				m_Grid_Beam.SetItemText(iRow + 1, 50, (LPCTSTR)fin.arrInfo[57]);
-			}
-		}
-		if (j >= 31 && beam.nForceParament == 0)
-		{
-			if (j >= 34 && j <= 49)
-			{
-				m_Grid_Beam.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j - 3]);
-			}
-			if (beam.iParaNumbers == 9 && j == 50)
-			{
-				m_Grid_Beam.SetItemText(iRow + 1, 50, (LPCTSTR)fin.arrInfo[47]);
-			}
-		}
-	}
-	fin.arrInfo.RemoveAll();
-	//ComboBox内容的单独设置
+	CString temp;
+	temp.Format(_T("%d"), beam.ID);
+	m_Grid_Beam.SetItemText(iRow + 1, 0, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iPKPM);
+	m_Grid_Beam.SetItemText(iRow + 1, 1, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iLine);
+	m_Grid_Beam.SetItemText(iRow + 1, 2, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iType);
+	m_Grid_Beam.SetItemText(iRow + 1, 3, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iSection);
+	m_Grid_Beam.SetItemText(iRow + 1, 4, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iSubType);
+	m_Grid_Beam.SetItemText(iRow + 1, 5, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.bArtiNode1);
+	m_Grid_Beam.SetItemText(iRow + 1, 6, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.bArtiNode2);
+	m_Grid_Beam.SetItemText(iRow + 1, 7, (LPCTSTR)temp);
 	if (beam.iConcMat != 0) {
 		m_Grid_Beam.SetCellType(iRow + 1, 8, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Beam, iRow + 1, 8, arrConcMat, beam.iConcMat);
+	}
+	else 
+	{
+		temp.Format(_T("%d"), beam.iConcMat);
+		m_Grid_Beam.SetItemText(iRow + 1, 8, (LPCTSTR)temp);
 	}
 	if (beam.iRebarMat != 0)
 	{
 		m_Grid_Beam.SetCellType(iRow + 1, 9, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Beam, iRow + 1, 9, arrRebarMat, beam.iRebarMat);
 	}
+	else
+	{
+		temp.Format(_T("%d"), beam.iRebarMat);
+		m_Grid_Beam.SetItemText(iRow + 1, 9, (LPCTSTR)temp);
+	}
 	if (beam.iStirrupMat != 0)
 	{
 		m_Grid_Beam.SetCellType(iRow + 1, 10, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Beam, iRow + 1, 10, arrRebarMat, beam.iStirrupMat);
 	}
+	else
+	{
+		temp.Format(_T("%d"), beam.iStirrupMat);
+		m_Grid_Beam.SetItemText(iRow + 1, 10, (LPCTSTR)temp);
+	}
 	if (beam.iSteelMat != 0)
 	{
 		m_Grid_Beam.SetCellType(iRow + 1, 11, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Beam, iRow + 1, 11, arrRebarMat, beam.iSteelMat);
+	}
+	else
+	{
+		temp.Format(_T("%d"), beam.iSteelMat);
+		m_Grid_Beam.SetItemText(iRow + 1, 11, (LPCTSTR)temp);
+	}
+	temp.Format(_T("%d"), beam.iStory);
+	m_Grid_Beam.SetItemText(iRow + 1, 12, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iStage);
+	m_Grid_Beam.SetItemText(iRow + 1, 13, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iTower);
+	m_Grid_Beam.SetItemText(iRow + 1, 14, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fRotateAng);
+	m_Grid_Beam.SetItemText(iRow + 1, 15, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fOffsetX1);
+	m_Grid_Beam.SetItemText(iRow + 1, 16, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fOffsetY1);
+	m_Grid_Beam.SetItemText(iRow + 1, 17, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fOffsetZ1);
+	m_Grid_Beam.SetItemText(iRow + 1, 18, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fOffsetX2);
+	m_Grid_Beam.SetItemText(iRow + 1, 19, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fOffsetY2);
+	m_Grid_Beam.SetItemText(iRow + 1, 20, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fOffsetZ2);
+	m_Grid_Beam.SetItemText(iRow + 1, 21, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fUpperRebarLeft);
+	m_Grid_Beam.SetItemText(iRow + 1, 22, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fUpperRebarMid);
+	m_Grid_Beam.SetItemText(iRow + 1, 23, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fUpperRebarRight);
+	m_Grid_Beam.SetItemText(iRow + 1, 24, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fLowerRebarLeft);
+	m_Grid_Beam.SetItemText(iRow + 1, 25, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fLowerRebarMid);
+	m_Grid_Beam.SetItemText(iRow + 1, 26, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fLowerRebarRight);
+	m_Grid_Beam.SetItemText(iRow + 1, 27, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fStirrupArea_D);
+	m_Grid_Beam.SetItemText(iRow + 1, 28, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fStirrupArea_UD);
+	m_Grid_Beam.SetItemText(iRow + 1, 29, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.nForceParament);
+	m_Grid_Beam.SetItemText(iRow + 1, 30, (LPCTSTR)temp);
+	if (beam.nForceParament == 2)
+	{
+		temp.Format(_T("%g"), beam.fF1);
+		m_Grid_Beam.SetItemText(iRow + 1, 31, (LPCTSTR)temp);
+		temp.Format(_T("%g"), beam.fLength);
+		m_Grid_Beam.SetItemText(iRow + 1, 32, (LPCTSTR)temp);
+		temp.Format(_T("%g"), beam.fF2);
+		m_Grid_Beam.SetItemText(iRow + 1, 33, (LPCTSTR)temp);
+	}
+	temp.Format(_T("%d"), beam.iMidPerformType);
+	m_Grid_Beam.SetItemText(iRow + 1, 34, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iSeverePerformType);
+	m_Grid_Beam.SetItemText(iRow + 1, 35, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iStructType);
+	m_Grid_Beam.SetItemText(iRow + 1, 36, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iMidNormSectPerformObject);
+	m_Grid_Beam.SetItemText(iRow + 1, 37, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iMidDiagSectPerformObject);
+	m_Grid_Beam.SetItemText(iRow + 1, 38, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iRareNormSectPerformObject);
+	m_Grid_Beam.SetItemText(iRow + 1, 39, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iRareDiagSectPerformObject);
+	m_Grid_Beam.SetItemText(iRow + 1, 40, (LPCTSTR)temp);
+	temp.Format(_T("%d"), beam.iParaNumbers);
+	m_Grid_Beam.SetItemText(iRow + 1, 41, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fAxisFactor);
+	m_Grid_Beam.SetItemText(iRow + 1, 42, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fMomentFactor);
+	m_Grid_Beam.SetItemText(iRow + 1, 43, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fShearFactor);
+	m_Grid_Beam.SetItemText(iRow + 1, 44, (LPCTSTR)temp);
+	temp.Format(_T("%i"), beam.iAppendMat);
+	m_Grid_Beam.SetItemText(iRow + 1, 45, (LPCTSTR)temp);
+	temp.Format(_T("%i"), beam.iNode1Sec);
+	m_Grid_Beam.SetItemText(iRow + 1, 46, (LPCTSTR)temp);
+	temp.Format(_T("%i"), beam.iNode2Sec);
+	m_Grid_Beam.SetItemText(iRow + 1, 47, (LPCTSTR)temp);
+	temp.Format(_T("%i"), beam.iShearNonlinear);
+	m_Grid_Beam.SetItemText(iRow + 1, 48, (LPCTSTR)temp);
+	temp.Format(_T("%g"), beam.fBeamSpan);
+	m_Grid_Beam.SetItemText(iRow + 1, 49, (LPCTSTR)temp);
+	if (beam.iParaNumbers == 9) {
+		temp.Format(_T("%d"), beam.iReinforcedSec);
+		m_Grid_Beam.SetItemText(iRow + 1, 50, (LPCTSTR)temp);
+	}
+	for (int j = 0; j < 4; j++) //设置部分列仅可读不可编辑
+	{
+		m_Grid_Beam.SetItemState(iRow + 1, j, GVIS_READONLY);
 	}
 }
 	
@@ -604,11 +654,8 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 		Beam beam;
 		SetBeamData(beam, fin);
 		vBeam.push_back(beam);
-		SetGridItemText(i, iColCount, m_Grid_Beam, fin, beam);
-		for (int j = 0; j < 4; j++) //设置部分列可读不可编辑
-		{
-			m_Grid_Beam.SetItemState(i + 1, j, GVIS_READONLY);
-		}
+		SetGridItemText(i, m_Grid_Beam,beam);
+		
 		
 	}
 	return LRESULT();

@@ -94,7 +94,7 @@ public:
 	void SetColumnData(Column& column, CDataFile& fin);
 	void GetColumnData(CGridCtrl& m_Grid_Column, int iRow);
 	void WriteColumnData(int iRow, CString& sNewLine);
-	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Column, CDataFile& fin, Column& column);
+	void SetGridItemText(int iRow, CGridCtrl& m_Grid_Column,Column& column);
 	int GetComboBoxIndex(CString sMat);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	CGridCtrl m_Grid_Column;

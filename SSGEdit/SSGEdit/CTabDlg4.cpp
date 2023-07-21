@@ -256,39 +256,101 @@ void CTabDlg4::WriteWallData(int iRow, CString& sNewLine)
 	sNewLine += temp;
 }
 
-void CTabDlg4::SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Wall, CDataFile& fin, Wall& wall)
+void CTabDlg4::SetGridItemText(int iRow,CGridCtrl& m_Grid_Wall,Wall& wall)
 {
-	for (int j = 0; j < iColCount; j++)
+	CString temp;
+	temp.Format(_T("%d"), wall.ID);
+	m_Grid_Wall.SetItemText(iRow + 1, 0, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iPKPM);
+	m_Grid_Wall.SetItemText(iRow + 1, 1, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.nLine);
+	m_Grid_Wall.SetItemText(iRow + 1, 2, (LPCTSTR)temp);
+	for (int i = 0; i < wall.nLine&&i<6;i++) 
 	{
-		
-		if (j < (wall.nLine + 3) && j < 9)
-		{
-			m_Grid_Wall.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[j]);
-		}
-		if (j >= 9)
-		{
-			m_Grid_Wall.SetItemText(iRow + 1, j, (LPCTSTR)fin.arrInfo[(j - (6 - wall.nLine))]);
-		}
+		temp.Format(_T("%d"), wall.iNode[i]);
+		m_Grid_Wall.SetItemText(iRow + 1, 3+i, (LPCTSTR)temp);
 	}
-	fin.arrInfo.RemoveAll();
-
-	//ComboBox内容的单独设置
-	if (wall.iConcMat != 0) 
-	{
+	temp.Format(_T("%d"), wall.iType);
+	m_Grid_Wall.SetItemText(iRow + 1, 9, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iSection);
+	m_Grid_Wall.SetItemText(iRow + 1, 10, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iSubType);
+	m_Grid_Wall.SetItemText(iRow + 1, 11, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.nRebarLayer);
+	m_Grid_Wall.SetItemText(iRow + 1, 12, (LPCTSTR)temp);
+	if (wall.iConcMat != 0) {
 		m_Grid_Wall.SetCellType(iRow + 1, 13, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Wall, iRow + 1, 13, arrConcMat, wall.iConcMat);
 	}
-	if (wall.iRebarMat != 0) 
+	else
+	{
+		temp.Format(_T("%d"), wall.iConcMat);
+		m_Grid_Wall.SetItemText(iRow + 1, 13, (LPCTSTR)temp);
+	}
+	if (wall.iRebarMat != 0)
 	{
 		m_Grid_Wall.SetCellType(iRow + 1, 14, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Wall, iRow + 1, 14, arrRebarMat, wall.iRebarMat);
+	}
+	else
+	{
+		temp.Format(_T("%d"), wall.iRebarMat);
+		m_Grid_Wall.SetItemText(iRow + 1, 14, (LPCTSTR)temp);
 	}
 	if (wall.iSteelMat != 0)
 	{
 		m_Grid_Wall.SetCellType(iRow + 1, 15, RUNTIME_CLASS(CGridCellCombo));
 		SetCellComboText(m_Grid_Wall, iRow + 1, 15, arrRebarMat, wall.iSteelMat);
 	}
-	
+	else
+	{
+		temp.Format(_T("%d"), wall.iSteelMat);
+		m_Grid_Wall.SetItemText(iRow + 1, 15, (LPCTSTR)temp);
+	}
+	temp.Format(_T("%d"), wall.iBottomStory);
+	m_Grid_Wall.SetItemText(iRow + 1, 16, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.idmStory);
+	m_Grid_Wall.SetItemText(iRow + 1, 17, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iStage);
+	m_Grid_Wall.SetItemText(iRow + 1, 18, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iTower);
+	m_Grid_Wall.SetItemText(iRow + 1, 19, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fOffset);
+	m_Grid_Wall.SetItemText(iRow + 1, 20, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fHRebarArea);
+	m_Grid_Wall.SetItemText(iRow + 1, 21, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fAngle1);
+	m_Grid_Wall.SetItemText(iRow + 1, 22, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fVRebarArea);
+	m_Grid_Wall.SetItemText(iRow + 1, 23, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fAngle2);
+	m_Grid_Wall.SetItemText(iRow + 1, 24, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iMidPerformType);
+	m_Grid_Wall.SetItemText(iRow + 1, 25, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iSeverePerformType);
+	m_Grid_Wall.SetItemText(iRow + 1, 26, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iStructType);
+	m_Grid_Wall.SetItemText(iRow + 1, 27, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iMidNormSectPerformObject);
+	m_Grid_Wall.SetItemText(iRow + 1, 28, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iMidDiagSectPerformObject);
+	m_Grid_Wall.SetItemText(iRow + 1, 29, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iRareNormSectPerformObject);
+	m_Grid_Wall.SetItemText(iRow + 1, 30, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iRareDiagSectPerformObject);
+	m_Grid_Wall.SetItemText(iRow + 1, 31, (LPCTSTR)temp);
+	temp.Format(_T("%d"), wall.iParaNumbers);
+	m_Grid_Wall.SetItemText(iRow + 1, 32, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fAxisFactor);
+	m_Grid_Wall.SetItemText(iRow + 1, 33, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fMomentFactor);
+	m_Grid_Wall.SetItemText(iRow + 1, 34, (LPCTSTR)temp);
+	temp.Format(_T("%g"), wall.fShearFactor);
+	m_Grid_Wall.SetItemText(iRow + 1, 35, (LPCTSTR)temp);
+	for (int j = 0; j < 10; j++)
+	{
+		m_Grid_Wall.SetItemState(iRow + 1, j, GVIS_READONLY);
+	}
 }
 
 int CTabDlg4::GetComboBoxIndex(CString sMat)
@@ -405,7 +467,6 @@ LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 		{
 			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			m_Grid_Wall.SetRowCount(iRowCount + 1);
-			//MessageBox(TEXT("ok"));
 			break;
 		}
 	}
@@ -416,11 +477,8 @@ LRESULT CTabDlg4::OnUpDate(WPARAM wParam, LPARAM lParam)
 		Wall wall;
 		SetWallData(wall, fin);
 		vWall.push_back(wall);
-		SetGridItemText(i, iColCount, m_Grid_Wall, fin, wall);
-		for (int j = 0; j < 10; j++)
-		{
-			m_Grid_Wall.SetItemState(i + 1, j, GVIS_READONLY);
-		}
+		SetGridItemText(i, m_Grid_Wall,wall);
+		
 	}
 	return LRESULT();
 }
@@ -447,7 +505,6 @@ LRESULT CTabDlg4::OnWriteDate(WPARAM wParam, LPARAM lParam)
 			for (int i = 0; i < iRowCount; i++)
 			{
 				fin.ReadString(sLine);
-
 				GetWallData(m_Grid_Wall, i);
 				WriteWallData(i, sNewLine);
 				//MessageBox(sNewLine);

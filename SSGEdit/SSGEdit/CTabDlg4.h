@@ -78,7 +78,7 @@ public:
 	void SetWallData(Wall& wall, CDataFile& fin);
 	void GetWallData(CGridCtrl& m_Grid_Wall, int iRow);
 	void WriteWallData(int iRow, CString& sNewLine);
-	void SetGridItemText(int iRow, int iColCount, CGridCtrl& m_Grid_Wall, CDataFile& fin, Wall& wall);
+	void SetGridItemText(int iRow, CGridCtrl& m_Grid_Wall,Wall& wall);
 	int GetComboBoxIndex(CString sMat);
 	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
 	virtual BOOL OnInitDialog();
