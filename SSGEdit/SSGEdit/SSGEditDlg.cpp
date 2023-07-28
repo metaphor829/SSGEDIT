@@ -55,6 +55,15 @@ CSSGEditDlg::CSSGEditDlg(CWnd* pParent /*=nullptr*/)
 	, m_ID(_T(""))
 	
 {
+	fTimes[2] = {0};
+	cTabDlg1 = NULL;
+	cTabDlg2 = NULL;
+	cTabDlg3 = NULL;
+	cTabDlg4 = NULL;
+	cTabDlg5 = NULL;
+	cTabDlg6 = NULL;
+	cTabDlg7 = NULL;
+	
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -77,6 +86,7 @@ BEGIN_MESSAGE_MAP(CSSGEditDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CSSGEditDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON_SERACH, &CSSGEditDlg::OnBnClickedButtonSerach)
 	ON_BN_CLICKED(IDC_BUTTON_SHOWALL, &CSSGEditDlg::OnBnClickedButtonShowAll)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -114,6 +124,9 @@ BOOL CSSGEditDlg::OnInitDialog()
 	// TODO: 在此添加额外的初始化代码
 	//tab控件初始化
 	CRect tabRect;
+	GetClientRect(&tabRect);
+	oldRectCoor.x=tabRect.right - tabRect.left;
+	oldRectCoor.y= tabRect.bottom - tabRect.top;
 	r_tab1.GetClientRect(&tabRect);
 	tabRect.DeflateRect(2, 30, 5, 5);//tabrect范围
 	r_tab1.InsertItem(0, L"项目总信息");
@@ -320,11 +333,11 @@ void CSSGEditDlg::OnBnClickedButton1()
 				//向对话框发送消息
 				::PostMessage(cTabDlg1->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 				::PostMessage(cTabDlg2->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
+				::PostMessage(cTabDlg7->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 				::PostMessage(cTabDlg3->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 				::PostMessage(cTabDlg4->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 				::PostMessage(cTabDlg5->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 				::PostMessage(cTabDlg6->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
-				::PostMessage(cTabDlg7->GetSafeHwnd(), NM_A, (LPARAM)0, (LPARAM)0);
 				m_filename = strFileName;
 				UpdateData(FALSE);
 			}
@@ -457,3 +470,113 @@ void CSSGEditDlg::OnBnClickedButtonShowAll()
 	}
 	// TODO: 在此添加控件通知处理程序代码
 }
+
+
+void CSSGEditDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+	if (nType != SIZE_MINIMIZED && cTabDlg1 != NULL)
+	{
+		ReSize();
+		CRect tabRect;
+		GetClientRect(&tabRect);
+		tabRect.DeflateRect(2, 30, 5, 5);
+		cTabDlg1->MoveWindow(tabRect);
+		cTabDlg2->MoveWindow(tabRect);
+		cTabDlg3->MoveWindow(tabRect);
+		cTabDlg7->MoveWindow(tabRect);
+		cTabDlg4->MoveWindow(tabRect);
+		cTabDlg5->MoveWindow(tabRect);
+		cTabDlg6->MoveWindow(tabRect);
+	}
+	//::PostMessage(cTabDlg1->GetSafeHwnd(), NM_K, (LPARAM)0, (LPARAM)0);
+	// TODO: 在此处添加消息处理程序代码
+}
+void CSSGEditDlg::SetCtrlRect(int nID)
+{
+	CPoint OldTLPoint, TLPoint; //左上角  
+	CPoint OldBRPoint, BRPoint; //右下角 
+	CWnd* pWnd = GetDlgItem(nID); // 取得控件的指针
+	HWND hwnd = pWnd->GetSafeHwnd(); // 取得控件的句柄
+	if (pWnd) {
+		CRect Rect;
+		pWnd->GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = OldTLPoint.x ;
+		TLPoint.y = OldTLPoint.y ;
+		//TLPoint.x = long(OldTLPoint.x * fTimes[0]);
+		//TLPoint.y = long(OldTLPoint.y * fTimes[1]);
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long(OldBRPoint.x * fTimes[0]);
+		BRPoint.y = long(OldBRPoint.y * fTimes[1]);
+		Rect.SetRect(TLPoint, BRPoint);
+		pWnd->MoveWindow(Rect);
+	}
+	
+}
+
+
+void CSSGEditDlg::SetCtrlWidth(int nID)
+{
+	CPoint OldTLPoint, TLPoint; //左上角  
+	CPoint OldBRPoint, BRPoint; //右下角 
+	CWnd* pWnd = GetDlgItem(nID); // 取得控件的指针
+	HWND hwnd = pWnd->GetSafeHwnd(); // 取得控件的句柄
+	if (pWnd) {
+		CRect Rect;
+		pWnd->GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = OldTLPoint.x;
+		TLPoint.y = OldTLPoint.y;
+		//TLPoint.x = long(OldTLPoint.x * fTimes[0]);
+		//TLPoint.y = long(OldTLPoint.y * fTimes[1]);
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long(OldBRPoint.x * fTimes[0]);
+		BRPoint.y = OldBRPoint.y;
+		Rect.SetRect(TLPoint, BRPoint);
+		pWnd->MoveWindow(Rect);
+	}
+}
+
+void CSSGEditDlg::SetCtrlPos(int nID)
+{
+	CPoint OldTLPoint, TLPoint; //左上角  
+	CPoint OldBRPoint, BRPoint; //右下角 
+	CWnd* pWnd = GetDlgItem(nID); // 取得控件的指针
+	HWND hwnd = pWnd->GetSafeHwnd(); // 取得控件的句柄
+	if (pWnd) {
+		CRect Rect;
+		pWnd->GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = long(OldTLPoint.x * fTimes[0]);
+		TLPoint.y = OldTLPoint.y;
+		//TLPoint.x = long(OldTLPoint.x * fTimes[0]);
+		//TLPoint.y = long(OldTLPoint.y * fTimes[1]);
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long(OldBRPoint.x *fTimes[0]);
+		BRPoint.y = OldBRPoint.y;
+		Rect.SetRect(TLPoint, BRPoint);
+		pWnd->MoveWindow(Rect);
+	}
+}
+
+
+void CSSGEditDlg::ReSize()
+{
+	CRect Rect;
+	GetClientRect(&Rect);//取客户区的大小
+	newRectCoor.x = Rect.right - Rect.left;
+	newRectCoor.y = Rect.bottom -Rect.top;
+	fTimes[0] = (float)newRectCoor.x / oldRectCoor.x;
+	fTimes[1] = (float)newRectCoor.y / oldRectCoor.y;
+	SetCtrlRect(IDC_TAB_CTRL);
+	SetCtrlWidth(IDC_EDIT1); 
+	SetCtrlWidth(IDC_EDIT_ID);
+	SetCtrlPos(IDC_BUTTON2);
+	SetCtrlPos(IDC_BUTTON_SERACH);
+	oldRectCoor = newRectCoor;
+}
+

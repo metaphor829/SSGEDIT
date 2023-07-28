@@ -107,9 +107,15 @@ public:
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
-	
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	void ReSize();
+	void SetCtrlRect(int nID);
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;
 	CStringArray arrSteelMat;
+	POINT oldRectCoor;
+	POINT newRectCoor;
+	float fTimes[2];
+
 };

@@ -84,6 +84,7 @@ BEGIN_MESSAGE_MAP(CTabDlg2, CDialogEx)
 	ON_MESSAGE(NM_C, OnWriteDate)
 	ON_MESSAGE(NM_I, OnSearchID)
 	ON_MESSAGE(NM_J, OnShowAll)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -552,8 +553,11 @@ void CTabDlg2::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringAr
 BOOL CTabDlg2::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	CRect cr;
-	m_Grid_Beam.GetClientRect(&cr);
+	CRect Rect;
+	GetClientRect(&Rect);
+	oldRectCoor.x = Rect.right - Rect.left;
+	oldRectCoor.y = Rect.bottom - Rect.top;
+	m_Grid_Beam.GetClientRect(&Rect);
 	m_Grid_Beam.SetColumnCount(51);//设置列数
 	m_Grid_Beam.SetFixedRowCount(1);//设置表头
 	m_Grid_Beam.SetItemText(0, 0, _T("ID"));
@@ -643,7 +647,6 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 		{
 			iRowCount = _ttoi(sLine.Mid(sLine.Find(TEXT("=")) + 1));
 			m_Grid_Beam.SetRowCount(iRowCount + 1);
-		
 			break;
 		}
 	}
@@ -655,8 +658,6 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 		SetBeamData(beam, fin);
 		vBeam.push_back(beam);
 		SetGridItemText(i, m_Grid_Beam,beam);
-		
-		
 	}
 	return LRESULT();
 	
@@ -731,5 +732,49 @@ LRESULT CTabDlg2::OnShowAll(WPARAM wParam, LPARAM lParam)
 	return LRESULT();
 }
 
+void CTabDlg2::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+	if (nType != SIZE_MINIMIZED)
+	{
+		ReSize();
+	}
+	// TODO: 在此处添加消息处理程序代码
+}
+
+void CTabDlg2::ReSize()
+{
+	CRect Rect;
+	GetClientRect(&Rect);//取客户区的大小
+	newRectCoor.x = Rect.right - Rect.left;
+	newRectCoor.y = Rect.bottom - Rect.top;
+	fTimes[0] = (float)newRectCoor.x / oldRectCoor.x;
+	fTimes[1] = (float)newRectCoor.y / oldRectCoor.y;
+	SetCtrlRect(IDC_CUSTOM1);
+	oldRectCoor = newRectCoor;
+}
+
+void CTabDlg2::SetCtrlRect(int nID)
+{
+	CPoint OldTLPoint, TLPoint; //左上角  
+	CPoint OldBRPoint, BRPoint; //右下角 
+	CWnd* pWnd = GetDlgItem(nID); // 取得控件的指针
+	HWND hwnd = pWnd->GetSafeHwnd(); // 取得控件的句柄
+	if (pWnd) {
+		CRect Rect;
+		pWnd->GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = OldTLPoint.x;
+		TLPoint.y = OldTLPoint.y;
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long((OldBRPoint.x * fTimes[0])-20);
+		BRPoint.y = long((OldBRPoint.y * fTimes[1])-20);
+		Rect.SetRect(TLPoint, BRPoint);
+		pWnd->MoveWindow(Rect);
+	}
+}
+
  
+
 

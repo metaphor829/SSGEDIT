@@ -93,7 +93,6 @@ BOOL CTabDlg1::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	//读取文件
 	m_codetype.InsertString(0,TEXT("国家规范"));
 	m_codetype.InsertString(1,TEXT("广东省标准"));
 	m_wallseisgrade.InsertString(0, TEXT("特一级"));
@@ -552,3 +551,10 @@ LRESULT CTabDlg1::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	cNewFile.Rename(sNewPath, sPath);
 	return 0;
 }
+
+
+
+
+
+
+
