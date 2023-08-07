@@ -53,9 +53,11 @@ CSSGEditDlg::CSSGEditDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_SSGEDIT_DIALOG, pParent)
 	, m_filename(_T(""))
 	, m_ID(_T(""))
-	
+	, m_iMinWidth(0)
+	, m_iMinHeight(0)
 {
-	fTimes[2] = {0};
+	fTimes[0] =(float)1.0;
+	fTimes[1] = (float)1.0;
 	cTabDlg1 = NULL;
 	cTabDlg2 = NULL;
 	cTabDlg3 = NULL;
@@ -63,7 +65,10 @@ CSSGEditDlg::CSSGEditDlg(CWnd* pParent /*=nullptr*/)
 	cTabDlg5 = NULL;
 	cTabDlg6 = NULL;
 	cTabDlg7 = NULL;
-	
+	oldRectCoor.x = 0;
+	oldRectCoor.y = 0;
+	newRectCoor.x = 0;
+	newRectCoor.y = 0;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -80,13 +85,13 @@ BEGIN_MESSAGE_MAP(CSSGEditDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_CTRL, &CSSGEditDlg::OnTcnSelchangeTab1)
-	ON_BN_CLICKED(IDC_BUTTON1, &CSSGEditDlg::OnBnClickedButton1)
-
-	
-	ON_BN_CLICKED(IDC_BUTTON2, &CSSGEditDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON1, &CSSGEditDlg::OnBnClickedButtonOpen)
+	ON_BN_CLICKED(IDC_BUTTON2, &CSSGEditDlg::OnBnClickedButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_SERACH, &CSSGEditDlg::OnBnClickedButtonSerach)
 	ON_BN_CLICKED(IDC_BUTTON_SHOWALL, &CSSGEditDlg::OnBnClickedButtonShowAll)
 	ON_WM_SIZE()
+	ON_WM_SIZING()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 
@@ -123,12 +128,16 @@ BOOL CSSGEditDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 	//tab控件初始化
+	CRect rectDlg; 
+	GetWindowRect(rectDlg);// 以对话框的初始大小作为对话框的宽度和高度的最小值
+	m_iMinWidth = rectDlg.Width();
+	m_iMinHeight = rectDlg.Height();
+	GetClientRect(rectDlg);//当前对话框客户区尺寸的宽度和高度
+	oldRectCoor.x= rectDlg.right - rectDlg.left;
+	oldRectCoor.y= rectDlg.bottom - rectDlg.top;
 	CRect tabRect;
-	GetClientRect(&tabRect);
-	oldRectCoor.x=tabRect.right - tabRect.left;
-	oldRectCoor.y= tabRect.bottom - tabRect.top;
 	r_tab1.GetClientRect(&tabRect);
-	tabRect.DeflateRect(2, 30, 5, 5);//tabrect范围
+	tabRect.DeflateRect(0, 25, 0, 0);//控件页标题栏的尺寸
 	r_tab1.InsertItem(0, L"项目总信息");
 	r_tab1.InsertItem(1, L"梁构件");
 	r_tab1.InsertItem(2, L"柱构件");
@@ -293,7 +302,7 @@ void CSSGEditDlg::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CSSGEditDlg::OnBnClickedButton1()
+void CSSGEditDlg::OnBnClickedButtonOpen()
 {
 	CFileDialog dlg(TRUE);//弹出打开文件对话框
 	CString strFileName;
@@ -310,7 +319,7 @@ void CSSGEditDlg::OnBnClickedButton1()
 		CString sFileFormat = strFileName.Mid(strFileName.ReverseFind('.'));
 
 		//MessageBox(sFileFormat);
-		if (sFileFormat == ".ssg" || sFileFormat == ".txt")
+		if (sFileFormat == ".ssg" || sFileFormat == ".txt")//判断文件格式和版本
 		{
 			while (cFile.ReadString(sLine))
 			{
@@ -348,7 +357,7 @@ void CSSGEditDlg::OnBnClickedButton1()
 		}
 		cFile.Close();
 	}
-	else
+	else//判断是否选择文件
 	{
 		MessageBox(TEXT("请选择文件打开"));
 	}
@@ -356,7 +365,7 @@ void CSSGEditDlg::OnBnClickedButton1()
 }
 
 
-void CSSGEditDlg::OnBnClickedButton2()
+void CSSGEditDlg::OnBnClickedButtonSave()
 {	
 	//向对话框发送消息
 	switch (r_tab1.GetCurSel())
@@ -391,7 +400,7 @@ void CSSGEditDlg::OnCancel()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	
-	if (!m_filename.IsEmpty())
+	if (!m_filename.IsEmpty())//只有当newfile文件存在时才会删除该文件
 	{
 		UpdateData(TRUE);
 		CString sPath = m_filename;
@@ -475,13 +484,13 @@ void CSSGEditDlg::OnBnClickedButtonShowAll()
 void CSSGEditDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialogEx::OnSize(nType, cx, cy);
-	if (nType != SIZE_MINIMIZED && cTabDlg1 != NULL)
+	if (nType != SIZE_MINIMIZED && cTabDlg1 != NULL)//尺寸调整且控件类已生成
 	{
 		ReSize();
 		CRect tabRect;
 		GetClientRect(&tabRect);
-		tabRect.DeflateRect(2, 30, 5, 5);
-		cTabDlg1->MoveWindow(tabRect);
+		tabRect.DeflateRect(0, 25, 0, 0);//控件页标题栏的尺寸
+		cTabDlg1->MoveWindow(tabRect);//向各对话框类发送WM_SIZE消息
 		cTabDlg2->MoveWindow(tabRect);
 		cTabDlg3->MoveWindow(tabRect);
 		cTabDlg7->MoveWindow(tabRect);
@@ -505,8 +514,6 @@ void CSSGEditDlg::SetCtrlRect(int nID)
 		OldTLPoint = Rect.TopLeft();
 		TLPoint.x = OldTLPoint.x ;
 		TLPoint.y = OldTLPoint.y ;
-		//TLPoint.x = long(OldTLPoint.x * fTimes[0]);
-		//TLPoint.y = long(OldTLPoint.y * fTimes[1]);
 		OldBRPoint = Rect.BottomRight();
 		BRPoint.x = long(OldBRPoint.x * fTimes[0]);
 		BRPoint.y = long(OldBRPoint.y * fTimes[1]);
@@ -530,8 +537,6 @@ void CSSGEditDlg::SetCtrlWidth(int nID)
 		OldTLPoint = Rect.TopLeft();
 		TLPoint.x = OldTLPoint.x;
 		TLPoint.y = OldTLPoint.y;
-		//TLPoint.x = long(OldTLPoint.x * fTimes[0]);
-		//TLPoint.y = long(OldTLPoint.y * fTimes[1]);
 		OldBRPoint = Rect.BottomRight();
 		BRPoint.x = long(OldBRPoint.x * fTimes[0]);
 		BRPoint.y = OldBRPoint.y;
@@ -553,8 +558,6 @@ void CSSGEditDlg::SetCtrlPos(int nID)
 		OldTLPoint = Rect.TopLeft();
 		TLPoint.x = long(OldTLPoint.x * fTimes[0]);
 		TLPoint.y = OldTLPoint.y;
-		//TLPoint.x = long(OldTLPoint.x * fTimes[0]);
-		//TLPoint.y = long(OldTLPoint.y * fTimes[1]);
 		OldBRPoint = Rect.BottomRight();
 		BRPoint.x = long(OldBRPoint.x *fTimes[0]);
 		BRPoint.y = OldBRPoint.y;
@@ -578,5 +581,21 @@ void CSSGEditDlg::ReSize()
 	SetCtrlPos(IDC_BUTTON2);
 	SetCtrlPos(IDC_BUTTON_SERACH);
 	oldRectCoor = newRectCoor;
+}
+
+
+
+void CSSGEditDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	CDialogEx::OnSizing(fwSide, pRect);
+	int iWidth = pRect->right - pRect->left;
+	int iHeight = pRect->bottom - pRect->top;
+
+	if (iWidth <= m_iMinWidth)
+		pRect->right = pRect->left + m_iMinWidth;
+
+	if (iHeight <= m_iMinHeight)
+		pRect->bottom = pRect->top + m_iMinHeight;
+	// TODO: 在此处添加消息处理程序代码
 }
 

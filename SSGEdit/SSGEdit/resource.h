@@ -13,6 +13,7 @@
 #define IDD_TAB_DIALOG4                 135
 #define IDD_TAB_DIALOG5                 136
 #define IDD_TAB_DIALOG6                 137
+#define IDR_MENU1                       137
 #define IDD_TAB_DIALOG7                 138
 #define IDC_BUTTON1                     1002
 #define IDC_EDIT1                       1004
@@ -40,7 +41,6 @@
 #define IDC_COMBO_WALLSEISGRADE         1036
 #define IDC_BUTTON_SERACH               1036
 #define IDC_COMBO_COLSEISGRADE          1037
-#define IDC_BUTTON4                     1037
 #define IDC_BUTTON_SHOWALL              1037
 #define IDC_COMBO_SLABSEISGRADE         1038
 #define IDC_COMBO_SEISDETAILGRADE       1039
@@ -55,18 +55,23 @@
 #define IDC_EDIT_WALLREBARRATIO         1049
 #define IDC_EDIT_BEAMREBARRATIO         1050
 #define IDC_EDIT_COLREBARRATIO          1051
+#define IDC_EDIT_BEAMREBARRATIO2        1051
 #define IDC_EDIT_SLABDETHICKNESS        1052
 #define IDC_EDIT_WALLDETHICKNESS        1053
 #define IDC_EDIT_EDGEREBAR              1065
 #define IDC_EDIT_LINKREABR              1066
+#define ID__32773                       32773
+#define ID__32774                       32774
+#define ID__32775                       32775
+#define ID__32776                       32776
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        136
-#define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1038
+#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

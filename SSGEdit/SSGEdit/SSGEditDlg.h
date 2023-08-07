@@ -77,19 +77,21 @@ public:
 	CString m_ID;
 	CString m_filename;
 	float fTimes[2];
-	afx_msg void OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnBnClickedButton1();
-	afx_msg void OnBnClickedButton2();
-	virtual void OnCancel();
-	afx_msg void OnBnClickedButtonSerach();
-	afx_msg void OnBnClickedButtonShowAll();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	void SetCtrlRect(int nID);
-	void SetCtrlWidth(int nID);
-	void SetCtrlPos(int nID);
-	void ReSize();
+	afx_msg void OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);//切换tab页的显示
+	afx_msg void OnBnClickedButtonOpen();//打开文件
+	afx_msg void OnBnClickedButtonSave();//保存文件
+	virtual void OnCancel();//退出按钮重写
+	afx_msg void OnBnClickedButtonSerach();//搜索ID按钮（发送消息给各个dlg类）
+	afx_msg void OnBnClickedButtonShowAll();//重新显示按钮（发送消息给各个dlg类）
+	afx_msg void OnSize(UINT nType, int cx, int cy);//尺寸调整
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
+	void SetCtrlRect(int nID);//设置控件尺寸，主要是tab控件
+	void SetCtrlWidth(int nID);//设置控件宽度
+	void SetCtrlPos(int nID);//设置控件位置
+	void ReSize(); //调整对话框内各个控件的尺寸、宽度、位置
 	POINT oldRectCoor;
 	POINT newRectCoor;
-	
+	int m_iMinWidth; // 对话框的最小宽度
+	int m_iMinHeight; // 对话框的最小高度
 };
 

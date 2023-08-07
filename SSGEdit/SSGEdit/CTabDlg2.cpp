@@ -15,7 +15,17 @@ IMPLEMENT_DYNAMIC(CTabDlg2, CDialogEx)
 
 CTabDlg2::CTabDlg2(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_DIALOG2, pParent)
+	, iRowCount(0)
+	, iColCount(0)
+	, selCol(0)
+	, selRow(0)
 {
+	fTimes[0] = (float)1.0;
+	fTimes[1] = (float)1.0;
+	oldRectCoor.x = 0;
+	oldRectCoor.y = 0;
+	newRectCoor.x = 0;
+	newRectCoor.y = 0;
 	//设置combobox类的选型列表
 	arrConcMat.SetSize(20);
 	arrConcMat.SetAt(0,TEXT("C15"));
@@ -85,13 +95,19 @@ BEGIN_MESSAGE_MAP(CTabDlg2, CDialogEx)
 	ON_MESSAGE(NM_I, OnSearchID)
 	ON_MESSAGE(NM_J, OnShowAll)
 	ON_WM_SIZE()
+	ON_WM_CONTEXTMENU()
+	ON_NOTIFY(GVN_SELCHANGED, IDC_CUSTOM1, OnSelChanged)
+	ON_COMMAND(ID__32773,OnHiddenColumn)
+	ON_COMMAND(ID__32774,OnHiddenRow)
+	ON_COMMAND(ID__32775, OnShowColumn)
+	ON_COMMAND(ID__32776, OnShowRow)
 END_MESSAGE_MAP()
 
 
 // CTabDlg2 消息处理程序
 
 
-void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)//读取构件信息的格式设置
+void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)
 {
 	beam.ID = fin.GetInt();
 	beam.iPKPM = fin.GetInt();
@@ -158,7 +174,7 @@ void CTabDlg2::SetBeamData(Beam& beam, CDataFile& fin)//读取构件信息的格
 	}
 }
 
-void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)//从容器中取出构件信息
+void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)
 {
 	vBeam[iRow].ID = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 0));
 	vBeam[iRow].iPKPM = _ttoi(m_Grid_Beam.GetItemText(iRow + 1, 1));
@@ -248,7 +264,7 @@ void CTabDlg2::GetBeamData(CGridCtrl& m_Grid_Beam, int iRow)//从容器中取出
 	}
 }
 
-void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)//写入构件信息的格式设置
+void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)
 {
 	char temp[512];
 	sprintf_s(temp, sizeof(temp), "%d ", vBeam[iRow].ID);
@@ -359,7 +375,7 @@ void CTabDlg2::WriteBeamData(int iRow, CString& sNewLine)//写入构件信息的
 
 }
 
-void CTabDlg2::SetGridItemText(int iRow, CGridCtrl& m_Grid_Beam, Beam& beam)//将构件信息显示在grid表格上的设置
+void CTabDlg2::SetGridItemText(int iRow, CGridCtrl& m_Grid_Beam, Beam& beam)
 {
 	CString temp;
 	temp.Format(_T("%d"), beam.ID);
@@ -507,7 +523,7 @@ void CTabDlg2::SetGridItemText(int iRow, CGridCtrl& m_Grid_Beam, Beam& beam)//�
 }
 	
 
-int CTabDlg2::GetComboBoxIndex(CString sMat)//获得Combox选项的序号
+int CTabDlg2::GetComboBoxIndex(CString sMat)
 {
 	for (int i = 0; i < arrConcMat.GetSize(); i++)
 	{
@@ -532,7 +548,7 @@ int CTabDlg2::GetComboBoxIndex(CString sMat)//获得Combox选项的序号
 	}
 }
 
-void CTabDlg2::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)//根据序号的值设置Combobox的内容
+void CTabDlg2::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat)
 {
 	CGridCellCombo* pCell = (CGridCellCombo*)m_Grid.GetCell(nRow, nCol);
 	pCell->SetOptions(arrText);
@@ -640,7 +656,7 @@ LRESULT CTabDlg2::OnUpDate(WPARAM wParam, LPARAM lParam)
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iColCount = m_Grid_Beam.GetColumnCount();
+	iColCount = m_Grid_Beam.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("NBEAM NUMBER=")) != -1)
@@ -675,7 +691,6 @@ LRESULT CTabDlg2::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fout.SeekToBegin();
 	CString sLine;
 	CString sNewLine;
-	int iColCount = m_Grid_Beam.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
@@ -729,6 +744,17 @@ LRESULT CTabDlg2::OnShowAll(WPARAM wParam, LPARAM lParam)
 	{
 		m_Grid_Beam.SetRowHeight(i, 25);
 	}
+	for (int i = 0; i < iColCount; i++)
+	{
+		m_Grid_Beam.SetColumnWidth(i, 60);
+	}
+	m_Grid_Beam.SetColumnWidth(1, 0);
+	m_Grid_Beam.SetColumnWidth(30, 0);
+	m_Grid_Beam.SetColumnWidth(32, 0);
+	m_Grid_Beam.SetColumnWidth(41, 0);
+	m_Grid_Beam.SetColumnWidth(50, 0);
+	m_Grid_Beam.EnableHiddenColUnhide(FALSE);//使隐藏列不能显示
+	m_Grid_Beam.Refresh();
 	return LRESULT();
 }
 
@@ -748,10 +774,11 @@ void CTabDlg2::ReSize()
 	GetClientRect(&Rect);//取客户区的大小
 	newRectCoor.x = Rect.right - Rect.left;
 	newRectCoor.y = Rect.bottom - Rect.top;
-	fTimes[0] = (float)newRectCoor.x / oldRectCoor.x;
-	fTimes[1] = (float)newRectCoor.y / oldRectCoor.y;
+	fTimes[0] = (float)newRectCoor.x/oldRectCoor.x;
+	fTimes[1] = (float)newRectCoor.y/oldRectCoor.y;
 	SetCtrlRect(IDC_CUSTOM1);
 	oldRectCoor = newRectCoor;
+	
 }
 
 void CTabDlg2::SetCtrlRect(int nID)
@@ -759,7 +786,6 @@ void CTabDlg2::SetCtrlRect(int nID)
 	CPoint OldTLPoint, TLPoint; //左上角  
 	CPoint OldBRPoint, BRPoint; //右下角 
 	CWnd* pWnd = GetDlgItem(nID); // 取得控件的指针
-	HWND hwnd = pWnd->GetSafeHwnd(); // 取得控件的句柄
 	if (pWnd) {
 		CRect Rect;
 		pWnd->GetWindowRect(&Rect);
@@ -768,13 +794,77 @@ void CTabDlg2::SetCtrlRect(int nID)
 		TLPoint.x = OldTLPoint.x;
 		TLPoint.y = OldTLPoint.y;
 		OldBRPoint = Rect.BottomRight();
-		BRPoint.x = long((OldBRPoint.x * fTimes[0])-20);
-		BRPoint.y = long((OldBRPoint.y * fTimes[1])-20);
+		BRPoint.x = long(OldBRPoint.x*fTimes[0]);
+		BRPoint.y = long(OldBRPoint.y*fTimes[1]);
 		Rect.SetRect(TLPoint, BRPoint);
 		pWnd->MoveWindow(Rect);
 	}
+	
 }
 
  
+
+void CTabDlg2::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	// TODO: 在此处添加消息处理程序代码
+	CMenu menu;
+	menu.LoadMenu(IDR_MENU1);
+	CMenu* pMenu;
+	pMenu = menu.GetSubMenu(0);
+
+	pMenu->EnableMenuItem(ID__32773, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID__32774, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID__32775, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID__32776, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+	pMenu->Detach();
+	menu.DestroyMenu();
+
+	// TODO: 在此处添加消息处理程序代码
+}
+
+void CTabDlg2::OnSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNMHDR;
+	selCol = (pItem->iColumn);
+	selRow= (pItem->iRow);
+}
+
+
+void CTabDlg2::OnHiddenColumn()
+{
+	m_Grid_Beam.SetColumnWidth(selCol, 0);
+	m_Grid_Beam.Refresh();
+}
+
+void CTabDlg2::OnHiddenRow()
+{
+	m_Grid_Beam.SetRowHeight(selRow, 0);
+	m_Grid_Beam.Refresh();
+}
+
+void CTabDlg2::OnShowColumn()
+{
+	for (int i = 0; i < iColCount; i++)
+	{
+		if (i != selCol)
+		{
+			m_Grid_Beam.SetColumnWidth(i, 0);
+		}
+	}
+	m_Grid_Beam.Refresh();
+}
+
+void CTabDlg2::OnShowRow()
+{
+	for (int i = 1; i < iRowCount+1; i++)
+	{
+		if (i != selRow)
+		{
+			m_Grid_Beam.SetRowHeight(i, 0);
+		}
+	}
+	m_Grid_Beam.Refresh();
+}
 
 

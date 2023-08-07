@@ -14,7 +14,17 @@ IMPLEMENT_DYNAMIC(CTabDlg7, CDialogEx)
 
 CTabDlg7::CTabDlg7(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_DIALOG7, pParent)
+	, iRowCount(0)
+	, iColCount(0)
+	, selCol(0)
+	, selRow(0)
 {
+	fTimes[0] = (float)1.0;
+	fTimes[1] = (float)1.0;
+	oldRectCoor.x = 0;
+	oldRectCoor.y = 0;
+	newRectCoor.x = 0;
+	newRectCoor.y = 0;
 	arrConcMat.SetSize(20);
 	arrConcMat.SetAt(0, TEXT("C15"));
 	arrConcMat.SetAt(1, TEXT("C20"));
@@ -81,6 +91,13 @@ BEGIN_MESSAGE_MAP(CTabDlg7, CDialogEx)
 	ON_MESSAGE(NM_H, OnWriteDate)
 	ON_MESSAGE(NM_I, OnSearchID)
 	ON_MESSAGE(NM_J, OnShowAll)
+	ON_WM_SIZE()
+	ON_WM_CONTEXTMENU()
+	ON_NOTIFY(GVN_SELCHANGED, IDC_CUSTOM6, OnSelChanged)
+	ON_COMMAND(ID__32773, OnHiddenColumn)
+	ON_COMMAND(ID__32774, OnHiddenRow)
+	ON_COMMAND(ID__32775, OnShowColumn)
+	ON_COMMAND(ID__32776, OnShowRow)
 END_MESSAGE_MAP()
 
 
@@ -498,8 +515,11 @@ void CTabDlg7::SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringAr
 BOOL CTabDlg7::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	CRect cr;
-	m_Grid_Brace.GetClientRect(&cr);
+	CRect Rect;
+	GetClientRect(&Rect);
+	oldRectCoor.x = Rect.right - Rect.left;
+	oldRectCoor.y = Rect.bottom - Rect.top;
+	m_Grid_Brace.GetClientRect(&Rect);
 	m_Grid_Brace.SetColumnCount(45);//设置列数
 	m_Grid_Brace.SetFixedRowCount(1);//设置表头
 	m_Grid_Brace.SetItemText(0, 0, _T("ID"));
@@ -573,7 +593,7 @@ LRESULT CTabDlg7::OnUpDate(WPARAM wParam, LPARAM lParam)
 	fin.Open(sPath, CFile::modeRead | CFile::shareDenyNone);
 	fin.SeekToBegin();
 	CString sLine;
-	int iColCount = m_Grid_Brace.GetColumnCount();
+	iColCount = m_Grid_Brace.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		if (sLine.Find(TEXT("BRACE NUMBER=")) != -1)
@@ -608,7 +628,6 @@ LRESULT CTabDlg7::OnWriteDate(WPARAM wParam, LPARAM lParam)
 	fout.SeekToBegin();
 	CString sLine;
 	CString sNewLine;
-	int iColCount = m_Grid_Brace.GetColumnCount();
 	while (fin.ReadString(sLine))
 	{
 		fout.WriteString(sLine + _T("\n"));
@@ -662,5 +681,115 @@ LRESULT CTabDlg7::OnShowAll(WPARAM wParam, LPARAM lParam)
 	{
 		m_Grid_Brace.SetRowHeight(i, 25);
 	}
+	for (int i = 0; i < iColCount; i++)
+	{
+		m_Grid_Brace.SetColumnWidth(i, 60);
+	}
+	m_Grid_Brace.SetColumnWidth(1, 0);
+	m_Grid_Brace.SetColumnWidth(12, 0);
+	m_Grid_Brace.SetColumnWidth(35, 0);
+	m_Grid_Brace.SetColumnWidth(44, 0);
 	return LRESULT();
+}
+
+void CTabDlg7::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+	if (nType != SIZE_MINIMIZED)
+	{
+		ReSize();
+	}
+}
+
+void CTabDlg7::ReSize()
+{
+	CRect Rect;
+	GetClientRect(&Rect);//取客户区的大小
+	newRectCoor.x = Rect.right - Rect.left;
+	newRectCoor.y = Rect.bottom - Rect.top;
+	fTimes[0] = (float)newRectCoor.x / oldRectCoor.x;
+	fTimes[1] = (float)newRectCoor.y / oldRectCoor.y;
+	SetCtrlRect(IDC_CUSTOM6);
+	oldRectCoor = newRectCoor;
+}
+
+void CTabDlg7::SetCtrlRect(int nID)
+{
+	CPoint OldTLPoint, TLPoint; //左上角  
+	CPoint OldBRPoint, BRPoint; //右下角 
+	CWnd* pWnd = GetDlgItem(nID); // 取得控件的指针
+	HWND hwnd = pWnd->GetSafeHwnd(); // 取得控件的句柄
+	if (pWnd) {
+		CRect Rect;
+		pWnd->GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = OldTLPoint.x;
+		TLPoint.y = OldTLPoint.y;
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long(OldBRPoint.x * fTimes[0]);
+		BRPoint.y = long(OldBRPoint.y * fTimes[1]);
+		Rect.SetRect(TLPoint, BRPoint);
+		pWnd->MoveWindow(Rect);
+	}
+}
+
+void CTabDlg7::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	// TODO: 在此处添加消息处理程序代码
+	CMenu menu;
+	menu.LoadMenu(IDR_MENU1);
+	CMenu* pMenu;
+	pMenu = menu.GetSubMenu(0);
+
+	pMenu->EnableMenuItem(ID__32773, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID__32774, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID__32775, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID__32776, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+	pMenu->Detach();
+	menu.DestroyMenu();
+}
+
+void CTabDlg7::OnSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNMHDR;
+	selCol = (pItem->iColumn);
+	selRow = (pItem->iRow);
+}
+
+void CTabDlg7::OnHiddenColumn()
+{
+	m_Grid_Brace.SetColumnWidth(selCol, 0);
+	m_Grid_Brace.Refresh();
+}
+
+void CTabDlg7::OnHiddenRow()
+{
+	m_Grid_Brace.SetRowHeight(selRow, 0);
+	m_Grid_Brace.Refresh();
+}
+
+void CTabDlg7::OnShowColumn()
+{
+	for (int i = 0; i < iColCount; i++)
+	{
+		if (i != selCol)
+		{
+			m_Grid_Brace.SetColumnWidth(i, 0);
+		}
+	}
+	m_Grid_Brace.Refresh();
+}
+
+void CTabDlg7::OnShowRow()
+{
+	for (int i = 1; i < iRowCount + 1; i++)
+	{
+		if (i != selRow)
+		{
+			m_Grid_Brace.SetRowHeight(i, 0);
+		}
+	}
+	m_Grid_Brace.Refresh();
 }

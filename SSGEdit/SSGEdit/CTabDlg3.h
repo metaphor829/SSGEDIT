@@ -90,19 +90,34 @@ public:
 		int iReinforcedSec;
 	}Column;
 	int iRowCount;
+	int iColCount;
+	int selCol;
+	int selRow;
+	float fTimes[2];
+	POINT oldRectCoor;
+	POINT newRectCoor;
 	std::vector<Column>vColumn;
-	void SetColumnData(Column& column, CDataFile& fin);
-	void GetColumnData(CGridCtrl& m_Grid_Column, int iRow);
-	void WriteColumnData(int iRow, CString& sNewLine);
-	void SetGridItemText(int iRow, CGridCtrl& m_Grid_Column,Column& column);
-	int GetComboBoxIndex(CString sMat);
-	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);
+	void SetColumnData(Column& column, CDataFile& fin);//读取文本文件中的Column构件信息至Column结构体中
+	void GetColumnData(CGridCtrl& m_Grid_Column, int iRow);//读取表格中的Column构件信息至Column的vector中
+	void WriteColumnData(int iRow, CString& sNewLine);//将修改后的Column构件信息写入文本文件
+	void SetGridItemText(int iRow, CGridCtrl& m_Grid_Column,Column& column);//将Column构件信息写入grid表格并显示
+	int GetComboBoxIndex(CString sMat);//获得Combox选项的序号
+	void SetCellComboText(CGridCtrl& m_Grid, int nRow, int nCol, CStringArray& arrText, int iMat);//根据序号的值设置Combobox的内容
 	CGridCtrl m_Grid_Column;
 	virtual BOOL OnInitDialog();
-	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnUpDate(WPARAM wParam, LPARAM lParam);//打开文件后立即更新grid表格显示
+	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);//读取Gird中的信息写入文本文件
+	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);//搜索构件ID
+	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);//显示所有行列
+	afx_msg void OnSize(UINT nType, int cx, int cy);//根据窗口调整大小，调整Grid控件大小
+	void ReSize();
+	void SetCtrlRect(int nID);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);//添加右键菜单并初始化
+	afx_msg void OnSelChanged(NMHDR* pNMHDR, LRESULT* pResult);//获取所选单元格的行列信息
+	afx_msg void OnHiddenColumn();//隐藏该列
+	afx_msg void OnHiddenRow();//隐藏该行
+	afx_msg void OnShowColumn();//仅显示该列
+	afx_msg void OnShowRow();//仅显示该行
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;

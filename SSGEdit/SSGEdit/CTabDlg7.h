@@ -88,6 +88,12 @@ public:
 		int iReinforcedSec;
 	}Brace;
 	int iRowCount;
+	int iColCount;
+	int selCol;
+	int selRow;
+	float fTimes[2];
+	POINT oldRectCoor;
+	POINT newRectCoor;
 	std::vector<Brace>vBrace;
 	void SetBraceData(Brace& brace, CDataFile& fin);
 	void GetBraceData(CGridCtrl& m_Grid_Brace, int iRow);
@@ -101,6 +107,15 @@ public:
 	afx_msg LRESULT OnWriteDate(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnSearchID(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnShowAll(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	void ReSize();
+	void SetCtrlRect(int nID);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);//添加右键菜单并初始化
+	afx_msg void OnSelChanged(NMHDR* pNMHDR, LRESULT* pResult);//获取所选单元格的行列信息
+	afx_msg void OnHiddenColumn();//隐藏该列
+	afx_msg void OnHiddenRow();//隐藏该行
+	afx_msg void OnShowColumn();//仅显示该列
+	afx_msg void OnShowRow();//仅显示该行
 private:
 	CStringArray arrConcMat;
 	CStringArray arrRebarMat;

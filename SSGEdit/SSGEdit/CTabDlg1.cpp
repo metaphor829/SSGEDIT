@@ -33,6 +33,7 @@ CTabDlg1::CTabDlg1(CWnd* pParent /*=nullptr*/)
 	, m_name(_T(""))
 	, m_edgerebar(_T(""))
 	, m_linkrebar(_T(""))
+	
 {
 
 }
@@ -73,6 +74,7 @@ void CTabDlg1::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_COLREBARRATIO, m_colrebarratio);
 	DDX_Text(pDX, IDC_EDIT_EDGEREBAR, m_edgerebar);
 	DDX_Text(pDX, IDC_EDIT_LINKREABR, m_linkrebar);
+	DDX_Text(pDX, IDC_EDIT_BEAMREBARRATIO2, m_colrebarratio);
 }
 
 
